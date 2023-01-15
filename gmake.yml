@@ -1,0 +1,20 @@
+vars:
+  name: 1
+all: |
+  @var name 2
+  @echo {{.name}}
+  # @copy test D:/tmp/test
+  @mkdir tests
+  @touch tests/test
+  @rm tests/test
+  @rm tests
+  @cd tests
+  @cd .
+  @env GOOS linux
+  go build -o ./bin/gmake gmake.go
+  @env GOOS windows
+  go build -o ./bin/gmake.exe gmake.go
+  @cmd made
+
+made:
+  @echo Whaaaaaaaaaaaaaaaaaaaaaat??????
