@@ -13,6 +13,7 @@ This branch extends some functionality.
   - [build-in command](#build-in-command)
     - [@echo](#echo)
     - [@var](#var)
+    - [@if](#if)
     - [@env](#env)
     - [@cmd](#cmd)
     - [comment](#comment)
@@ -24,7 +25,15 @@ This branch extends some functionality.
     - [@cd](#cd)
     - [@download](#download)
   - [system command](#system-command)
+  - [Built-in variables](#built-in-variables)
+    - [time](#time)
+    - [time\_utc](#time_utc)
+    - [time\_unix](#time_unix)
+    - [time\_utc\_unix](#time_utc_unix)
+    - [runtime\_os](#runtime_os)
+    - [runtime\_arch](#runtime_arch)
 - [examples](#examples)
+- [License](#license)
 
 # Installing
 
@@ -93,6 +102,69 @@ vars:
 
 all: |
   @echo {{.msg}}
+```
+
+### @if
+This keyword is a binary operator that supports the following two data types:
+`string, int64`
+
+<strong>Example</strong>
+
+```yml
+# Equal to
+all: |
+  @if windows == windows then iaw
+
+iaw: |
+  @echo i am windows!!!
+
+
+# or
+all: |
+  @if linux == windows then iaw or ial
+
+iaw: |
+  @echo i am windows!!!
+
+ial: |
+  @echo i am linux!!!
+
+
+# Not equal to
+all: |
+  @if windows2 != windows then iaw
+
+iaw: |
+  @echo i am not windows!!!
+
+
+# Greater than
+all: |
+  @if 2 > 1 then iaw
+
+iaw: |
+  @echo i am 2!!!
+
+# Greater than or equal
+all: |
+  @if 2 >= 2 then iaw
+
+iaw: |
+  @echo i am 2!!!
+
+# Smaller than
+all: |
+  @if 1 < 2 then iaw
+
+iaw: |
+  @echo i am 1!!!
+
+# Less than or equal to
+all: |
+  @if 1 <= 1 then iaw
+
+iaw: |
+  @echo i am 1!!!
 ```
 
 ### @env
@@ -194,6 +266,51 @@ System commands, execute console commands, and execute everything that the conso
 go build
 ```
 
+## Built-in variables
+For the convenience of use, gmake2 has some built-in available variables, which will be continuously updated.
+
+### time
+Current time
+
+```
+@echo {{.time}}
+```
+
+### time_utc
+Current UTC time
+
+```
+@echo {{.time}}
+```
+
+### time_unix
+Current Unix Time
+
+```
+@echo {{.time_unix}}
+```
+
+### time_utc_unix
+Current UTC Unix time
+
+```
+@echo {{.time_utc_unix}}
+```
+
+### runtime_os
+Current system name
+
+```
+@echo {{.runtime_os}}
+```
+
+### runtime_arch
+Current System Architecture
+
+```
+@echo {{.runtime_arch}}
+```
+
 # examples
 
 examples.yml
@@ -224,3 +341,6 @@ all: |
 ```sh
 gmake
 ```
+
+# License
+This software is distributed under Apache-2.0 license.
