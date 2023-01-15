@@ -248,14 +248,14 @@ Download a file from the server.
 
 Example: save the file as-is to the current directory.
 ```sh
-@download https://ghproxy.com/https://github.com/3JoB/gmake2/releases/download/v2.0.0/gmake2_Linux_aarch64.tar.gz
+@download https://github.com/3JoB/gmake2/releases/download/v2.0.0/gmake2_Linux_aarch64.tar.gz
 ```
 
 Or
 
 Example: save a file into a custom directory/file.
 ```sh
-@download https://ghproxy.com/https://github.com/3JoB/gmake2/releases/download/v2.0.0/gmake2_Linux_aarch64.tar.gz bin/gmake2.tar.gz
+@download https://github.com/3JoB/gmake2/releases/download/v2.0.0/gmake2_Linux_aarch64.tar.gz bin/gmake2.tar.gz
 ```
 
 ## system command
