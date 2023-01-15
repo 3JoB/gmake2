@@ -31,7 +31,7 @@ Download the latest version from github.
 
 
 ```sh
-go get -u github.com/3JoB/gmake2
+https://github.com/3JoB/gmake2/releases
 ```
 
 # Getting Started
