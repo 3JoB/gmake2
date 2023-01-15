@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"os"
 	"os/exec"
 	"path"
@@ -27,7 +26,6 @@ var (
 )
 
 func main() {
-	log.SetFlags(log.Lshortfile | log.LstdFlags)
 	var rootCmd = &cobra.Command{
 		Use:   "gmake",
 		Short: "parse custom makefile and execute",
@@ -86,9 +84,7 @@ func run(ym map[string]any, commands string) {
 				}
 				// line = ResolveVars(vars, line)
 				cmdStrs, err := shellquote.Split(line)
-				if err != nil {
-					log.Fatal(err)
-				}
+				checkError(err)
 				for i, cmdStr := range cmdStrs {
 					cmdStrs[i] = ResolveVars(vars, cmdStr)
 				}
@@ -118,8 +114,11 @@ func run(ym map[string]any, commands string) {
 				case "@touch":
 					touch(args[0])
 				case "@download":
-					err := downloadFile(args[1], args[0])
-					checkError(err)
+					if len(args) == 1 {
+						downloadFile(".", args[0])
+					} else {
+						downloadFile(args[1], args[0])
+					}
 				case "@cd":
 					abs, err := filepath.Abs(args[0])
 					checkError(err)
@@ -191,7 +190,7 @@ func parseCommandLine(command string) ([]string, error) {
 	}
 
 	if state == "quotes" {
-		return []string{}, errors.New(`Unclosed quote in command line: " ` + command + ` "`)
+		return []string{}, errors.New(`gmake: Unclosed quote in command line: " ` + command + ` "`)
 	}
 
 	if current != "" {
@@ -222,7 +221,7 @@ func touch(path string) {
 	f.Close()
 }
 
-func downloadFile(filepath string, url string) error {
+func downloadFile(filepath string, url string) {
 	// Get the data
 	client := grab.NewClient()
 	client.UserAgent = "github.com/3JoB/gmake2 grab/3"
@@ -230,7 +229,11 @@ func downloadFile(filepath string, url string) error {
 	// start download
 	fmt.Printf("gmake: Downloading %v...\n", req.URL())
 	resp := client.Do(req)
-	fmt.Printf("  %v\n", resp.HTTPResponse.Status)
+	fmt.Printf("gmake: Connection info: %v\n", resp.HTTPResponse.Status)
+	fsize := cast.ToString(resp.Size)
+	if fsize == "" {
+		fsize = "unknown"
+	}
 
 	// start UI loop
 	t := time.NewTicker(500 * time.Millisecond)
@@ -240,13 +243,8 @@ Loop:
 	for {
 		select {
 		case <-t.C:
-			fmt.Printf("gmake:  transferred %v / %v bytes (%.2f%%)\n",
-				resp.BytesComplete(),
-				resp.Size,
-				100*resp.Progress())
-
+			fmt.Printf("gmake: transferred %v/%v bytes (%.2f%%)\n", resp.BytesComplete(), fsize, 100*resp.Progress())
 		case <-resp.Done:
-			// download is complete
 			break Loop
 		}
 	}
@@ -254,11 +252,10 @@ Loop:
 	// check for errors
 	if err := resp.Err(); err != nil {
 		fmt.Fprintf(os.Stderr, "gmake: Download failed: %v\n", err)
-		return err
+		return
 	}
 
 	fmt.Printf("gmake: Download saved to ./%v \n", resp.Filename)
-	return nil
 }
 
 func copy(src, dst string) {
@@ -266,7 +263,7 @@ func copy(src, dst string) {
 	dst = filepath.Clean(dst)
 	if isDir(src) {
 		if !isDir(dst) {
-			fmt.Printf("gmake2: cannot copy directory to file src=%v dst=%v", src, dst)
+			fmt.Printf("gmake2: Cannot copy directory to file src=%v dst=%v", src, dst)
 			return
 		}
 		si, err := os.Stat(src)
@@ -309,16 +306,16 @@ func ResolveVars(vars any, templateStr string) string {
 	}
 	t := template.Must(template.New("template").Parse(templateStr))
 	buf := new(bytes.Buffer)
-	if err := t.Execute(buf, vars); err != nil {
-		log.Fatal(err)
-	}
+	err := t.Execute(buf, vars)
+	checkError(err)
 	s := buf.String()
 	return s
 }
 
 func checkError(err error) {
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
+		return
 	}
 }
 
@@ -331,7 +328,7 @@ func isFile(path string) bool {
 }
 
 func ExecCmd(c *exec.Cmd) {
-	log.Println(c.String())
+	fmt.Println(c.String())
 	stdout, err := c.StdoutPipe()
 	checkError(err)
 	stderr, err := c.StderrPipe()
