@@ -22,6 +22,7 @@ This branch extends some functionality.
     - [@rm](#rm)
     - [@mkdir](#mkdir)
     - [@cd](#cd)
+    - [@download](#download)
   - [system command](#system-command)
 - [examples](#examples)
 
@@ -168,6 +169,21 @@ Set the directory to make subsequent console commands run in the specified direc
 
 ```
 @cd from
+```
+
+### @download
+Download a file from the server.
+
+Example: save the file as-is to the current directory.
+```sh
+@download https://ghproxy.com/https://github.com/3JoB/gmake2/releases/download/v2.0.0/gmake2_Linux_aarch64.tar.gz
+```
+
+Or
+
+Example: save a file into a custom directory/file.
+```sh
+@download https://ghproxy.com/https://github.com/3JoB/gmake2/releases/download/v2.0.0/gmake2_Linux_aarch64.tar.gz bin/gmake2.tar.gz
 ```
 
 ## system command
