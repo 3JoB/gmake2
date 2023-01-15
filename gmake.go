@@ -9,6 +9,7 @@ import (
 	"os/exec"
 	"path"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"text/template"
 	"time"
@@ -22,7 +23,8 @@ import (
 )
 
 var (
-	cfgFile string
+	cfgFile       string
+	commands_args string
 )
 
 func main() {
@@ -33,13 +35,12 @@ func main() {
 		Args:  cobra.MinimumNArgs(0),
 		Run: func(cmd *cobra.Command, args []string) {
 			ym := parseConfig(cfgFile)
-			cmds := ""
 			if len(cmd.Flags().Args()) != 1 {
-				cmds = "all"
+				commands_args = "all"
 			} else {
-				cmds = cmd.Flags().Args()[0]
+				commands_args = cmd.Flags().Args()[0]
 			}
-			run(ym, cmds)
+			run(ym, commands_args)
 		},
 	}
 	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "gmake.yml", "config file")
@@ -62,7 +63,7 @@ func run(ym map[string]any, commands string) {
 	} else {
 		vars = make(map[string]any)
 	}
-	vars["time"] = time.Now().Format("2006-01-02 15:04")
+	vars = variable(vars)
 	for _, e := range os.Environ() {
 		pair := strings.SplitN(e, "=", 2)
 		// fmt.Println(pair[0])
@@ -100,6 +101,8 @@ func run(ym map[string]any, commands string) {
 					os.Setenv(args[0], strings.Join(args[1:], " "))
 				case "@cmd":
 					run(ym, args[0])
+				case "@if":
+					ifelse(ym, args)
 				case "#":
 				case "@echo":
 					fmt.Println(strings.Join(args, " "))
@@ -133,6 +136,89 @@ func run(ym map[string]any, commands string) {
 			}
 		}
 	}
+}
+
+func variable(v map[string]any) map[string]any {
+	v["time"] = time.Now().Format("2006-01-02 15:04")
+	v["time_utc"] = time.Now().UTC().Format("2006-01-02 15:04")
+	v["time_unix"] = time.Now().Unix()
+	v["time_utc_unix"] = time.Now().UTC().Unix()
+	v["runtime_os"] = runtime.GOOS
+	v["runtime_arch"] = runtime.GOARCH
+	return v
+}
+
+func ifelse(ym map[string]any, f []string) error {
+	switch f[1] {
+	case "==":
+		if f[0] == f[2] {
+			return ifunc(f, ym)
+		}
+		return ifunc2(f, ym)
+	case "!=":
+		if f[0] != f[2] {
+			return ifunc(f, ym)
+		}
+		return ifunc2(f, ym)
+	case "<":
+		if cast.ToInt64(f[0]) < cast.ToInt64(f[2]) {
+			return ifunc(f, ym)
+		}
+		return ifunc2(f, ym)
+	case "<=":
+		if cast.ToInt64(f[0]) <= cast.ToInt64(f[2]) {
+			return ifunc(f, ym)
+		}
+		return ifunc2(f, ym)
+	case ">":
+		if cast.ToInt64(f[0]) > cast.ToInt64(f[2]) {
+			return ifunc(f, ym)
+		}
+		return ifunc2(f, ym)
+	case ">=":
+		if cast.ToInt64(f[0]) >= cast.ToInt64(f[2]) {
+			return ifunc(f, ym)
+		}
+		return ifunc2(f, ym)
+	default:
+		fmt.Println("gmake: Invalid operator!")
+	}
+	return nil
+}
+
+func checkThen(th string) {
+	if th != "then" {
+		fmt.Printf("gmake: Invalid operator at %v \n", th)
+		return
+	}
+}
+
+func checkOr(th string) {
+	if th != "or" {
+		fmt.Printf("gmake: Invalid operator at %v \n", th)
+		return
+	}
+}
+
+func ifunc(f []string, ym map[string]any) error {
+	checkThen(f[3])
+	if f[4] == "null" {
+		return nil
+	}
+	run(ym, f[4])
+	return nil
+}
+
+func ifunc2(f []string, ym map[string]any) error {
+	if len(f) != 7 {
+		return nil
+	}
+	checkOr(f[5])
+	if f[6] == "null" {
+		return nil
+	}
+	run(ym, f[6])
+	return nil
 }
 
 func parseCommandLine(command string) ([]string, error) {
@@ -206,13 +292,11 @@ func mv(from, to string) {
 }
 
 func rm(path string) {
-	err := os.RemoveAll(path)
-	checkError(err)
+	checkError(os.RemoveAll(path))
 }
 
 func mkdir(path string) {
-	err := os.MkdirAll(path, os.ModePerm)
-	checkError(err)
+	checkError(os.MkdirAll(path, os.ModePerm))
 }
 
 func touch(path string) {
@@ -306,8 +390,7 @@ func ResolveVars(vars any, templateStr string) string {
 	}
 	t := template.Must(template.New("template").Parse(templateStr))
 	buf := new(bytes.Buffer)
-	err := t.Execute(buf, vars)
-	checkError(err)
+	checkError(t.Execute(buf, vars))
 	s := buf.String()
 	return s
 }
