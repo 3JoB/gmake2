@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"log"
-	"net/http"
 	"os"
 	"os/exec"
 	"path"
@@ -15,6 +14,8 @@ import (
 	"text/template"
 	"time"
 
+	"github.com/cavaliergopher/grab/v3"
+	"github.com/gookit/goutil/fsutil"
 	shellquote "github.com/kballard/go-shellquote"
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
@@ -63,8 +64,7 @@ func run(ym map[string]any, commands string) {
 	} else {
 		vars = make(map[string]any)
 	}
-	t := time.Now().Format("2006-01-02 15:04")
-	vars["time"] = t
+	vars["time"] = time.Now().Format("2006-01-02 15:04")
 	for _, e := range os.Environ() {
 		pair := strings.SplitN(e, "=", 2)
 		// fmt.Println(pair[0])
@@ -93,7 +93,7 @@ func run(ym map[string]any, commands string) {
 					cmdStrs[i] = ResolveVars(vars, cmdStr)
 				}
 				bin, args := cmdStrs[0], cmdStrs[1:]
-				if len(args) != 1 {
+				if len(args) == 0 {
 					fmt.Println("gmake: Illegal instruction!")
 					return
 				}
@@ -133,62 +133,7 @@ func run(ym map[string]any, commands string) {
 				}
 			}
 		}
-	}                                                                                                                                                                              
-	
-	/*for k, v := range ym {
-		if k != "vars" {
-			lines := strings.Split(cast.ToString(v), "\n")
-			for _, line := range lines {
-				if line != "" {
-					// 注释
-					if strings.TrimSpace(line)[0] == '#' {
-						continue
-					}
-					// line = ResolveVars(vars, line)
-					cmdStrs, err := shellquote.Split(line)
-					if err != nil {
-						log.Fatal(err)
-					}
-					for i, cmdStr := range cmdStrs {
-						cmdStrs[i] = ResolveVars(vars, cmdStr)
-					}
-					bin, args := cmdStrs[0], cmdStrs[1:]
-					switch bin {
-					case "@var":
-						vars[args[0]] = strings.Join(args[1:], " ")
-					case "@env":
-						os.Setenv(args[0], strings.Join(args[1:], " "))
-					case "#":
-					case "@echo":
-						fmt.Println(strings.Join(args, " "))
-					case "@mv":
-						mv(args[0], args[1])
-					case "@copy":
-						copy(args[0], args[1])
-					case "@rm":
-						rm(args[0])
-					case "@mkdir":
-						mkdir(args[0])
-					case "@touch":
-						touch(args[0])
-					case "@download":
-						err := downloadFile(args[1], args[0])
-						checkError(err)
-					case "@cd":
-						abs, err := filepath.Abs(args[0])
-						checkError(err)
-						cmdDir = abs
-					default:
-						cmd := exec.Command(bin, args...)
-						if cmdDir != "" {
-							cmd.Dir = cmdDir
-						}
-						ExecCmd(cmd)
-					}
-				}
-			}
-		}
-	}*/
+	}
 }
 
 func parseCommandLine(command string) ([]string, error) {
@@ -279,22 +224,41 @@ func touch(path string) {
 
 func downloadFile(filepath string, url string) error {
 	// Get the data
-	resp, err := http.Get(url)
-	if err != nil {
+	client := grab.NewClient()
+	client.UserAgent = "github.com/3JoB/gmake2 grab/3"
+	req, _ := grab.NewRequest(filepath, url)
+	// start download
+	fmt.Printf("gmake: Downloading %v...\n", req.URL())
+	resp := client.Do(req)
+	fmt.Printf("  %v\n", resp.HTTPResponse.Status)
+
+	// start UI loop
+	t := time.NewTicker(500 * time.Millisecond)
+	defer t.Stop()
+
+Loop:
+	for {
+		select {
+		case <-t.C:
+			fmt.Printf("gmake:  transferred %v / %v bytes (%.2f%%)\n",
+				resp.BytesComplete(),
+				resp.Size,
+				100*resp.Progress())
+
+		case <-resp.Done:
+			// download is complete
+			break Loop
+		}
+	}
+
+	// check for errors
+	if err := resp.Err(); err != nil {
+		fmt.Fprintf(os.Stderr, "gmake: Download failed: %v\n", err)
 		return err
 	}
-	defer resp.Body.Close()
 
-	// Create the file
-	out, err := os.Create(filepath)
-	if err != nil {
-		return err
-	}
-	defer out.Close()
-
-	// Write the body to file
-	_, err = io.Copy(out, resp.Body)
-	return err
+	fmt.Printf("gmake: Download saved to ./%v \n", resp.Filename)
+	return nil
 }
 
 func copy(src, dst string) {
@@ -302,7 +266,8 @@ func copy(src, dst string) {
 	dst = filepath.Clean(dst)
 	if isDir(src) {
 		if !isDir(dst) {
-			panic(fmt.Errorf("不能复制目录到文件 src=%v dst=%v", src, dst))
+			fmt.Printf("gmake2: cannot copy directory to file src=%v dst=%v", src, dst)
+			return
 		}
 		si, err := os.Stat(src)
 		checkError(err)
@@ -334,43 +299,8 @@ func copy(src, dst string) {
 	}
 }
 
-func copyFile(src, dst string) (err error) {
-	in, err := os.Open(src)
-	if err != nil {
-		return
-	}
-	defer in.Close()
-
-	out, err := os.Create(dst)
-	if err != nil {
-		return
-	}
-	defer func() {
-		if e := out.Close(); e != nil {
-			err = e
-		}
-	}()
-
-	_, err = io.Copy(out, in)
-	if err != nil {
-		return
-	}
-
-	err = out.Sync()
-	if err != nil {
-		return
-	}
-
-	si, err := os.Stat(src)
-	if err != nil {
-		return
-	}
-	err = os.Chmod(dst, si.Mode())
-	if err != nil {
-		return
-	}
-
-	return
+func copyFile(src, dst string) error {
+	return fsutil.CopyFile(src, dst)
 }
 
 func ResolveVars(vars any, templateStr string) string {
@@ -393,19 +323,11 @@ func checkError(err error) {
 }
 
 func isDir(path string) bool {
-	s, err := os.Stat(path)
-	if err != nil && !os.IsNotExist(err) {
-		return false
-	}
-	return s == nil || s.IsDir()
+	return fsutil.IsDir(path)
 }
 
 func isFile(path string) bool {
-	s, err := os.Stat(path)
-	if err != nil && !os.IsNotExist(err) {
-		return false
-	}
-	return s == nil || !s.IsDir()
+	return fsutil.IsFile(path)
 }
 
 func ExecCmd(c *exec.Cmd) {
