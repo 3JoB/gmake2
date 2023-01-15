@@ -1,20 +1,25 @@
-vars:
-  name: 1
 all: |
-  @var name 2
-  @echo {{.name}}
-  # @copy test D:/tmp/test
-  @mkdir tests
-  @touch tests/test
-  @rm tests/test
-  @rm tests
-  @cd tests
-  @cd .
-  @env GOOS linux
-  go build -o ./bin/gmake gmake.go
-  @env GOOS windows
-  go build -o ./bin/gmake.exe gmake.go
-  @cmd made
+  @cmd clean
+  @mkdir bin
+  @mkdir bin/tmp
+  @cmd linux
+  @cmd windows
 
-made:
-  @echo Whaaaaaaaaaaaaaaaaaaaaaat??????
+clean: |
+  @rm bin
+
+linux: |
+  @env GOOS linux
+  @env CGO_ENABLED 0
+  @env GOARCH amd64
+  go build -ldflags "-s -w" -o ./bin/gmake2_Linux_X86_64
+  @env GOARCH arm64
+  go build -ldflags "-s -w" -o ./bin/gmake2_Linux_aarch64
+
+windows: |
+  @env GOOS windows
+  @env CGO_ENABLED 0
+  @env GOARCH amd64
+  go build -ldflags "-s -w" -o ./bin/gmake2_Windows_X86_64.exe
+  @env GOARCH arm64
+  go build -ldflags "-s -w" -o ./bin/gmake2_Windows_aarch64.exe
