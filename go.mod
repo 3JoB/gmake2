@@ -1,4 +1,4 @@
-module gmake
+module github.com/3JoB/gmake
 
 go 1.19
 
