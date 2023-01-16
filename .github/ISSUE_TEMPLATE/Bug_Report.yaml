@@ -1,0 +1,81 @@
+---
+name: "GMake2 - Bug Report"
+description: Report a bug on GMake2
+body:
+- type: markdown
+  attributes:
+    value: |
+      Please [search for existing issues](https://github.com/3JoB/gmake2/issues) before creating a new one.
+      Please do not use this template to report irrelevant information or your issues will be closed.
+
+- type: input
+  attributes:
+    label: Version
+    description: |
+      Please run `gmake --version` to get the build of GMake2 you are on.
+      Note that this tag was not supported before version 2.2.0 .
+    placeholder: "GMake2 [BuildID 2023 ° Version 2.2.0 ° Channel Stable]"
+  validations:
+    required: true
+
+- type: checkboxes
+  attributes:
+    label: Have you read the README.md.
+    description: |
+      Have you read the README.md.
+    options:
+      - label: "YES"
+      - label: "NO"
+
+- type: input
+  attributes:
+    label: Distro Version
+    description: |
+      Please tell us what distro you are using (if applicable). 
+      You can get additional information about the version where possible, e.g. on Debian / Ubuntu, run `lsb_release -r`
+    placeholder: "Debian 11"
+  validations:
+    required: false
+
+- type: textarea
+  attributes:
+    label: Other Software
+    description: If you're reporting a bug involving GMake2's interaction with other applications, please tell us. What applications? What versions?
+    placeholder: |
+      go1.19.4 windows/amd64
+  validations:
+    required: false
+
+- type: textarea
+  attributes:
+    label: Repro Steps
+    description: Please list out the steps to reproduce your bug.  
+    placeholder: Your steps go here. Include relevant environmental variables or any other configuration.
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: Expected Behavior
+    description: What were you expecting to see? Include any relevant examples or documentation links.
+    placeholder: If you want to include screenshots, paste them into the text area or follow up with a separate comment. 
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: Actual Behavior
+    description: What happened instead?
+    placeholder: Include the terminal output, straces of the failing command, etc. as necessary.
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: Diagnostic Logs
+    description: | 
+      Please provide additional diagnostics if needed.
+      See the [guidance](https://github.com/Microsoft/WSL/blob/master/CONTRIBUTING.md) for info on how to gather Feedback Hub logs, networking logs, and more.
+    placeholder: Your links to logs or other information go here.
+  validations:
+    required: false
