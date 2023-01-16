@@ -1,5 +1,5 @@
 all: |
-  @echo {{.runtime_os}}/{{.runtime_arch}}
+  @echo {{.runtime.os}}/{{.runtime.arch}}
 
 test: |
   @if 2 < -1 then test1 or test2

@@ -26,12 +26,12 @@ This branch extends some functionality.
     - [@download](#download)
   - [system command](#system-command)
   - [Built-in variables](#built-in-variables)
-    - [time](#time)
-    - [time\_utc](#time_utc)
-    - [time\_unix](#time_unix)
-    - [time\_utc\_unix](#time_utc_unix)
-    - [runtime\_os](#runtime_os)
-    - [runtime\_arch](#runtime_arch)
+    - [time.now](#timenow)
+    - [time.utc](#timeutc)
+    - [time.unix](#timeunix)
+    - [time.utc\_unix](#timeutc_unix)
+    - [runtime.os](#runtimeos)
+    - [runtime.arch](#runtimearch)
 - [examples](#examples)
 - [License](#license)
 
@@ -269,46 +269,46 @@ go build
 ## Built-in variables
 For the convenience of use, gmake2 has some built-in available variables, which will be continuously updated.
 
-### time
+### time.now
 Current time
 
 ```
-@echo {{.time}}
+@echo {{.time.now}}
 ```
 
-### time_utc
+### time.utc
 Current UTC time
 
 ```
-@echo {{.time_utc}}
+@echo {{.time.utc}}
 ```
 
-### time_unix
+### time.unix
 Current Unix Time
 
 ```
-@echo {{.time_unix}}
+@echo {{.time.unix}}
 ```
 
-### time_utc_unix
+### time.utc_unix
 Current UTC Unix time
 
 ```
-@echo {{.time_utc_unix}}
+@echo {{.time.utc_unix}}
 ```
 
-### runtime_os
+### runtime.os
 Current system name
 
 ```
-@echo {{.runtime_os}}
+@echo {{.runtime.os}}
 ```
 
-### runtime_arch
+### runtime.arch
 Current System Architecture
 
 ```
-@echo {{.runtime_arch}}
+@echo {{.runtime.arch}}
 ```
 
 # examples
