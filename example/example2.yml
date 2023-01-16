@@ -3,8 +3,9 @@ all: |
 
 test: |
   @if 2 < -1 then test1 or test2
-  @echo haha
+  @echo haha {{.ec}}
 test1: |
   @echo test1
 test2: |
   @echo test2
+  @var ec 傻逼

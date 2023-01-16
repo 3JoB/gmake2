@@ -280,7 +280,7 @@ Current time
 Current UTC time
 
 ```
-@echo {{.time}}
+@echo {{.time_utc}}
 ```
 
 ### time_unix

@@ -1,7 +1,6 @@
 all: |
   @cmd clean
   @mkdir bin
-  @mkdir bin/tmp
   @cmd linux
   @cmd windows
 
@@ -15,6 +14,8 @@ linux: |
   go build -ldflags "-s -w" -o ./bin/gmake2_Linux_X86_64
   @env GOARCH arm64
   go build -ldflags "-s -w" -o ./bin/gmake2_Linux_aarch64
+  @enc GOARCH mips64
+  go build -ldflags "-s -w" -o ./bin/gmake2_Linux_mips64
 
 windows: |
   @env GOOS windows
