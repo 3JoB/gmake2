@@ -3,6 +3,8 @@ A make-like program, forked from https://github.com/fdxxw/gmake .
 
 This branch extends some functionality.
 
+[![GitHub Actions](https://github.com/3JoB/gmake2/actions/workflows/codeql.yml/badge.svg)](https://github.com/3JoB/gmake2/actions)
+
 # Menu
 
 - [GMake2](#gmake2)
