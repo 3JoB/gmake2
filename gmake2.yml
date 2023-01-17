@@ -18,7 +18,7 @@ linux: |
   go build -ldflags "-s -w -X 'gmake2/main.SoftCommit={{.commit}}' -X 'gmake2/main.SoftVersion={{.version}}'" -o ./bin/gmake2_Linux_X86_64
   @env GOARCH arm64
   go build -ldflags "-s -w -X 'gmake2/main.SoftCommit={{.commit}}' -X 'gmake2/main.SoftVersion={{.version}}'" -o ./bin/gmake2_Linux_aarch64
-  @enc GOARCH mips64
+  @env GOARCH mips64
   go build -ldflags "-s -w -X 'gmake2/main.SoftCommit={{.commit}}' -X 'gmake2/main.SoftVersion={{.version}}'" -o ./bin/gmake2_Linux_mips64
 
 windows: |

@@ -60,8 +60,8 @@ func run(ym map[string]any, commands string) {
 				case "@if":
 					ifelse(ym, args)
 				case "@val":
-					varg := args[1:]
-					vcmd := exec.Command(bin, varg...)
+					varg := args[2:]
+					vcmd := exec.Command(args[1], varg...)
 					if cmdDir != "" {
 						vcmd.Dir = cmdDir
 					}

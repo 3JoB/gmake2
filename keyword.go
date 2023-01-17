@@ -1,8 +1,8 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
-	"io"
 	"net/url"
 	"os"
 	"os/exec"
@@ -56,16 +56,16 @@ func ifelse(ym map[string]any, f []string) error {
 }
 
 func val(r []string, c *exec.Cmd) {
-	vars[r[0]] = c.String()
-	stdout, err := c.StdoutPipe()
+	var stdout, stderr bytes.Buffer
+	c.Stdout = &stdout
+	c.Stderr = &stderr
+	err := c.Run()
 	checkError(err)
-	stderr, err := c.StderrPipe()
-	checkError(err)
-	err = c.Start()
-	checkError(err)
-	io.Copy(os.Stdout, stdout)
-	io.Copy(os.Stderr, stderr)
-	c.Wait()
+	outStr, errStr := pkg.String(stdout.Bytes()), pkg.String(stderr.Bytes())
+	if errStr != "" {
+		EPrint(errStr)
+	}
+	vars[r[0]] = outStr
 }
 
 /*
@@ -90,9 +90,9 @@ func get_json_url(r []string) error {
 	}
 	client := resty.New()
 	resp, err := client.R().
-	SetHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.52").
-	SetHeader("APP-User-Agent", "github.com/3JoB/gmake2 grab/3").
-	Get(r[1])
+		SetHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.52").
+		SetHeader("APP-User-Agent", "github.com/3JoB/gmake2 grab/3").
+		Get(r[1])
 	checkError(err)
 	if resp.StatusCode() != 200 {
 		EPrintf("GMake2: Server returned status code: %v \n", resp.StatusCode())
