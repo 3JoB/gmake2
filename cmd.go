@@ -13,14 +13,6 @@ var (
 	SoftCommit string
 )
 
-var (
-	VersionInfo string = `GMake2 is distributed under Apache-2.0 license.
-Github: https://github.com/3JoB/gmake2
-
-Version: `+SoftVersion+`
-CommitID: `+SoftCommit
-)
-
 func main() {
 	app := &cli.App{
 		Name: "GMake2",
@@ -47,6 +39,11 @@ func main() {
 					fmt.Println(VersionInfo)
 					return nil
 				},
+			},
+			{
+				Name: "init",
+				Usage: "Initialize in the current directory.",
+				Action: InitFile,
 			},
 		},
 		Action: CMD,

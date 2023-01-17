@@ -16,6 +16,7 @@ Keywords are some built-in instructions of GMake2, which can be used to quickly 
     - [@json](#json)
     - [@var](#var)
     - [@val](#val)
+    - [@sleep](#sleep)
     - [@touch](#touch)
     - [@mv](#mv)
     - [@copy](#copy)
@@ -144,6 +145,15 @@ Execute a custom command and assign the returned value to a variable.
 all: |
   @val commit git log --pretty=format:'%h' -1
   @echo {{.commit}}
+```
+
+
+### @sleep
+Let Gmake2 be paused to run.
+
+Example: Pause five seconds
+```yml
+@sleep 5
 ```
 
 

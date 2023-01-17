@@ -43,6 +43,10 @@ func if_func2(f []string, ym map[string]any) error {
 	return nil
 }
 
+func write(path string, v any) {
+	checkError(fsutil.WriteFile(path, v, 777, 0))
+}
+
 func copyFile(src, dst string) error {
 	return fsutil.CopyFile(src, dst)
 }
@@ -71,7 +75,7 @@ func EPrint(a ...any) {
 
 func EPrintf(format string, v ...any){
 	if ctx.Bool("debug"){
-	log.Fatalf(format, v...)
+		panic(fmt.Sprintf(format, v...))
 	}
 	fmt.Printf(format, v...)
 	os.Exit(0)

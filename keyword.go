@@ -15,6 +15,7 @@ import (
 	"github.com/go-resty/resty/v2"
 	"github.com/spf13/cast"
 	"github.com/tidwall/gjson"
+	"github.com/urfave/cli/v2"
 )
 
 func ifelse(ym map[string]any, f []string) error {
@@ -206,4 +207,17 @@ func copy(src, dst string) {
 			copyFile(src, path.Join(dst, filepath.Base(src)))
 		}
 	}
+}
+
+func InitFile(c *cli.Context) error {
+	if isFile("gmake2.yml") {
+		fmt.Println("GMake2: Note! There are already Gmake2.yml files in the directory! Now you still have 12 seconds to prevent GMAKE2 from covering the file!")
+		time.Sleep(time.Second * 12)
+		rm("gmake2.yml")
+		fmt.Println("GMake2: File is being covered.")
+	}
+	touch("gmake2.yml")
+	write("gmake2.yml", InitFileContent)
+	fmt.Println("GMake2: gmake2.yml file has been generated in the current directory.")
+	return nil
 }
