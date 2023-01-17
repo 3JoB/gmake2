@@ -16,7 +16,6 @@ import (
 )
 
 var (
-	cfgFile string
 	vars    map[string]any
 	cfg     map[string]any
 	ctx     *cli.Context
@@ -61,7 +60,8 @@ func run(ym map[string]any, commands string) {
 				case "@if":
 					ifelse(ym, args)
 				case "@val":
-					vcmd := exec.Command(bin, args[1:]...)
+					varg := args[1:]
+					vcmd := exec.Command(bin, varg...)
 					if cmdDir != "" {
 						vcmd.Dir = cmdDir
 					}

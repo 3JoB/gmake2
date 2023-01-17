@@ -48,25 +48,29 @@ func main() {
 				},
 			},
 		},
-		Action: func(c *cli.Context) error {
-			ctx = c
-			ym := parseConfig(c.String("c"))
-			parseMap(ym)
-			commands_args := ""
-			if c.Args().Len() == 0 {
-				if cfg["default"] != "" {
-					commands_args = cast.ToString(cfg["default"])
-				} else {
-					commands_args = "all"
-				}
-			} else {
-				commands_args = c.Args().First()
-			}
-			run(ym, commands_args)
-			return nil
-		},
+		Action: CMD,
 	}
 
 	err := app.Run(os.Args)
 	checkError(err)
+}
+
+func CMD(c *cli.Context) error {
+	ctx = c
+	ym := parseConfig(c.String("c"))
+	parseMap(ym)
+	commands_args := ""
+	if len(c.Args().Slice()) != 0 {
+		commands_args = c.Args().First()
+	} else {
+		if cast.ToString(cfg["default"]) != "" {
+			commands_args = cast.ToString(cfg["default"])
+			fmt.Printf("这是cfg: %v \n", commands_args)
+		} else {
+			commands_args = "all"
+			fmt.Printf("普通cfg: %v \n", commands_args)
+		}
+	}
+	run(ym, commands_args)
+	return nil
 }
