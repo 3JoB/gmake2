@@ -1,0 +1,36 @@
+all: |
+  @cmd clean
+  @mkdir bin
+  @cmd linux
+  @cmd windows
+
+clean: |
+  @rm bin
+
+linux: |
+  @cmd init
+  @env GOOS linux
+  @env CGO_ENABLED 0
+  @env GOARCH amd64
+  go build -ldflags "-s -w -X 'gmake2/main.SoftCommit={{.commit}}' -X 'gmake2/main.SoftVersion={{.version}}'" -o ./bin/gmake2_Linux_X86_64
+  @env GOARCH arm64
+  go build -ldflags "-s -w -X 'gmake2/main.SoftCommit={{.commit}}' -X 'gmake2/main.SoftVersion={{.version}}'" -o ./bin/gmake2_Linux_aarch64
+  @enc GOARCH mips64
+  go build -ldflags "-s -w -X 'gmake2/main.SoftCommit={{.commit}}' -X 'gmake2/main.SoftVersion={{.version}}'" -o ./bin/gmake2_Linux_mips64
+
+windows: |
+  @cmd init
+  @env GOOS windows
+  @env CGO_ENABLED 0
+  @env GOARCH amd64
+  go build -ldflags "-s -w -X 'gmake2/main.SoftCommit={{.commit}}' -X 'gmake2/main.SoftVersion={{.version}}'" -o ./bin/gmake2_Windows_X86_64.exe
+  @env GOARCH arm64
+  go build -ldflags "-s -w -X 'gmake2/main.SoftCommit={{.commit}}' -X 'gmake2/main.SoftVersion={{.version}}'" -o ./bin/gmake2_Windows_aarch64.exe
+
+init: |
+  @if {{.init}} != use then getinfo
+
+getinfo: |
+  @json https://ghproxy.com/https://raw.githubusercontent.com/3JoB/gmake2/master/gmake.json string version version
+  @val commit git log --pretty=format:'%h' -1
+  @var init use

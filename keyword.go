@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"net/url"
 	"os"
+	"os/exec"
 	"path"
 	"path/filepath"
 	"time"
@@ -51,6 +53,19 @@ func ifelse(ym map[string]any, f []string) error {
 		fmt.Println("GMake2: Invalid operator!")
 	}
 	return nil
+}
+
+func val(r []string, c *exec.Cmd) {
+	vars[r[0]] = c.String()
+	stdout, err := c.StdoutPipe()
+	checkError(err)
+	stderr, err := c.StderrPipe()
+	checkError(err)
+	err = c.Start()
+	checkError(err)
+	io.Copy(os.Stdout, stdout)
+	io.Copy(os.Stderr, stderr)
+	c.Wait()
 }
 
 /*

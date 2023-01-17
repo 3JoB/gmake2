@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"os"
 
 	"github.com/gookit/goutil/fsutil"
 )
@@ -55,7 +57,22 @@ func isFile(path string) bool {
 
 func checkError(err error) {
 	if err != nil {
-		fmt.Println(err)
-		return
+		EPrint(err)
 	}
+}
+
+func EPrint(a ...any) {
+	if ctx.Bool("debug"){
+		log.Fatal(a...)
+	}
+	fmt.Println(a...)
+	os.Exit(0)
+}
+
+func EPrintf(format string, v ...any){
+	if ctx.Bool("debug"){
+	log.Fatalf(format, v...)
+	}
+	fmt.Printf(format, v...)
+	os.Exit(0)
 }

@@ -18,6 +18,20 @@ func parseConfig(cfgFile string) map[string]any {
 	return m
 }
 
+func parseMap(ym map[string]any) {
+	if v, ok := ym["vars"]; ok {
+		vars = v.(map[string]any)
+	} else {
+		vars = make(map[string]any)
+	}
+	if v, ok := ym["config"]; ok {
+		cfg = v.(map[string]any)
+	} else {
+		cfg = make(map[string]any)
+	}
+	vars = variable(vars)
+}
+
 func ResolveVars(vars any, templateStr string) string {
 	if vars == nil {
 		return templateStr

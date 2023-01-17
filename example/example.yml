@@ -1,6 +1,7 @@
 vars:
   name: 1
 config:
+  default: all
   
 all: |
   @var name 2

@@ -12,48 +12,17 @@ import (
 
 	shellquote "github.com/kballard/go-shellquote"
 	"github.com/spf13/cast"
-	"github.com/spf13/cobra"
+	"github.com/urfave/cli/v2"
 )
 
 var (
 	cfgFile string
 	vars    map[string]any
-	cfg map[string]any
+	cfg     map[string]any
+	ctx     *cli.Context
 )
 
-func main() {
-	var rootCmd = &cobra.Command{
-		Use:   "gmake2",
-		Short: "parse custom makefile and execute",
-		Long:  "",
-		Args:  cobra.MinimumNArgs(0),
-		Run: func(cmd *cobra.Command, args []string) {
-			ym := parseConfig(cfgFile)
-			commands_args := ""
-			if len(cmd.Flags().Args()) != 1 {
-				commands_args = "all"
-			} else {
-				commands_args = cmd.Flags().Args()[0]
-			}
-			run(ym, commands_args)
-		},
-	}
-	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "gmake.yml", "config file")
-	rootCmd.Execute()
-}
-
 func run(ym map[string]any, commands string) {
-	if v, ok := ym["vars"]; ok {
-		vars = v.(map[string]any)
-	} else {
-		vars = make(map[string]any)
-	}
-	if v, ok := ym["config"]; ok {
-		cfg = v.(map[string]any)
-	} else {
-		cfg = make(map[string]any)
-	}
-	vars = variable(vars)
 	for _, e := range os.Environ() {
 		pair := strings.SplitN(e, "=", 2)
 		// fmt.Println(pair[0])
@@ -61,8 +30,7 @@ func run(ym map[string]any, commands string) {
 	}
 	cmdDir := ""
 	if cast.ToString(ym[commands]) == "" {
-		fmt.Printf("GMake2: Command not found %v \n", commands)
-		return
+		EPrintf("GMake2: Command not found %v \n", commands)
 	}
 	k, v := commands, ym[commands]
 	if k != "vars" && k != "config" {
@@ -81,8 +49,7 @@ func run(ym map[string]any, commands string) {
 				}
 				bin, args := cmdStrs[0], cmdStrs[1:]
 				if len(args) == 0 {
-					fmt.Println("GMake2: Illegal instruction!")
-					return
+					EPrint("GMake2: Illegal instruction!")
 				}
 				switch bin {
 				case "@var":
@@ -93,6 +60,12 @@ func run(ym map[string]any, commands string) {
 					run(ym, args[0])
 				case "@if":
 					ifelse(ym, args)
+				case "@val":
+					vcmd := exec.Command(bin, args[1:]...)
+					if cmdDir != "" {
+						vcmd.Dir = cmdDir
+					}
+					val(args, vcmd)
 				case "#":
 				case "@echo":
 					fmt.Println(strings.Join(args, " "))
@@ -108,6 +81,8 @@ func run(ym map[string]any, commands string) {
 					mkdir(args[0])
 				case "@touch":
 					touch(args[0])
+				case "@sleep":
+					time.Sleep(time.Second * cast.ToDuration(args[0]))
 				case "@download":
 					if len(args) == 1 {
 						downloadFile(".", args[0])
