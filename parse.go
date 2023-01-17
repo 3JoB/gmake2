@@ -59,7 +59,7 @@ func parseCommandLine(command string) ([]string, error) {
 	}
 
 	if state == "quotes" {
-		return []string{}, errors.New(`GMake: Unclosed quote in command line: " ` + command + ` "`)
+		return []string{}, errors.New(`GMake2: Unclosed quote in command line: " ` + command + ` "`)
 	}
 
 	if current != "" {

@@ -51,21 +51,21 @@ func ifelse(ym map[string]any, f []string) error {
 		}
 		return if_func2(f, ym)
 	default:
-		fmt.Println("GMake: Invalid operator!")
+		fmt.Println("GMake2: Invalid operator!")
 	}
 	return nil
 }
 
 func checkThen(th string) {
 	if th != "then" {
-		fmt.Printf("GMake: Invalid operator at %v \n", th)
+		fmt.Printf("GMake2: Invalid operator at %v \n", th)
 		return
 	}
 }
 
 func checkOr(th string) {
 	if th != "or" {
-		fmt.Printf("GMake: Invalid operator at %v \n", th)
+		fmt.Printf("GMake2: Invalid operator at %v \n", th)
 		return
 	}
 }
@@ -109,19 +109,19 @@ api.json:
 */
 func get_json_url(r []string) error {
 	if len(r) != 5 {
-		fmt.Println("GMake: Illegal instruction!!!")
+		fmt.Println("GMake2: Illegal instruction!!!")
 		os.Exit(0)
 	}
 	if _, err := url.Parse(r[1]); err != nil {
-		fmt.Println("GMake: Url check failed!!!")
-		fmt.Println("GMake: " + err.Error())
+		fmt.Println("GMake2: Url check failed!!!")
+		fmt.Println("GMake2: " + err.Error())
 		os.Exit(0)
 	}
 	client := resty.New()
 	resp, err := client.R().SetHeader("User-Agent", "github.com/3JoB/gmake2 grab/3").Get(r[1])
 	checkError(err)
 	if resp.StatusCode() != 200 {
-		fmt.Printf("GMake: Server returned status code: %v \n", resp.StatusCode())
+		fmt.Printf("GMake2: Server returned status code: %v \n", resp.StatusCode())
 		os.Exit(0)
 	}
 	fmt.Printf("Parsing json from %v", r[1])
@@ -168,9 +168,9 @@ func downloadFile(filepath string, url string) {
 	client.UserAgent = "github.com/3JoB/gmake2 grab/3"
 	req, _ := grab.NewRequest(filepath, url)
 	// start download
-	fmt.Printf("GMake: Downloading %v...\n", req.URL())
+	fmt.Printf("GMake2: Downloading %v...\n", req.URL())
 	resp := client.Do(req)
-	fmt.Printf("GMake: Connection info: %v\n", resp.HTTPResponse.Status)
+	fmt.Printf("GMake2: Connection info: %v\n", resp.HTTPResponse.Status)
 	fsize := cast.ToString(resp.Size)
 	if fsize == "" {
 		fsize = "unknown"
@@ -184,7 +184,7 @@ Loop:
 	for {
 		select {
 		case <-t.C:
-			fmt.Printf("GMake: transferred %v/%v bytes (%.2f%%)\n", resp.BytesComplete(), fsize, 100*resp.Progress())
+			fmt.Printf("GMake2: transferred %v/%v bytes (%.2f%%)\n", resp.BytesComplete(), fsize, 100*resp.Progress())
 		case <-resp.Done:
 			break Loop
 		}
@@ -192,11 +192,11 @@ Loop:
 
 	// check for errors
 	if err := resp.Err(); err != nil {
-		fmt.Fprintf(os.Stderr, "GMake: Download failed: %v\n", err)
+		fmt.Fprintf(os.Stderr, "GMake2: Download failed: %v\n", err)
 		return
 	}
 
-	fmt.Printf("GMake: Download saved to ./%v \n", resp.Filename)
+	fmt.Printf("GMake2: Download saved to ./%v \n", resp.Filename)
 }
 
 func copy(src, dst string) {

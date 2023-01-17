@@ -65,7 +65,7 @@ func run(ym map[string]any, commands string) {
 	}
 	cmdDir := ""
 	if cast.ToString(ym[commands]) == "" {
-		fmt.Printf("GMake: Command not found %v \n", commands)
+		fmt.Printf("GMake2: Command not found %v \n", commands)
 		return
 	}
 	k, v := commands, ym[commands]
@@ -85,7 +85,7 @@ func run(ym map[string]any, commands string) {
 				}
 				bin, args := cmdStrs[0], cmdStrs[1:]
 				if len(args) == 0 {
-					fmt.Println("GMake: Illegal instruction!")
+					fmt.Println("GMake2: Illegal instruction!")
 					return
 				}
 				switch bin {
