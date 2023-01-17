@@ -10,14 +10,14 @@ import (
 
 func checkThen(th string) {
 	if th != "then" {
-		fmt.Printf("GMake2: Invalid operator at %v \n", th)
+		EPrintf("GMake2: Invalid operator at %v \n", th)
 		return
 	}
 }
 
 func checkOr(th string) {
 	if th != "or" {
-		fmt.Printf("GMake2: Invalid operator at %v \n", th)
+		EPrintf("GMake2: Invalid operator at %v \n", th)
 		return
 	}
 }

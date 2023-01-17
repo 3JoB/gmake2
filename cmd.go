@@ -53,7 +53,7 @@ func main() {
 			ym := parseConfig(c.String("c"))
 			parseMap(ym)
 			commands_args := ""
-			if c.NArg() != 1 {
+			if c.Args().Len() == 0 {
 				if cfg["default"] != "" {
 					commands_args = cast.ToString(cfg["default"])
 				} else {

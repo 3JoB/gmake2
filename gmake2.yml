@@ -31,6 +31,6 @@ init: |
   @if {{.init}} != use then getinfo
 
 getinfo: |
-  @json https://ghproxy.com/https://raw.githubusercontent.com/3JoB/gmake2/master/gmake.json string version version
+  @json url https://raw.githubusercontent.com/3JoB/gmake2/master/gmake2.json string version version
   @val commit git log --pretty=format:'%h' -1
   @var init use

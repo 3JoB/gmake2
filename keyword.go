@@ -50,7 +50,7 @@ func ifelse(ym map[string]any, f []string) error {
 		}
 		return if_func2(f, ym)
 	default:
-		fmt.Println("GMake2: Invalid operator!")
+		EPrint("GMake2: Invalid operator!")
 	}
 	return nil
 }
@@ -80,23 +80,24 @@ api.json:
 @echo {{.vb}}
 */
 func get_json_url(r []string) error {
+	fmt.Println(r[:])
 	if len(r) != 5 {
-		fmt.Println("GMake2: Illegal instruction!!!")
-		os.Exit(0)
+		EPrint("GMake2: Illegal instruction!!!")
 	}
 	if _, err := url.Parse(r[1]); err != nil {
 		fmt.Println("GMake2: Url check failed!!!")
-		fmt.Println("GMake2: " + err.Error())
-		os.Exit(0)
+		EPrint("GMake2: " + err.Error())
 	}
 	client := resty.New()
-	resp, err := client.R().SetHeader("User-Agent", "github.com/3JoB/gmake2 grab/3").Get(r[1])
+	resp, err := client.R().
+	SetHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.52").
+	SetHeader("APP-User-Agent", "github.com/3JoB/gmake2 grab/3").
+	Get(r[1])
 	checkError(err)
 	if resp.StatusCode() != 200 {
-		fmt.Printf("GMake2: Server returned status code: %v \n", resp.StatusCode())
-		os.Exit(0)
+		EPrintf("GMake2: Server returned status code: %v \n", resp.StatusCode())
 	}
-	fmt.Printf("Parsing json from %v", r[1])
+	fmt.Printf("Parsing json from %v \n", r[1])
 	result := gjson.Get(pkg.String(resp.Body()), r[3])
 	switch r[2] {
 	case "string", "String":
@@ -176,8 +177,7 @@ func copy(src, dst string) {
 	dst = filepath.Clean(dst)
 	if isDir(src) {
 		if !isDir(dst) {
-			fmt.Printf("gmake2: Cannot copy directory to file src=%v dst=%v", src, dst)
-			return
+			EPrintf("gmake2: Cannot copy directory to file src=%v dst=%v", src, dst)
 		}
 		si, err := os.Stat(src)
 		checkError(err)
