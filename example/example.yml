@@ -1,5 +1,7 @@
 vars:
   name: 1
+config:
+  
 all: |
   @var name 2
   @echo {{.name}}

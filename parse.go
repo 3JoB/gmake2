@@ -1,8 +1,33 @@
 package main
 
 import (
+	"bytes"
 	"errors"
+	"os"
+	"text/template"
+
+	"gopkg.in/yaml.v3"
 )
+
+func parseConfig(cfgFile string) map[string]any {
+	ymlData, err := os.ReadFile(cfgFile)
+	checkError(err)
+	m := make(map[string]any)
+	err = yaml.Unmarshal(ymlData, &m)
+	checkError(err)
+	return m
+}
+
+func ResolveVars(vars any, templateStr string) string {
+	if vars == nil {
+		return templateStr
+	}
+	t := template.Must(template.New("template").Parse(templateStr))
+	buf := new(bytes.Buffer)
+	checkError(t.Execute(buf, vars))
+	s := buf.String()
+	return s
+}
 
 func parseCommandLine(command string) ([]string, error) {
 	var args []string

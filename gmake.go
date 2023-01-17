@@ -13,17 +13,17 @@ import (
 	shellquote "github.com/kballard/go-shellquote"
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
-	"gopkg.in/yaml.v3"
 )
 
 var (
 	cfgFile string
 	vars    map[string]any
+	cfg map[string]any
 )
 
 func main() {
 	var rootCmd = &cobra.Command{
-		Use:   "gmake",
+		Use:   "gmake2",
 		Short: "parse custom makefile and execute",
 		Long:  "",
 		Args:  cobra.MinimumNArgs(0),
@@ -42,20 +42,16 @@ func main() {
 	rootCmd.Execute()
 }
 
-func parseConfig(cfgFile string) map[string]any {
-	ymlData, err := os.ReadFile(cfgFile)
-	checkError(err)
-	m := make(map[string]any)
-	err = yaml.Unmarshal(ymlData, &m)
-	checkError(err)
-	return m
-}
-
 func run(ym map[string]any, commands string) {
 	if v, ok := ym["vars"]; ok {
 		vars = v.(map[string]any)
 	} else {
 		vars = make(map[string]any)
+	}
+	if v, ok := ym["config"]; ok {
+		cfg = v.(map[string]any)
+	} else {
+		cfg = make(map[string]any)
 	}
 	vars = variable(vars)
 	for _, e := range os.Environ() {
@@ -69,7 +65,7 @@ func run(ym map[string]any, commands string) {
 		return
 	}
 	k, v := commands, ym[commands]
-	if k != "vars" {
+	if k != "vars" && k != "config" {
 		lines := strings.Split(cast.ToString(v), "\n")
 		for _, line := range lines {
 			if line != "" {
