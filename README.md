@@ -4,7 +4,7 @@ A make-like program, forked from https://github.com/fdxxw/gmake .
 This branch extends some functionality.
 
 [![GitHub Actions](https://github.com/3JoB/gmake2/actions/workflows/codeql.yml/badge.svg)](https://github.com/3JoB/gmake2/actions)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2F3JoB%2Fgmake2.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2F3JoB%2Fgmake2?ref=badge_shield)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2F3JoB%2Fgmake2.svg?type=smail)](https://app.fossa.com/projects/git%2Bgithub.com%2F3JoB%2Fgmake2?ref=badge_smail)
 
 # Menu
 
