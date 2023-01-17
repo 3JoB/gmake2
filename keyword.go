@@ -176,7 +176,7 @@ func copy(src, dst string) {
 	dst = filepath.Clean(dst)
 	if isDir(src) {
 		if !isDir(dst) {
-			EPrintf("gmake2: Cannot copy directory to file src=%v dst=%v", src, dst)
+			EPrintf("GMake2: Cannot copy directory to file src=%v dst=%v", src, dst)
 		}
 		si, err := os.Stat(src)
 		checkError(err)
