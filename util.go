@@ -44,7 +44,7 @@ func if_func2(f []string, ym map[string]any) error {
 }
 
 func write(path string, v any) {
-	checkError(fsutil.WriteFile(path, v, 777, 0))
+	checkError(fsutil.WriteFile(path, v, 0777, 0))
 }
 
 func copyFile(src, dst string) error {
