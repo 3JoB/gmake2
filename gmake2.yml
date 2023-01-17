@@ -15,20 +15,20 @@ linux: |
   @env GOOS linux
   @env CGO_ENABLED 0
   @env GOARCH amd64
-  go build -ldflags "-s -w -X 'gmake2/main.SoftCommit={{.commit}}' -X 'gmake2/main.SoftVersion={{.version}}'" -o ./bin/gmake2_Linux_X86_64
+  go build -ldflags "-s -w -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}'" -o ./bin/gmake2_Linux_X86_64
   @env GOARCH arm64
-  go build -ldflags "-s -w -X 'gmake2/main.SoftCommit={{.commit}}' -X 'gmake2/main.SoftVersion={{.version}}'" -o ./bin/gmake2_Linux_aarch64
+  go build -ldflags "-s -w -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}'" -o ./bin/gmake2_Linux_aarch64
   @env GOARCH mips64
-  go build -ldflags "-s -w -X 'gmake2/main.SoftCommit={{.commit}}' -X 'gmake2/main.SoftVersion={{.version}}'" -o ./bin/gmake2_Linux_mips64
+  go build -ldflags "-s -w -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}'" -o ./bin/gmake2_Linux_mips64
 
 windows: |
   @cmd init
   @env GOOS windows
   @env CGO_ENABLED 0
   @env GOARCH amd64
-  go build -ldflags "-s -w -X 'gmake2/main.SoftCommit={{.commit}}' -X 'gmake2/main.SoftVersion={{.version}}'" -o ./bin/gmake2_Windows_X86_64.exe
+  go build -ldflags "-s -w -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}'" -o ./bin/gmake2_Windows_X86_64.exe
   @env GOARCH arm64
-  go build -ldflags "-s -w -X 'gmake2/main.SoftCommit={{.commit}}' -X 'gmake2/main.SoftVersion={{.version}}'" -o ./bin/gmake2_Windows_aarch64.exe
+  go build -ldflags "-s -w -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}'" -o ./bin/gmake2_Windows_aarch64.exe
 
 init: |
   @if {{.init}} != use then getinfo

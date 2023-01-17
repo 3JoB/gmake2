@@ -80,7 +80,6 @@ api.json:
 @echo {{.vb}}
 */
 func get_json_url(r []string) error {
-	fmt.Println(r[:])
 	if len(r) != 5 {
 		EPrint("GMake2: Illegal instruction!!!")
 	}
