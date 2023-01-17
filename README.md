@@ -4,6 +4,7 @@ A make-like program, forked from https://github.com/fdxxw/gmake .
 This branch extends some functionality.
 
 [![GitHub Actions](https://github.com/3JoB/gmake2/actions/workflows/codeql.yml/badge.svg)](https://github.com/3JoB/gmake2/actions)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2F3JoB%2Fgmake2.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2F3JoB%2Fgmake2?ref=badge_shield)
 
 # Menu
 
@@ -346,3 +347,5 @@ gmake
 
 # License
 This software is distributed under Apache-2.0 license.
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2F3JoB%2Fgmake2.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2F3JoB%2Fgmake2?ref=badge_large)
