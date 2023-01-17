@@ -65,10 +65,8 @@ func CMD(c *cli.Context) error {
 	} else {
 		if cast.ToString(cfg["default"]) != "" {
 			commands_args = cast.ToString(cfg["default"])
-			fmt.Printf("这是cfg: %v \n", commands_args)
 		} else {
 			commands_args = "all"
-			fmt.Printf("普通cfg: %v \n", commands_args)
 		}
 	}
 	run(ym, commands_args)
