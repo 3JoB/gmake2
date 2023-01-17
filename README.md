@@ -14,13 +14,8 @@ This branch extends some functionality.
 - [Getting Started](#getting-started)
 - [Features](#features)
   - [Keywords](#keywords)
-  - [Built-in variables](#built-in-variables)
-    - [time.now](#timenow)
-    - [time.utc](#timeutc)
-    - [time.unix](#timeunix)
-    - [time.utc\_unix](#timeutc_unix)
-    - [runtime.os](#runtimeos)
-    - [runtime.arch](#runtimearch)
+  - [Reserved Keyword](#reserved-keyword)
+  - [Variables](#variables)
 - [examples](#examples)
 - [License](#license)
 
@@ -67,51 +62,13 @@ What's up???
 
 Keywords moved to [Wiki](wiki/Keyword.md)
 
+## Reserved Keyword
+View in [Wiki](wiki/Reserved_Keyword.md)
 
-## Built-in variables
-For the convenience of use, gmake2 has some built-in available variables, which will be continuously updated.
 
-### time.now
-Current time
+## Variables
+Variables moved to [Wiki](wiki/variables.md)
 
-```
-@echo {{.time.now}}
-```
-
-### time.utc
-Current UTC time
-
-```
-@echo {{.time.utc}}
-```
-
-### time.unix
-Current Unix Time
-
-```
-@echo {{.time.unix}}
-```
-
-### time.utc_unix
-Current UTC Unix time
-
-```
-@echo {{.time.utc_unix}}
-```
-
-### runtime.os
-Current system name
-
-```
-@echo {{.runtime.os}}
-```
-
-### runtime.arch
-Current System Architecture
-
-```
-@echo {{.runtime.arch}}
-```
 
 # examples
 
