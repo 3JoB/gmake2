@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/spf13/cast"
@@ -10,6 +11,15 @@ import (
 var (
 	SoftVersion string
 	SoftCommit string
+)
+
+var (
+	VersionInfo string = `
+GMake2 is distributed under Apache-2.0 license.
+Github: https://github.com/3JoB/gmake2
+
+Version: `+SoftVersion+`
+CommitID: `+SoftCommit
 )
 
 func main() {
@@ -30,12 +40,17 @@ func main() {
 		Commands: []*cli.Command{
 			{
 				Name: "version",
-
+				Aliases: []string{"v"},
+				Usage: "GMake2 Version",
+				Action: func(ctx *cli.Context) error {
+					fmt.Println(VersionInfo)
+					return nil
+				},
 			},
 		},
 		Action: func(c *cli.Context) error {
 			ctx = c
-			ym := parseConfig(cfgFile)
+			ym := parseConfig(c.String("c"))
 			parseMap(ym)
 			commands_args := ""
 			if c.NArg() != 1 {
