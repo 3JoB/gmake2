@@ -14,8 +14,7 @@ var (
 )
 
 var (
-	VersionInfo string = `
-GMake2 is distributed under Apache-2.0 license.
+	VersionInfo string = `GMake2 is distributed under Apache-2.0 license.
 Github: https://github.com/3JoB/gmake2
 
 Version: `+SoftVersion+`
@@ -24,6 +23,8 @@ CommitID: `+SoftCommit
 
 func main() {
 	app := &cli.App{
+		Name: "GMake2",
+		Usage: "program like make",
 		Flags: []cli.Flag{
 			&cli.BoolFlag{
 				Name:  "debug",
