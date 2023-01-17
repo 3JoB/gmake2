@@ -12,9 +12,9 @@ body:
   attributes:
     label: Version
     description: |
-      Please run `gmake --version` to get the build of GMake2 you are on.
+      Please run `gmake2 version` or `gmake2 v` to get the build of GMake2 you are on.
       Note that this tag was not supported before version 2.2.0 .
-    placeholder: "GMake2 [BuildID 2023 ° Version 2.2.0 ° Channel Stable]"
+    placeholder: "GMake2 [Version 2.2.0  CommitID xxxxx]"
   validations:
     required: true
 
@@ -75,7 +75,6 @@ body:
     label: Diagnostic Logs
     description: | 
       Please provide additional diagnostics if needed.
-      See the [guidance](https://github.com/Microsoft/WSL/blob/master/CONTRIBUTING.md) for info on how to gather Feedback Hub logs, networking logs, and more.
     placeholder: Your links to logs or other information go here.
   validations:
     required: false

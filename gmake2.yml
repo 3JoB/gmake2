@@ -6,6 +6,7 @@ all: |
   @mkdir bin
   @cmd linux
   @cmd windows
+  @echo Done!
 
 clean: |
   @rm bin
@@ -34,6 +35,7 @@ init: |
   @if {{.init}} != use then getinfo
 
 getinfo: |
+  @echo Get version info...
   @json url https://raw.githubusercontent.com/3JoB/gmake2/master/gmake2.json string version version
   @val commit git log --pretty=format:'%h' -1
   @var init use
