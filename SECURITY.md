@@ -1,19 +1,22 @@
-# Security Policy
+# Malonan Security Policy
 
 ## Supported Versions
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+Currently, versions prior to 2.2.0 are no longer supported.
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 2.x.x   | :white_check_mark: |
-| 1.x.x   | :x:                |
+APT source servers distribute only the latest version of each package.
+
+|   Version  |   Supported        |
+| ---------- | ------------------ |
+| 2.2.x >=   | :white_check_mark: |
+| 2.1.x      | :x:                |
+| 2.0.x      | :x:                |
+| 1.x.x      | :x:                |
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
+You can report high-risk vulnerabilities to [Malonan Security Department](security@goog.stream) , or you can select `report a security vulnerability` in Issues.
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+## Software Source Issues
+
+Regarding software sources, you can send problem reports to [Malonan source manager](deb@goog.stream).
