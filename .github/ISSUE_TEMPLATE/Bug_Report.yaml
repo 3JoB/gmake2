@@ -26,6 +26,8 @@ body:
     options:
       - label: "YES"
       - label: "NO"
+    validations:
+    required: true
 
 - type: input
   attributes:
@@ -35,7 +37,7 @@ body:
       You can get additional information about the version where possible, e.g. on Debian / Ubuntu, run `lsb_release -r`
     placeholder: "Debian 11"
   validations:
-    required: false
+    required: true
 
 - type: textarea
   attributes:
