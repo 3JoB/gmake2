@@ -40,7 +40,7 @@ This method is limited to systems using apt and dpkg for package management.
 
 Please execute the following commands in the order they were written.
 ```sh
-echo 'deb http://deb.lcag.org stable main' | sudo tee /etc/apt/sources.list.d/malonan.list
+echo 'deb https://deb.lcag.org stable main' | sudo tee /etc/apt/sources.list.d/malonan.list
 
 wget -qO - https://deb.lcag.org/public.key | sudo apt-key --keyring /etc/apt/trusted.gpg.d/malonan.gpg add -
 
