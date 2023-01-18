@@ -21,6 +21,9 @@ This branch extends some functionality.
 - [GMake2](#gmake2)
 - [Menu](#menu)
 - [Installing](#installing)
+  - [Install from software source](#install-from-software-source)
+  - [Install from Github Releases](#install-from-github-releases)
+  - [Install from source code](#install-from-source-code)
 - [Getting Started](#getting-started)
 - [Features](#features)
   - [Keywords](#keywords)
@@ -31,12 +34,45 @@ This branch extends some functionality.
 
 # Installing
 
+## Install from software source
+This method is limited to systems using apt and dpkg for package management.
+
+
+Please execute the following commands in the order they were written.
+```sh
+echo 'deb http://deb.lcag.org stable main' | sudo tee /etc/apt/sources.list.d/malonan.list
+
+wget -qO - https://deb.lcag.org/public.key | sudo apt-key --keyring /etc/apt/trusted.gpg.d/malonan.gpg add -
+
+sudo apt update && sudo apt install gmake2
+```
+
+Please execute the following commands in the order they were written.
+```sh
+apt update && apt upgrade
+```
+
+## Install from Github Releases
 Download the latest version from github.
 
 
+[Release](https://github.com/3JoB/gmake2/releases)
+
+## Install from source code
+You can build gmake2 directly using Go build, but the version subcommand will not work properly.
+
 ```sh
-https://github.com/3JoB/gmake2/releases
+git clone https://github.com/3JoB/gmake2 && cd gmake2
+
+# gmake2 installed
+gmake2
+
+# gmake2 is not installed
+export CGO_ENABLED=0
+go build -ldflags "-s -w -X 'main.SoftCommit=owner' -X 'main.SoftVersion=owner'"
 ```
+
+
 
 # Getting Started
 
