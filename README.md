@@ -40,7 +40,7 @@ https://github.com/3JoB/gmake2/releases
 
 # Getting Started
 
-Write the gmake.yml file in the current directory, the content is as follows
+Write the gmake2.yml file in the current directory, the content is as follows
 
 ```yml
 vars:
@@ -53,13 +53,13 @@ mg: |
   @echo What's up???
 ```
 
-Then run `gmake` on the current command line console, you can see the console print
+Then run `gmake2` on the current command line console, you can see the console print
 
 ```
 Hello World
 ```
 
-Or execute `gmake mg` to execute the specified command, and the console will print
+Or execute `gmake2 mg` to execute the specified command, and the console will print
 ```
 What's up???
 ```
@@ -82,7 +82,7 @@ Variables moved to [Wiki](wiki/variables.md)
 
 # examples
 
-examples.yml
+gmake2.yml
 
 ```yml
 vars:
@@ -108,7 +108,7 @@ all: |
 ```
 
 ```sh
-gmake
+gmake2
 ```
 
 # License
