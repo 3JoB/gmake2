@@ -21,11 +21,11 @@ body:
 - type: dropdown
   id: readme
   attributes:
-    label: Have you read the README.md.
+    label: README.md.
     description: Have you read the README.md.
     options:
       - No (Default)
-      - YES
+      - YES (real)
   validations:
     required: true
 
