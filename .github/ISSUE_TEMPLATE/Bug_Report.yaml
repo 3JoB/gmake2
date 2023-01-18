@@ -18,15 +18,15 @@ body:
   validations:
     required: true
 
-- type: checkboxes
+- type: dropdown
+  id: readme
   attributes:
     label: Have you read the README.md.
-    description: |
-      Have you read the README.md.
+    description: Have you read the README.md.
     options:
-      - label: "YES"
-      - label: "NO"
-    validations:
+      - No (Default)
+      - YES
+  validations:
     required: true
 
 - type: input
