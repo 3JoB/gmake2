@@ -42,10 +42,6 @@ Please execute the following commands in the order they were written.
 ```sh
 echo 'deb https://deb.lcag.org stable main' | sudo tee /etc/apt/sources.list.d/malonan.list
 
-# new wording
-wget -qO - https://deb.lcag.org/public.key | sudo gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/malonan.gpg --import
-
-# legacy system
 wget -qO - https://deb.lcag.org/public.key | sudo apt-key --keyring /etc/apt/trusted.gpg.d/malonan.gpg add -
 
 sudo apt update && sudo apt install gmake2
@@ -54,6 +50,13 @@ sudo apt update && sudo apt install gmake2
 Please execute the following commands in the order they were written.
 ```sh
 apt update && apt upgrade
+```
+
+
+<strong>The following method is proven to be no longer available, it causes apt not to read the installed key, the workaround is to delete the key and re-add it using apt-key.</strong>
+
+```sh
+wget -qO - https://deb.lcag.org/public.key | sudo gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/malonan.gpg --import
 ```
 
 ## Install from Github Releases
