@@ -15,7 +15,7 @@ APT source servers distribute only the latest version of each package.
 
 ## Reporting a Vulnerability
 
-You can report high-risk vulnerabilities to Malonan Security Department (security@goog.stream) , or you can select `report a security vulnerability` in Issues.
+You can report high-risk vulnerabilities to Malonan Security Manager (security@goog.stream) , or you can select `report a security vulnerability` in Issues.
 
 ## Software Source Issues
 
