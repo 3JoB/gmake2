@@ -5,7 +5,7 @@ This branch extends some functionality.
 
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/3JoB/gmake2/codeql.yml?label=CodeQL%20Scanner&style=flat-square)](https://github.com/3JoB/gmake2/actions)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2F3JoB%2Fgmake2.svg?type=smail)](https://app.fossa.com/projects/git%2Bgithub.com%2F3JoB%2Fgmake2?ref=badge_smail)
-[![GPLv3](https://img.shields.io/github/license/3JoB/gmake2?style=flat-square)](https://github.com/3JoB/gmake2/blob/master/LICENSE)
+[![MPL-2.0](https://img.shields.io/github/license/3JoB/gmake2?style=flat-square)](https://github.com/3JoB/gmake2/blob/master/LICENSE)
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/3JoB/gmake2?label=Go%20Version&style=flat-square)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/3JoB/gmake2?label=Release%20Version&style=flat-square)](https://github.com/3JoB/gmake2/release)
 
@@ -155,6 +155,6 @@ gmake2
 ```
 
 # License
-This software is distributed under GPL-3.0 license.
+This software is distributed under MPL-2.0 license.
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2F3JoB%2Fgmake2.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2F3JoB%2Fgmake2?ref=badge_large)
