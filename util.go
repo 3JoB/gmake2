@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/gookit/goutil/fsutil"
+	"github.com/urfave/cli/v2"
 )
 
 func checkThen(th string) {
@@ -44,7 +46,7 @@ func if_func2(f []string, ym map[string]any) error {
 }
 
 func write(path string, v any) {
-	checkError(fsutil.WriteFile(path, v, 0777, 0))
+	checkError(fsutil.WriteFile(path, v, 0664))
 }
 
 func copyFile(src, dst string) error {
@@ -66,17 +68,30 @@ func checkError(err error) {
 }
 
 func EPrint(a ...any) {
-	if ctx.Bool("debug"){
+	if ctx.Bool("debug") {
 		log.Fatal(a...)
 	}
 	fmt.Println(a...)
 	os.Exit(0)
 }
 
-func EPrintf(format string, v ...any){
-	if ctx.Bool("debug"){
+func EPrintf(format string, v ...any) {
+	if ctx.Bool("debug") {
 		panic(fmt.Sprintf(format, v...))
 	}
 	fmt.Printf(format, v...)
 	os.Exit(0)
+}
+
+func InitFile(c *cli.Context) error {
+	if isFile("gmake2.yml") {
+		fmt.Println("GMake2: Note! There are already Gmake2.yml files in the directory! Now you still have 12 seconds to prevent GMAKE2 from covering the file!")
+		time.Sleep(time.Second * 12)
+		rm("gmake2.yml")
+		fmt.Println("GMake2: File is being covered.")
+	}
+	touch("gmake2.yml")
+	write("gmake2.yml", InitFileContent)
+	fmt.Println("GMake2: gmake2.yml file has been generated in the current directory.")
+	return nil
 }
