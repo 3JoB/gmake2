@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/url"
@@ -13,10 +12,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/3JoB/args"
 	"github.com/3JoB/telebot/pkg"
 	"github.com/cavaliergopher/grab/v3"
 	"github.com/go-resty/resty/v2"
+	"github.com/goccy/go-json"
 	"github.com/spf13/cast"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v2"
@@ -226,57 +225,96 @@ func InitFile(c *cli.Context) error {
 	return nil
 }
 
-/*
-	@req -X=GET -u=https://test.com -H='{"User-Agent":"Miniapps","cookie":"123456"}' -F="main.exe"
+type Req struct {
+	Header map[string]string
+	Body   any
+	File   string
+	Method string
+	Uri    string
+	Req    *resty.Request
+	Resp   *resty.Response
+}
 
-@req -X=GET -u="https://test.com" -H='{"User-Agent":"Miniapps","cookie":"123456"}' -d='{"api":"1234"}'
+/*
+@req c X GET
+
+@req c uri https://test.com
+
+@req c H '{"User-Agent":"Miniapps","cookie":"123456"}'
+
+@req c F main.exe
+
+@req do
+
+or
+
+@req c X GET
+
+@req c u https://test.com
+
+@req c H '{"User-Agent":"Miniapps","cookie":"123456"}'
+
+@req c d '{"api":"1234"}'
+
 */
-func network(str ...string) {
-	v := strings.ReplaceAll(strings.Trim(fmt.Sprint(str), "[]"), " ", " ")
-	fmt.Println(v)
-	flags := args.NewFlags("req")
-	X := flags.String("X", "GET", "method")
-	uri := flags.String("u", "", "url")
-	header := flags.String("H", `{"User-Agent":"github.com/3JoB/gmake2 Version/2"}`, "Header")
-	d := flags.String("d", "", "Body")
-	f := flags.String("F", "", "file")
-	err := args.ParseFlags(flags, v)
-	checkError(err)
-	_, err = url.Parse(*uri)
-	checkError(err)
-	headers := make(map[string]string)
-	json.Unmarshal(pkg.Bytes(*header), &headers)
-	fmt.Println(*header)
-	client := resty.New()
-	req := &resty.Request{}
-	resp := &resty.Response{}
-	req = client.R().SetHeaders(headers).SetBody(*d)
-	if *f != "" {
-		req = req.SetFile(*f, *f)
-	}
-	switch *X {
-	case "GET", "get":
-		resp, err = req.Get(*uri)
-	case "POST", "post":
-		resp, err = req.Post(*uri)
-	case "DELETE", "delete":
-		resp, err = req.Delete(*uri)
-	case "PATCH", "patch":
-		resp, err = req.Patch(*uri)
-	case "PUT", "put":
-		resp, err = req.Put(*uri)
+func (r *Req) Network(str ...string) {
+	switch str[0] {
+	case "config", "c":
+		switch str[1] {
+		case "header", "HEADER", "h", "H":
+			headers := make(map[string]string)
+			json.Unmarshal(pkg.Bytes(strings.ReplaceAll(strings.Trim(fmt.Sprint(str[2:]), "[]"), " ", " ")), &headers)
+			r.Header = headers
+		case "body", "BODY", "d", "b", "D", "B":
+			r.Body = strings.ReplaceAll(strings.Trim(fmt.Sprint(str[2:]), "[]"), " ", " ")
+		case "file", "FILE", "f", "F":
+			r.File = strings.ReplaceAll(strings.Trim(fmt.Sprint(str[2:]), "[]"), " ", " ")
+		case "method", "METHOD", "X", "x", "m", "M":
+			r.Method = strings.ReplaceAll(strings.Trim(fmt.Sprint(str[2:]), "[]"), " ", " ")
+		case "uri", "url", "URI", "URL", "u", "U":
+			r.Uri = strings.ReplaceAll(strings.Trim(fmt.Sprint(str[2:]), "[]"), " ", " ")
+		default:
+			fmt.Println("GMake2: @req: unknown method: " + str[1])
+		}
+	case "do", "Do":
+		r.Request()
 	default:
-		err = errors.New("GMake2: unknown request type :" + *X)
+		checkError(errors.New("GMake2: @req: Must use do method to execute"))
+	}
+	// v := strings.ReplaceAll(strings.Trim(fmt.Sprint(str), "[]"), " ", " ")
+}
+
+func (r *Req) Request() {
+	_, err := url.Parse(r.Uri)
+	checkError(err)
+	client := resty.New()
+	r.Req = client.R().SetHeaders(r.Header).SetBody(r.Body)
+	if r.File != "" {
+		r.Req = r.Req.SetFile(r.File, r.File)
+	}
+	switch r.Method {
+	case "GET", "get":
+		r.Resp, err = r.Req.Get(r.Uri)
+	case "POST", "post":
+		r.Resp, err = r.Req.Post(r.Uri)
+	case "DELETE", "delete":
+		r.Resp, err = r.Req.Delete(r.Uri)
+	case "PATCH", "patch":
+		r.Resp, err = r.Req.Patch(r.Uri)
+	case "PUT", "put":
+		r.Resp, err = r.Req.Put(r.Uri)
+	default:
+		r.Resp, err = r.Req.Get(r.Uri)
 	}
 	checkError(err)
-	defer resp.RawBody().Close()
-	if resp.StatusCode() != 200 {
-		fmt.Println("GMake2: @req: Server returned error code:" + cast.ToString(resp.StatusCode()))
+	defer r.Resp.RawBody().Close()
+	if r.Resp.StatusCode() != 200 {
+		fmt.Println("GMake2: @req: Server returned error code:" + cast.ToString(r.Resp.StatusCode()))
 	} else {
 		fmt.Println("GMake2: @req: 200 ok")
 	}
-	body := pkg.String(resp.Body())
-	if body != ""{
+	body := pkg.String(r.Resp.Body())
+	if body != "" {
 		fmt.Println(body)
 	}
 }

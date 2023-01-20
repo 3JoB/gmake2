@@ -19,6 +19,7 @@ var (
 	vars    map[string]any
 	cfg     map[string]any
 	ctx     *cli.Context
+	R Req
 )
 
 func run(ym map[string]any, commands string) {
@@ -94,7 +95,7 @@ func run(ym map[string]any, commands string) {
 					checkError(err)
 					cmdDir = abs
 				case "@req":
-					network(args...)
+					R.Network(args...)
 				default:
 					cmd := exec.Command(bin, args...)
 					if cmdDir != "" {

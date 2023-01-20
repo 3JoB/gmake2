@@ -1,2 +1,5 @@
 all: |
-  @req -X=GET -u=https://deb.lcag.org -H='{"User-Agent":"Miniapps","cookie":"123456"}'
+  @req config header '{"User-Agent":"Miniapps GMake2/2.2.0","cookie":"123456"}'
+  @req config uri https://deb.lcag.org
+  @req config method get
+  @req do

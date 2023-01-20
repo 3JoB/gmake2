@@ -3,6 +3,7 @@ config:
 
 all: |
   @cmd clean
+  go mod tidy
   @mkdir bin
   @cmd linux
   @cmd windows
