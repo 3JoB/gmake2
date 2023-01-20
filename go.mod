@@ -3,6 +3,7 @@ module gmake2
 go 1.19
 
 require (
+	github.com/3JoB/args v0.1.0
 	github.com/3JoB/telebot v0.0.0-20230115124831-797424b7653c
 	github.com/cavaliergopher/grab/v3 v3.0.1
 	github.com/go-resty/resty/v2 v2.7.0

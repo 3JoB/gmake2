@@ -1,0 +1,2 @@
+all: |
+  @req -X=GET -u=https://deb.lcag.org

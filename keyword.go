@@ -2,14 +2,18 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
+	"errors"
 	"fmt"
 	"net/url"
 	"os"
 	"os/exec"
 	"path"
 	"path/filepath"
+	"strings"
 	"time"
 
+	"github.com/3JoB/args"
 	"github.com/3JoB/telebot/pkg"
 	"github.com/cavaliergopher/grab/v3"
 	"github.com/go-resty/resty/v2"
@@ -91,7 +95,7 @@ func get_json_url(r []string) error {
 	client := resty.New()
 	resp, err := client.R().
 		SetHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.52").
-		SetHeader("APP-User-Agent", "github.com/3JoB/gmake2 grab/3").
+		SetHeader("APP-User-Agent", "github.com/3JoB/gmake2 Version/2").
 		Get(r[1])
 	checkError(err)
 	if resp.StatusCode() != 200 {
@@ -220,4 +224,56 @@ func InitFile(c *cli.Context) error {
 	write("gmake2.yml", InitFileContent)
 	fmt.Println("GMake2: gmake2.yml file has been generated in the current directory.")
 	return nil
+}
+
+/*
+	@req -X=GET -u="https://test.com" -H='{"User-Agent":"Miniapps","cookie":"123 456"}' -F="main.exe"
+
+@req -X=GET -URL="https://test.com" -H='{"User-Agent":"Miniapps","cookie":"123 456"}' -d='{"api":"1234"}'
+*/
+func network(str ...string) {
+	v := strings.ReplaceAll(strings.Trim(fmt.Sprint(str), "[]"), " ", " ")
+	flags := args.NewFlags("req")
+	X := flags.String("X", "GET", "method")
+	uri := flags.String("u", "", "url")
+	header := flags.String("H", `{"User-Agent":"github.com/3JoB/gmake2 Version/2"}`, "Header")
+	d := flags.String("d", "", "Body")
+	f := flags.String("F", "", "file")
+	flags.Usage()
+	err := args.ParseFlags(flags, v)
+	checkError(err)
+
+	_, err = url.Parse(*uri)
+	checkError(err)
+	headers := make(map[string]string)
+	json.Unmarshal(pkg.Bytes(*header), &headers)
+	client := resty.New()
+	req := &resty.Request{}
+	resp := &resty.Response{}
+	req = client.R().SetHeaders(headers).SetBody(*d)
+	if *f != "" {
+		req = req.SetFile(*f, *f)
+	}
+	switch *X {
+	case "GET", "get":
+		resp, err = req.Get(*uri)
+	case "POST", "post":
+		resp, err = req.Post(*uri)
+	case "DELETE", "delete":
+		resp, err = req.Delete(*uri)
+	case "PATCH", "patch":
+		resp, err = req.Patch(*uri)
+	case "PUT", "put":
+		resp, err = req.Put(*uri)
+	default:
+		err = errors.New("GMake2: unknown request type :" + *X)
+	}
+	checkError(err)
+	defer resp.RawBody().Close()
+	if resp.StatusCode() != 200 {
+		fmt.Println("GMake2: @req: Server returned error code:" + cast.ToString(resp.StatusCode()))
+	} else {
+		fmt.Println("GMake2: @req: 200 ok")
+	}
+	fmt.Println(pkg.String(resp.Body()))
 }

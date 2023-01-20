@@ -93,6 +93,8 @@ func run(ym map[string]any, commands string) {
 					abs, err := filepath.Abs(args[0])
 					checkError(err)
 					cmdDir = abs
+				case "@req":
+					network(args...)
 				default:
 					cmd := exec.Command(bin, args...)
 					if cmdDir != "" {
