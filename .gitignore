@@ -1,3 +1,5 @@
 bin
 gmake2.exe
 nfpm.yaml
+build
+key.gpg

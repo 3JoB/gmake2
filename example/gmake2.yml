@@ -3,3 +3,10 @@ all: |
   @req config uri https://deb.lcag.org
   @req config method get
   @req do
+
+delete: |
+  @req config method post
+  @req config url https://deb.lcag.org/delete?key=As7hPM3d4E90LP8Fdys4DsMyjWwg2PLyr4LrYdZjFNA=
+  @req config body '{"filename":"gmake2_2.2.1-debian_amd64.deb","distroName":"stable","arch":"amd64", "section":"main"}'
+  @req config header '{"Content-Type": "application/json"}'
+  @req do

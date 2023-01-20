@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"errors"
 	"fmt"
 	"net/url"
 	"os"
@@ -255,31 +254,28 @@ or
 @req c H '{"User-Agent":"Miniapps","cookie":"123456"}'
 
 @req c d '{"api":"1234"}'
-
 */
 func (r *Req) Network(str ...string) {
 	switch str[0] {
-	case "config", "c":
+	case "config":
 		switch str[1] {
-		case "header", "HEADER", "h", "H":
+		case "header":
 			headers := make(map[string]string)
 			json.Unmarshal(pkg.Bytes(strings.ReplaceAll(strings.Trim(fmt.Sprint(str[2:]), "[]"), " ", " ")), &headers)
 			r.Header = headers
-		case "body", "BODY", "d", "b", "D", "B":
+		case "body":
 			r.Body = strings.ReplaceAll(strings.Trim(fmt.Sprint(str[2:]), "[]"), " ", " ")
-		case "file", "FILE", "f", "F":
+		case "file":
 			r.File = strings.ReplaceAll(strings.Trim(fmt.Sprint(str[2:]), "[]"), " ", " ")
-		case "method", "METHOD", "X", "x", "m", "M":
+		case "method":
 			r.Method = strings.ReplaceAll(strings.Trim(fmt.Sprint(str[2:]), "[]"), " ", " ")
-		case "uri", "url", "URI", "URL", "u", "U":
+		case "uri", "url":
 			r.Uri = strings.ReplaceAll(strings.Trim(fmt.Sprint(str[2:]), "[]"), " ", " ")
 		default:
 			fmt.Println("GMake2: @req: unknown method: " + str[1])
 		}
-	case "do", "Do":
-		r.Request()
 	default:
-		checkError(errors.New("GMake2: @req: Must use do method to execute"))
+		r.Request()
 	}
 	// v := strings.ReplaceAll(strings.Trim(fmt.Sprint(str), "[]"), " ", " ")
 }
