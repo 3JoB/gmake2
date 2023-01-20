@@ -275,5 +275,8 @@ func network(str ...string) {
 	} else {
 		fmt.Println("GMake2: @req: 200 ok")
 	}
-	fmt.Println(pkg.String(resp.Body()))
+	body := pkg.String(resp.Body())
+	if body != ""{
+		fmt.Println(body)
+	}
 }

@@ -2,6 +2,8 @@ github.com/3JoB/args v0.0.0-20230120083732-b958da1aef7f h1:AsLqrlpGj7d4dNk+mXb07
 github.com/3JoB/args v0.0.0-20230120083732-b958da1aef7f/go.mod h1:iDth34dbgGBh06DJ4t7mdtLiWHBUh13GrAzO+xvZiMA=
 github.com/3JoB/args v0.1.0 h1:0kdDPDGUst5eCAACf/b5r4RoNhOQb/DCPXUqmRIvhhQ=
 github.com/3JoB/args v0.1.0/go.mod h1:pSWs0C2oDyT+r+LdG9bVuIq66uCd25aF5Z+wdOQhBMg=
+github.com/3JoB/args v0.1.1 h1:vuNq88RPTZMxXi/j0V1FigFnN+NwY/2BbfKGlK0VKUo=
+github.com/3JoB/args v0.1.1/go.mod h1:pSWs0C2oDyT+r+LdG9bVuIq66uCd25aF5Z+wdOQhBMg=
 github.com/3JoB/telebot v0.0.0-20230115124831-797424b7653c h1:yBAQPfwZ15EvzHTGn2UjC5PMBxvodd+zGpWq6uaM9qw=
 github.com/3JoB/telebot v0.0.0-20230115124831-797424b7653c/go.mod h1:MevyoMQ8Z2Ba3w63lGAUhGDoWs/llHBCN/p3O4h2Gbw=
 github.com/cavaliergopher/grab/v3 v3.0.1 h1:4z7TkBfmPjmLAAmkkAZNX/6QJ1nNFdv3SdIHXju0Fr4=
