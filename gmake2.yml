@@ -8,6 +8,12 @@ all: |
   @cmd windows
   @echo Done!
 
+exp: |
+  @cmd init
+  @env CGO_ENABLED 0
+  @env GOARCH amd64
+  go build -ldflags "-s -w -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}'" -o ./example/gmake2.exe
+
 clean: |
   @rm bin
 

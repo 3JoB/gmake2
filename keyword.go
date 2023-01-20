@@ -227,26 +227,26 @@ func InitFile(c *cli.Context) error {
 }
 
 /*
-	@req -X=GET -u="https://test.com" -H='{"User-Agent":"Miniapps","cookie":"123 456"}' -F="main.exe"
+	@req -X=GET -u=https://test.com -H='{"User-Agent":"Miniapps","cookie":"123456"}' -F="main.exe"
 
-@req -X=GET -URL="https://test.com" -H='{"User-Agent":"Miniapps","cookie":"123 456"}' -d='{"api":"1234"}'
+@req -X=GET -u="https://test.com" -H='{"User-Agent":"Miniapps","cookie":"123456"}' -d='{"api":"1234"}'
 */
 func network(str ...string) {
 	v := strings.ReplaceAll(strings.Trim(fmt.Sprint(str), "[]"), " ", " ")
+	fmt.Println(v)
 	flags := args.NewFlags("req")
 	X := flags.String("X", "GET", "method")
 	uri := flags.String("u", "", "url")
 	header := flags.String("H", `{"User-Agent":"github.com/3JoB/gmake2 Version/2"}`, "Header")
 	d := flags.String("d", "", "Body")
 	f := flags.String("F", "", "file")
-	flags.Usage()
 	err := args.ParseFlags(flags, v)
 	checkError(err)
-
 	_, err = url.Parse(*uri)
 	checkError(err)
 	headers := make(map[string]string)
 	json.Unmarshal(pkg.Bytes(*header), &headers)
+	fmt.Println(*header)
 	client := resty.New()
 	req := &resty.Request{}
 	resp := &resty.Response{}

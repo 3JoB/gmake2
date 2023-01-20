@@ -1,2 +1,2 @@
 all: |
-  @req -X=GET -u=https://deb.lcag.org
+  @req -X=GET -u=https://deb.lcag.org -H='{"User-Agent":"Miniapps","cookie":"123456"}'
