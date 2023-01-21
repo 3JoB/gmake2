@@ -244,7 +244,7 @@ or
 */
 func (r *Req) Network(str ...string) {
 	switch str[0] {
-	case "config":
+	case "def":
 		switch str[1] {
 		case "header":
 			headers := make(map[string]string)
