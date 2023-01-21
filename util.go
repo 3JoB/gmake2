@@ -53,7 +53,7 @@ func isFile(path string) bool {
 
 func checkError(err error) {
 	if err != nil {
-		EPrint(err)
+		EPrintf("GMake2:  Something went wrong, you must examine the following error messages to determine what went wrong. \n %v \n", err)
 	}
 }
 
