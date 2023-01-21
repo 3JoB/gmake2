@@ -26,7 +26,7 @@ func main() {
 			&cli.StringFlag{
 				Name:    "config",
 				Aliases: []string{"c"},
-				Value:   "gmake2.yml",
+				Value:   "GMakefile.yml",
 				Usage:   "GMake2 Config File",
 			},
 		},
