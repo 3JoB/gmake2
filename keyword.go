@@ -217,6 +217,7 @@ type Req struct {
 	File   string
 	Method string
 	Uri    string
+	Value string
 	Req    *resty.Request
 	Resp   *resty.Response
 }
@@ -258,8 +259,10 @@ func (r *Req) Network(str ...string) {
 			r.Method = strings.ReplaceAll(strings.Trim(fmt.Sprint(str[2:]), "[]"), " ", " ")
 		case "uri", "url":
 			r.Uri = strings.ReplaceAll(strings.Trim(fmt.Sprint(str[2:]), "[]"), " ", " ")
+		case "value":
+			r.Value = strings.ReplaceAll(strings.Trim(fmt.Sprint(str[2:]), "[]"), " ", " ")
 		default:
-			fmt.Println("GMake2: @req: unknown method: " + str[1])
+			fmt.Println("GMake2: @req: unknown method: " + fmt.Sprint(str[1:]))
 		}
 	default:
 		r.Request()
@@ -276,8 +279,6 @@ func (r *Req) Request() {
 		r.Req = r.Req.SetFile(r.File, r.File)
 	}
 	switch r.Method {
-	case "GET", "get":
-		r.Resp, err = r.Req.Get(r.Uri)
 	case "POST", "post":
 		r.Resp, err = r.Req.Post(r.Uri)
 	case "DELETE", "delete":
@@ -298,6 +299,9 @@ func (r *Req) Request() {
 	}
 	body := pkg.String(r.Resp.Body())
 	if body != "" {
+		if r.Value != "" {
+			vars[r.Value] = body
+		}
 		fmt.Println(body)
 	}
 }
