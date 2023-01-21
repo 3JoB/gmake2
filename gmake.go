@@ -16,10 +16,10 @@ import (
 )
 
 var (
-	vars    map[string]any
-	cfg     map[string]any
-	ctx     *cli.Context
-	R Req
+	vars map[string]any
+	cfg  map[string]any
+	ctx  *cli.Context
+	R    Req
 )
 
 func run(ym map[string]any, commands string) {
@@ -49,7 +49,7 @@ func run(ym map[string]any, commands string) {
 				}
 				bin, args := cmdStrs[0], cmdStrs[1:]
 				if len(args) == 0 {
-					EPrint("GMake2: Illegal instruction!")
+					EPrintf("GMake2: Illegal instruction!\n GMake2: Error Command: %v \n", fmt.Sprint(cmdStrs[:]))
 				}
 				switch bin {
 				case "@var":

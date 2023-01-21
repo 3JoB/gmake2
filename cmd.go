@@ -10,12 +10,12 @@ import (
 
 var (
 	SoftVersion string
-	SoftCommit string
+	SoftCommit  string
 )
 
 func main() {
 	app := &cli.App{
-		Name: "GMake2",
+		Name:  "GMake2",
 		Usage: "program like make",
 		Flags: []cli.Flag{
 			&cli.BoolFlag{
@@ -32,17 +32,17 @@ func main() {
 		},
 		Commands: []*cli.Command{
 			{
-				Name: "version",
+				Name:    "version",
 				Aliases: []string{"v"},
-				Usage: "GMake2 Version",
+				Usage:   "GMake2 Version",
 				Action: func(ctx *cli.Context) error {
 					fmt.Println(VersionInfo)
 					return nil
 				},
 			},
 			{
-				Name: "init",
-				Usage: "Initialize in the current directory.",
+				Name:   "init",
+				Usage:  "Initialize in the current directory.",
 				Action: InitFile,
 			},
 		},

@@ -53,7 +53,7 @@ func ifelse(ym map[string]any, f []string) error {
 		}
 		return if_func2(f, ym)
 	default:
-		EPrint("GMake2: Invalid operator!")
+		EPrintf("GMake2: Invalid operator!\n GMake2: Error Command: %v \n", fmt.Sprint(f[:]))
 	}
 	return nil
 }
@@ -66,7 +66,7 @@ func val(r []string, c *exec.Cmd) {
 	checkError(err)
 	outStr, errStr := pkg.String(stdout.Bytes()), pkg.String(stderr.Bytes())
 	if errStr != "" {
-		EPrint(errStr)
+		EPrintf("GMake: Val Failed!!!\n  GMake2: Error Command: %v \n", errStr)
 	}
 	vars[r[0]] = outStr
 }
@@ -84,11 +84,10 @@ api.json:
 */
 func get_json_url(r []string) error {
 	if len(r) != 5 {
-		EPrint("GMake2: Illegal instruction!!!")
+		EPrintf("GMake2: Illegal instruction!!!\nGMake2: Error Command: %v \n", fmt.Sprint(r[:]))
 	}
 	if _, err := url.Parse(r[1]); err != nil {
-		fmt.Println("GMake2: Url check failed!!!")
-		EPrint("GMake2: " + err.Error())
+		EPrint("GMake2: Url check failed!!!\nGMake2: " + err.Error())
 	}
 	client := resty.New()
 	resp, err := client.R().
@@ -179,7 +178,7 @@ func copy(src, dst string) {
 	dst = filepath.Clean(dst)
 	if isDir(src) {
 		if !isDir(dst) {
-			EPrintf("GMake2: Cannot copy directory to file src=%v dst=%v", src, dst)
+			EPrintf("GMake2: Cannot copy directory to file src=%v dst=%v \n", src, dst)
 		}
 		si, err := os.Stat(src)
 		checkError(err)
@@ -217,7 +216,7 @@ type Req struct {
 	File   string
 	Method string
 	Uri    string
-	Value string
+	Value  string
 	Req    *resty.Request
 	Resp   *resty.Response
 }
