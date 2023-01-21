@@ -10,22 +10,10 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func checkThen(th string) {
-	if th != "then" {
-		EPrintf("GMake2: Invalid operator at %v \n", th)
-		return
-	}
-}
-
-func checkOr(th string) {
-	if th != "or" {
-		EPrintf("GMake2: Invalid operator at %v \n", th)
-		return
-	}
-}
-
 func if_func(f []string, ym map[string]any) error {
-	checkThen(f[3])
+	if f[3] != "then" {
+		EPrintf("GMake2: Invalid operator at %v \n", f[3])
+	}
 	if f[4] == "null" {
 		return nil
 	}
@@ -37,7 +25,9 @@ func if_func2(f []string, ym map[string]any) error {
 	if len(f) != 7 {
 		return nil
 	}
-	checkOr(f[5])
+	if f[5] != "or" {
+		EPrintf("GMake2: Invalid operator at %v \n", f[5])
+	}
 	if f[6] == "null" {
 		return nil
 	}
