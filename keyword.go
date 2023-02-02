@@ -8,13 +8,13 @@ import (
 	"os/exec"
 	"path"
 	"path/filepath"
-	"strings"
+	//"strings"
 	"time"
 
 	"github.com/3JoB/telebot/pkg"
 	"github.com/cavaliergopher/grab/v3"
 	"github.com/go-resty/resty/v2"
-	"github.com/goccy/go-json"
+	//"github.com/goccy/go-json"
 	"github.com/gookit/goutil/fsutil"
 	"github.com/spf13/cast"
 	"github.com/tidwall/gjson"
@@ -210,7 +210,7 @@ func copy(src, dst string) {
 	}
 }
 
-type Req struct {
+/*type Req struct {
 	Header map[string]string
 	Body   any
 	File   string
@@ -221,27 +221,8 @@ type Req struct {
 	Resp   *resty.Response
 }
 
-/*
-@req c X GET
 
-@req c uri https://test.com
-
-@req c H '{"User-Agent":"Miniapps","cookie":"123456"}'
-
-@req c F main.exe
-
-@req do
-
-or
-
-@req c X GET
-
-@req c u https://test.com
-
-@req c H '{"User-Agent":"Miniapps","cookie":"123456"}'
-
-@req c d '{"api":"1234"}'
-*/
+// Deprecated: This method is about to be deprecated and is no longer supported
 func (r *Req) Network(str ...string) {
 	switch str[0] {
 	case "def":
@@ -269,6 +250,9 @@ func (r *Req) Network(str ...string) {
 	// v := strings.ReplaceAll(strings.Trim(fmt.Sprint(str), "[]"), " ", " ")
 }
 
+// Deprecated
+//
+//This method is about to be deprecated and is no longer supported
 func (r *Req) Request() {
 	_, err := url.Parse(r.Uri)
 	checkError(err)
@@ -304,3 +288,4 @@ func (r *Req) Request() {
 		fmt.Println(body)
 	}
 }
+*/
