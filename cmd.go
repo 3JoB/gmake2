@@ -58,7 +58,7 @@ func CMD(c *cli.Context) error {
 	ym := parseConfig(c.String("c"))
 	parseMap(ym)
 	commands_args := ""
-	if len(c.Args().Slice()) != 0 {
+	if c.Args().Len() != 0 {
 		commands_args = c.Args().First()
 	} else {
 		if cast.ToString(cfg["default"]) != "" {
