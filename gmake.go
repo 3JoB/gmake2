@@ -61,12 +61,12 @@ func run(ym map[string]any, commands string) {
 				case "@if":
 					ifelse(ym, args)
 				case "@val":
-					varg := args[2:]
-					vcmd := exec.Command(args[1], varg...)
+					arg := args[2:]
+					cmd := exec.Command(args[1], arg...)
 					if cmdDir != "" {
-						vcmd.Dir = cmdDir
+						cmd.Dir = cmdDir
 					}
-					val(args, vcmd)
+					val(args, cmd)
 				case "#":
 				case "@echo":
 					fmt.Println(strings.Join(args, " "))

@@ -107,7 +107,7 @@ func get_json_url(r []string) error {
 		vars[r[4]] = result.Bool()
 	case "int", "int8", "int16", "int32", "int64":
 		vars[r[4]] = result.Int()
-	case "uint", "utin8", "uint16", "uint32", "uint64":
+	case "uint", "uint8", "uint16", "uint32", "uint64":
 		vars[r[4]] = result.Uint()
 	case "float", "float32", "float64":
 		vars[r[4]] = result.Float()
