@@ -9,6 +9,7 @@ CommitID: ` + SoftCommit
 
 	InitFileContent string = `config:
   default: all
+  req: false
 
 var:
   msg: GMake2

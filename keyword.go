@@ -8,13 +8,13 @@ import (
 	"os/exec"
 	"path"
 	"path/filepath"
-	//"strings"
+	"strings"
 	"time"
 
 	"github.com/3JoB/telebot/pkg"
 	"github.com/cavaliergopher/grab/v3"
 	"github.com/go-resty/resty/v2"
-	//"github.com/goccy/go-json"
+	"github.com/3JoB/ulib/json"
 	"github.com/gookit/goutil/fsutil"
 	"github.com/spf13/cast"
 	"github.com/tidwall/gjson"
@@ -210,7 +210,7 @@ func copy(src, dst string) {
 	}
 }
 
-/*type Req struct {
+type Req struct {
 	Header map[string]string
 	Body   any
 	File   string
@@ -229,7 +229,7 @@ func (r *Req) Network(str ...string) {
 		switch str[1] {
 		case "header":
 			headers := make(map[string]string)
-			json.Unmarshal(pkg.Bytes(strings.ReplaceAll(strings.Trim(fmt.Sprint(str[2:]), "[]"), " ", " ")), &headers)
+			json.UnmarshalString(strings.ReplaceAll(strings.Trim(fmt.Sprint(str[2:]), "[]"), " ", " "), &headers)
 			r.Header = headers
 		case "body":
 			r.Body = strings.ReplaceAll(strings.Trim(fmt.Sprint(str[2:]), "[]"), " ", " ")
@@ -288,4 +288,3 @@ func (r *Req) Request() {
 		fmt.Println(body)
 	}
 }
-*/

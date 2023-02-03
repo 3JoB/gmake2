@@ -19,7 +19,7 @@ var (
 	vars map[string]any
 	cfg  map[string]any
 	ctx  *cli.Context
-	//R    Req
+	R    Req
 )
 
 func run(ym map[string]any, commands string) {
@@ -95,8 +95,11 @@ func run(ym map[string]any, commands string) {
 					checkError(err)
 					cmdDir = abs
 				case "@req":
-					//R.Network(args...)
-					fmt.Println("GMake2: The @req tag has been deprecated.")
+					if cast.ToBool(cfg["req"]) {
+						R.Network(args...)
+					} else {
+						fmt.Println("GMake2: The @req tag has been deprecated.")
+					}
 				default:
 					cmd := exec.Command(bin, args...)
 					if cmdDir != "" {
