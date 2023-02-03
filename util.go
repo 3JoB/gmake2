@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	ufs "github.com/3JoB/ulib/fsutil"
 	"github.com/gookit/goutil/fsutil"
 	"github.com/urfave/cli/v2"
 )
@@ -80,8 +81,7 @@ func InitFile(c *cli.Context) error {
 		rm("GMakefile.yml")
 		fmt.Println("GMake2: File is being covered.")
 	}
-	touch("GMakefile.yml")
-	write("GMakefile.yml", InitFileContent)
+	ufs.TruncWrite("GMakefile.yml", InitFileContent)
 	fmt.Println("GMake2: GMakefile.yml file has been generated in the current directory.")
 	return nil
 }
