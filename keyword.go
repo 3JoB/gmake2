@@ -12,9 +12,9 @@ import (
 	"time"
 
 	"github.com/3JoB/telebot/pkg"
+	"github.com/3JoB/ulib/json"
 	"github.com/cavaliergopher/grab/v3"
 	"github.com/go-resty/resty/v2"
-	"github.com/3JoB/ulib/json"
 	"github.com/gookit/goutil/fsutil"
 	"github.com/spf13/cast"
 	"github.com/tidwall/gjson"
@@ -221,7 +221,6 @@ type Req struct {
 	Resp   *resty.Response
 }
 
-
 // Deprecated: This method is about to be deprecated and is no longer supported
 func (r *Req) Network(str ...string) {
 	switch str[0] {
@@ -252,7 +251,7 @@ func (r *Req) Network(str ...string) {
 
 // Deprecated
 //
-//This method is about to be deprecated and is no longer supported
+// This method is about to be deprecated and is no longer supported
 func (r *Req) Request() {
 	_, err := url.Parse(r.Uri)
 	checkError(err)

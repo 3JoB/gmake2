@@ -81,7 +81,7 @@ func InitFile(c *cli.Context) error {
 		rm("GMakefile.yml")
 		fmt.Println("GMake2: File is being covered.")
 	}
-	if err:=ufs.NewFile("GMakefile.yml").SetTrunc().Write(InitFileContent); err != nil {
+	if err := ufs.NewFile("GMakefile.yml").SetTrunc().Write(InitFileContent); err != nil {
 		EPrintf("GMake2: Error!%v \n", err.Error())
 	}
 	fmt.Println("GMake2: GMakefile.yml file has been generated in the current directory.")
