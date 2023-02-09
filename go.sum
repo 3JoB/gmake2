@@ -1,7 +1,7 @@
 github.com/3JoB/telebot v0.0.0-20230206093018-d4bc9140380f h1:7G/ari6DQTh+6/bI+UkCKeDgroVn5QpvjV71P2Zh/7Q=
 github.com/3JoB/telebot v0.0.0-20230206093018-d4bc9140380f/go.mod h1:/5lZ+FTI/7qV+94/5F/UKgZaqEjidzsqFXq303xCO0Q=
-github.com/3JoB/ulib v0.0.8 h1:pBANOIFnFPz9k8CfFgLgE2FgJbM2k+HseRNuMCPWpHc=
-github.com/3JoB/ulib v0.0.8/go.mod h1:VVeyrE22K6Ju/037QvVv15k890Pkx4VqpB3tNci1k9c=
+github.com/3JoB/ulib v0.0.11 h1:ujsUbkyXbBWuIZIkbPJrSKs7Vq+fARSFqZuFbHKH+f0=
+github.com/3JoB/ulib v0.0.11/go.mod h1:VVeyrE22K6Ju/037QvVv15k890Pkx4VqpB3tNci1k9c=
 github.com/cavaliergopher/grab/v3 v3.0.1 h1:4z7TkBfmPjmLAAmkkAZNX/6QJ1nNFdv3SdIHXju0Fr4=
 github.com/cavaliergopher/grab/v3 v3.0.1/go.mod h1:1U/KNnD+Ft6JJiYoYBAimKH2XrYptb8Kl3DFGmsjpq4=
 github.com/cpuguy83/go-md2man/v2 v2.0.2 h1:p1EgwI/C7NhT0JmVkwCD2ZBK8j4aeHQX2pMHHBfMQ6w=
