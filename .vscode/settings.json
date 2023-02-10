@@ -1,14 +1,18 @@
 {
     "cSpell.words": [
+        "aarch",
         "cavaliergopher",
         "fsutil",
+        "getinfo",
         "gjson",
         "gmake",
+        "GOARCH",
         "goccy",
         "gookit",
         "goutil",
         "kballard",
         "KHTML",
+        "ldflags",
         "resty",
         "shellquote",
         "Strs",

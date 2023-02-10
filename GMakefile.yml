@@ -9,7 +9,7 @@ all: |
   @cmd windows
   @echo Done!
 
-exp: |
+build: |
   @cmd init
   @env CGO_ENABLED 0
   @env GOARCH amd64
@@ -39,9 +39,9 @@ windows: |
   go build -ldflags "-s -w -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}'" -o ./bin/gmake2_Windows_aarch64.exe
 
 init: |
-  @if {{.init}} != use then getinfo
+  @if {{.init}} != use then get_info
 
-getinfo: |
+get_info: |
   @echo Get version info...
   @json url https://raw.githubusercontent.com/3JoB/data/master/version/gmake2.json string version version
   @val commit git log --pretty=format:'%h' -1
