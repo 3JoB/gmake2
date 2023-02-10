@@ -5,8 +5,9 @@ init: |
   @cmd get_info
 
 hello: |
-  @wait PleaseEnterPassword pass
+  @wait Please Enter Password pass
   @echo {{.pass}}
+  @echo 114
 
 all: |
   @cmd clean

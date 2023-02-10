@@ -28,10 +28,10 @@ func run(ym map[string]any, commands string) {
 		// fmt.Println(pair[0])
 		vars[pair[0]] = pair[1]
 	}
-	cmdDir := ""
-	if cast.ToString(ym[commands]) == "" {
+	if ym[commands] == nil {
 		ErrPrintf("GMake2: Command not found %v \n", commands)
 	}
+	cmdDir := ""
 	k, v := commands, ym[commands]
 	if k != "vars" && k != "config" {
 		lines := strings.Split(cast.ToString(v), "\n")
@@ -71,7 +71,7 @@ func run(ym map[string]any, commands string) {
 					val(args, cmd)
 				case "#":
 				case "@echo":
-					Println(strings.Join(args, " "))
+					fmt.Println(strings.Join(args, " "))
 				case "@mv":
 					mv(args[0], args[1])
 				case "@copy":
