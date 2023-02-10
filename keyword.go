@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
 	"fmt"
 	"net/url"
@@ -294,4 +295,19 @@ func (r *Req) Request() {
 		}
 		Println(body)
 	}
+}
+
+func wait(v ...string){
+	if len(v) != 2 {
+		ErrPrint("GMake2: @wait bad format!")
+	}
+	r := bufio.NewReader(os.Stdin)
+	//v[0] print
+    Println(v[0])
+    fmt.Print("=> ")
+    t, err := r.ReadString('\n')
+    if err != nil {
+        ErrPrintf("GMake2: %v \n", err.Error())
+	}
+	vars[v[1]] = t
 }

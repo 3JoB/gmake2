@@ -58,6 +58,8 @@ func run(ym map[string]any, commands string) {
 					os.Setenv(args[0], strings.Join(args[1:], " "))
 				case "@cmd":
 					run(ym, args[0])
+				case "@wait":
+					wait(args...)
 				case "@if":
 					ifelse(ym, args)
 				case "@val":
