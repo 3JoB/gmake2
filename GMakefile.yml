@@ -43,6 +43,6 @@ init: |
 
 getinfo: |
   @echo Get version info...
-  @json url https://raw.githubusercontent.com/3JoB/gmake2/master/gmake2.json string version version
+  @json url https://raw.githubusercontent.com/3JoB/data/master/version/gmake2.json string version version
   @val commit git log --pretty=format:'%h' -1
   @var init use
