@@ -298,16 +298,17 @@ func (r *Req) Request() {
 }
 
 func wait(v ...string){
-	if len(v) != 2 {
+	ar := len(v)
+	if ar < 2 {
 		ErrPrint("GMake2: @wait bad format!")
 	}
 	r := bufio.NewReader(os.Stdin)
 	//v[0] print
-    Println(v[0])
+    Println(v[:ar-1])
     fmt.Print("=> ")
     t, err := r.ReadString('\n')
     if err != nil {
         ErrPrintf("GMake2: %v \n", err.Error())
 	}
-	vars[v[1]] = t
+	vars[v[ar-1]] = t
 }
