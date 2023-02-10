@@ -1,6 +1,9 @@
 config:
   default: all
 
+init: |
+  @if {{.inits}} != use then get_info
+
 all: |
   @cmd clean
   go mod tidy
@@ -10,7 +13,6 @@ all: |
   @echo Done!
 
 build: |
-  @cmd init
   @env CGO_ENABLED 0
   @env GOARCH amd64
   go build -ldflags "-s -w -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}'" -o ./example/gmake2.exe
@@ -19,7 +21,6 @@ clean: |
   @rm bin
 
 linux: |
-  @cmd init
   @env GOOS linux
   @env CGO_ENABLED 0
   @env GOARCH amd64
@@ -30,16 +31,12 @@ linux: |
   go build -ldflags "-s -w -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}'" -o ./bin/gmake2_Linux_mips64
 
 windows: |
-  @cmd init
   @env GOOS windows
   @env CGO_ENABLED 0
   @env GOARCH amd64
   go build -ldflags "-s -w -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}'" -o ./bin/gmake2_Windows_amd64.exe
   @env GOARCH arm64
   go build -ldflags "-s -w -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}'" -o ./bin/gmake2_Windows_aarch64.exe
-
-init: |
-  @if {{.inits}} != use then get_info
 
 get_info: |
   @echo Get version info...
