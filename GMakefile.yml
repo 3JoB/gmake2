@@ -1,5 +1,5 @@
 config:
-  default: hello
+  default: all
 
 init: |
   @cmd get_info
