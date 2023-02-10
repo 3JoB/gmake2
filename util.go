@@ -75,7 +75,7 @@ func ErrPrint(a ...any) {
 
 func ErrPrintf(format string, v ...any) {
 	if ctx.Bool("debug") {
-		log.Panic(fmt.Sprintf(format, v...))
+		log.Panicf(format, v...)
 	}
 	fmt.Printf(format, v...)
 	os.Exit(0)
