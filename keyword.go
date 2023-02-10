@@ -232,21 +232,22 @@ type Req struct {
 func (r *Req) Network(str ...string) {
 	switch str[0] {
 	case "def":
+		d := strings.ReplaceAll(strings.Trim(fmt.Sprint(str[2:]), "[]"), " ", " ")
 		switch str[1] {
 		case "header":
 			headers := make(map[string]string)
-			json.UnmarshalString(strings.ReplaceAll(strings.Trim(fmt.Sprint(str[2:]), "[]"), " ", " "), &headers)
+			json.UnmarshalString(d, &headers)
 			r.Header = headers
 		case "body":
-			r.Body = strings.ReplaceAll(strings.Trim(fmt.Sprint(str[2:]), "[]"), " ", " ")
+			r.Body = d
 		case "file":
-			r.File = strings.ReplaceAll(strings.Trim(fmt.Sprint(str[2:]), "[]"), " ", " ")
+			r.File = d
 		case "method":
-			r.Method = strings.ReplaceAll(strings.Trim(fmt.Sprint(str[2:]), "[]"), " ", " ")
+			r.Method = d
 		case "uri", "url":
-			r.Uri = strings.ReplaceAll(strings.Trim(fmt.Sprint(str[2:]), "[]"), " ", " ")
+			r.Uri = d
 		case "value":
-			r.Value = strings.ReplaceAll(strings.Trim(fmt.Sprint(str[2:]), "[]"), " ", " ")
+			r.Value = d
 		default:
 			Println("GMake2: @req: unknown method: " + fmt.Sprint(str[1:]))
 		}
