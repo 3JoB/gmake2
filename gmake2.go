@@ -12,14 +12,13 @@ import (
 
 	shellquote "github.com/kballard/go-shellquote"
 	"github.com/spf13/cast"
-	"github.com/urfave/cli/v2"
 )
 
 var (
-	vars map[string]any
-	cfg  map[string]any
-	ctx  *cli.Context
-	R    Req
+	vars  map[string]any
+	cfg   map[string]any
+	R     Req
+	debug bool
 )
 
 func run(ym map[string]any, commands string) {

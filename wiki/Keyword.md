@@ -12,6 +12,7 @@ Keywords are some built-in instructions of GMake2, which can be used to quickly 
     - [@download](#download)
     - [@echo](#echo)
     - [@env](#env)
+    - [@wait](#wait)
     - [@if](#if)
     - [@json](#json)
     - [@var](#var)
@@ -83,6 +84,36 @@ Set environment variables
 
 ```
 @env GOOS linux
+```
+
+### @wait
+Wait for the command line to enter the value, and then assign the value.
+
+Example: `@wait [prompt information] [value]`
+
+next demo:
+
+GMakefile.yml
+```yml
+hello: |
+  @wait Please Enter Password pass
+  @echo {{.pass}}
+  @echo 114
+```
+
+CommandLine:
+```sh
+$ gmake2 hello
+
+[Please Enter Password]
+=> 
+
+;Enter 2023;
+
+[Please Enter Password]
+=> 2023
+2023
+114
 ```
 
 

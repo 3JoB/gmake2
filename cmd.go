@@ -3,7 +3,9 @@ package main
 import (
 	"fmt"
 	"os"
+	"time"
 
+	ufs "github.com/3JoB/ulib/fsutil"
 	"github.com/spf13/cast"
 	"github.com/urfave/cli/v2"
 )
@@ -54,13 +56,22 @@ func main() {
 }
 
 func CMD(c *cli.Context) error {
-	ctx = c
+	// Parsing GMakefile
 	ym := parseConfig(c.String("c"))
+
+	// Read debug information
+	debug = c.Bool("debug")
+
+	// Parse Map
 	parseMap(ym)
+
 	commands_args := ""
+
+	// Check if the initialization command group exists
 	if ym["init"] != nil {
 		run(ym, "init")
 	}
+
 	if c.Args().Len() != 0 {
 		commands_args = c.Args().First()
 	} else {
@@ -70,6 +81,25 @@ func CMD(c *cli.Context) error {
 			commands_args = "all"
 		}
 	}
+	// Execution command group
 	run(ym, commands_args)
+	return nil
+}
+
+// Create a GMakefile
+func InitFile(c *cli.Context) error {
+	// If GMakefile exists, make it wait 12 seconds
+	if isFile("GMakefile.yml") {
+		Println("GMake2: Note! There are already GMakefile.yml files in the directory! Now you still have 12 seconds to prevent GMAKE2 from covering the file!")
+		time.Sleep(time.Second * 12)
+		rm("GMakefile.yml")
+		Println("GMake2: File is being covered.")
+	}
+
+	// Then write to the file
+	if err := ufs.File("GMakefile.yml").SetTrunc().Write(InitFileContent); err != nil {
+		ErrPrintf("GMake2: Error! %v \n", err.Error())
+	}
+	Println("GMake2: GMakefile.yml file has been generated in the current directory.")
 	return nil
 }
