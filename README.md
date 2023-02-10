@@ -1,7 +1,8 @@
 # GMake2
-A make-like program, forked from https://github.com/fdxxw/gmake .
+Build a GMakefile at lightning speed!
 
-This branch extends some functionality.
+This project is the follow-up maintenance of [go-gmake](https://github.com/fdxxw/gmake).
+
 
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/3JoB/gmake2/codeql.yml?label=CodeQL%20Scanner&style=flat-square)](https://github.com/3JoB/gmake2/actions)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2F3JoB%2Fgmake2.svg?type=smail)](https://app.fossa.com/projects/git%2Bgithub.com%2F3JoB%2Fgmake2?ref=badge_smail)
