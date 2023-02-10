@@ -2,7 +2,7 @@ config:
   default: hello
 
 init: |
-  @if {{.inits}} != use then get_info
+  @cmd get_info
 
 hello: |
   @wait PleaseEnterPassword pass
