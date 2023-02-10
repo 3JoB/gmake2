@@ -13,7 +13,7 @@ import (
 
 func if_func(f []string, ym map[string]any) error {
 	if f[3] != "then" {
-		EPrintf("GMake2: Invalid operator at %v \n", f[3])
+		ErrPrintf("GMake2: Invalid operator at %v \n", f[3])
 	}
 	if f[4] == "null" {
 		return nil
@@ -27,7 +27,7 @@ func if_func2(f []string, ym map[string]any) error {
 		return nil
 	}
 	if f[5] != "or" {
-		EPrintf("GMake2: Invalid operator at %v \n", f[5])
+		ErrPrintf("GMake2: Invalid operator at %v \n", f[5])
 	}
 	if f[6] == "null" {
 		return nil
@@ -54,21 +54,28 @@ func isFile(path string) bool {
 
 func checkError(err error) {
 	if err != nil {
-		EPrintf("GMake2:  Something went wrong, you must examine the following error messages to determine what went wrong. \n %v \n", err)
+		ErrPrintf("GMake2:  Something went wrong, you must examine the following error messages to determine what went wrong. \n %v \n", err)
 	}
 }
 
-func EPrint(a ...any) {
+func Println(a ...any) {
 	if ctx.Bool("debug") {
 		log.Fatal(a...)
+	}
+	fmt.Println(a...)
+}
+
+func ErrPrint(a ...any) {
+	if ctx.Bool("debug") {
+		log.Panic(a...)
 	}
 	fmt.Println(a...)
 	os.Exit(0)
 }
 
-func EPrintf(format string, v ...any) {
+func ErrPrintf(format string, v ...any) {
 	if ctx.Bool("debug") {
-		panic(fmt.Sprintf(format, v...))
+		log.Panic(fmt.Sprintf(format, v...))
 	}
 	fmt.Printf(format, v...)
 	os.Exit(0)
@@ -76,14 +83,14 @@ func EPrintf(format string, v ...any) {
 
 func InitFile(c *cli.Context) error {
 	if isFile("GMakefile.yml") {
-		fmt.Println("GMake2: Note! There are already GMakefile.yml files in the directory! Now you still have 12 seconds to prevent GMAKE2 from covering the file!")
+		Println("GMake2: Note! There are already GMakefile.yml files in the directory! Now you still have 12 seconds to prevent GMAKE2 from covering the file!")
 		time.Sleep(time.Second * 12)
 		rm("GMakefile.yml")
-		fmt.Println("GMake2: File is being covered.")
+		Println("GMake2: File is being covered.")
 	}
 	if err := ufs.File("GMakefile.yml").SetTrunc().Write(InitFileContent); err != nil {
-		EPrintf("GMake2: Error!%v \n", err.Error())
+		ErrPrintf("GMake2: Error! %v \n", err.Error())
 	}
-	fmt.Println("GMake2: GMakefile.yml file has been generated in the current directory.")
+	Println("GMake2: GMakefile.yml file has been generated in the current directory.")
 	return nil
 }

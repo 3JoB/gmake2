@@ -30,7 +30,7 @@ func run(ym map[string]any, commands string) {
 	}
 	cmdDir := ""
 	if cast.ToString(ym[commands]) == "" {
-		EPrintf("GMake2: Command not found %v \n", commands)
+		ErrPrintf("GMake2: Command not found %v \n", commands)
 	}
 	k, v := commands, ym[commands]
 	if k != "vars" && k != "config" {
@@ -49,7 +49,7 @@ func run(ym map[string]any, commands string) {
 				}
 				bin, args := cmdStrs[0], cmdStrs[1:]
 				if len(args) == 0 {
-					EPrintf("GMake2: Illegal instruction!\n GMake2: Error Command: %v \n", fmt.Sprint(cmdStrs[:]))
+					ErrPrintf("GMake2: Illegal instruction!\nGMake2: Error Command: %v \n", fmt.Sprint(cmdStrs[:]))
 				}
 				switch bin {
 				case "@var":
@@ -69,7 +69,7 @@ func run(ym map[string]any, commands string) {
 					val(args, cmd)
 				case "#":
 				case "@echo":
-					fmt.Println(strings.Join(args, " "))
+					Println(strings.Join(args, " "))
 				case "@mv":
 					mv(args[0], args[1])
 				case "@copy":
@@ -98,7 +98,7 @@ func run(ym map[string]any, commands string) {
 					if cast.ToBool(cfg["req"]) {
 						R.Network(args...)
 					} else {
-						fmt.Println("GMake2: The @req tag has been deprecated.")
+						Println("GMake2: The @req tag has been deprecated.")
 					}
 				default:
 					cmd := exec.Command(bin, args...)
@@ -127,7 +127,7 @@ func variable(v map[string]any) map[string]any {
 }
 
 func ExecCmd(c *exec.Cmd) {
-	fmt.Println(c.String())
+	Println(c.String())
 	stdout, err := c.StdoutPipe()
 	checkError(err)
 	stderr, err := c.StderrPipe()

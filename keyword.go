@@ -53,7 +53,7 @@ func ifelse(ym map[string]any, f []string) error {
 		}
 		return if_func2(f, ym)
 	default:
-		EPrintf("GMake2: Invalid operator!\n GMake2: Error Command: %v \n", fmt.Sprint(f[:]))
+		ErrPrintf("GMake2: Invalid operator!\nGMake2: Error Command: %v \n", fmt.Sprint(f[:]))
 	}
 	return nil
 }
@@ -66,7 +66,7 @@ func val(r []string, c *exec.Cmd) {
 	checkError(err)
 	outStr, errStr := pkg.String(stdout.Bytes()), pkg.String(stderr.Bytes())
 	if errStr != "" {
-		EPrintf("GMake: Val Failed!!!\n  GMake2: Error Command: %v \n", errStr)
+		ErrPrintf("GMake: Val Failed!!!\nGMake2: Error Command: %v \n", errStr)
 	}
 	vars[r[0]] = outStr
 }
@@ -84,22 +84,26 @@ api.json:
 */
 func get_json_url(r []string) error {
 	if len(r) != 5 {
-		EPrintf("GMake2: Illegal instruction!!!\nGMake2: Error Command: %v \n", fmt.Sprint(r[:]))
+		ErrPrintf("GMake2: Illegal instruction!!!\nGMake2: Error Command: %v \n", fmt.Sprint(r[:]))
 	}
 	if _, err := url.Parse(r[1]); err != nil {
-		EPrint("GMake2: Url check failed!!!\nGMake2: " + err.Error())
+		ErrPrint("GMake2: Url check failed!!!\nGMake2: " + err.Error())
 	}
-	client := resty.New()
-	resp, err := client.R().
+
+	resp, err := resty.New().R().
 		SetHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.52").
 		SetHeader("APP-User-Agent", "github.com/3JoB/gmake2 Version/2").
 		Get(r[1])
+
 	checkError(err)
+
 	if resp.StatusCode() != 200 {
-		EPrintf("GMake2: Server returned status code: %v \n", resp.StatusCode())
+		ErrPrintf("GMake2: Server returned status code: %v \n", resp.StatusCode())
 	}
-	fmt.Printf("Parsing json from %v \n", r[1])
+
+	fmt.Printf("GMake2: Parsing json from %v \n", r[1])
 	result := gjson.Get(pkg.String(resp.Body()), r[3])
+
 	switch r[2] {
 	case "string", "String":
 		vars[r[4]] = result.String()
@@ -137,20 +141,23 @@ func touch(path string) {
 }
 
 func downloadFile(filepath string, url string) {
-	// Get the data
 	client := grab.NewClient()
 	client.UserAgent = "github.com/3JoB/gmake2 grab/3"
+
 	req, _ := grab.NewRequest(filepath, url)
-	// start download
+
 	fmt.Printf("GMake2: Downloading %v...\n", req.URL())
+
 	resp := client.Do(req)
+
 	fmt.Printf("GMake2: Connection info: %v\n", resp.HTTPResponse.Status)
+
 	fsize := cast.ToString(resp.Size)
+
 	if fsize == "" {
 		fsize = "unknown"
 	}
 
-	// start UI loop
 	t := time.NewTicker(500 * time.Millisecond)
 	defer t.Stop()
 
@@ -178,7 +185,7 @@ func copy(src, dst string) {
 	dst = filepath.Clean(dst)
 	if isDir(src) {
 		if !isDir(dst) {
-			EPrintf("GMake2: Cannot copy directory to file src=%v dst=%v \n", src, dst)
+			ErrPrintf("GMake2: Cannot copy directory to file src=%v dst=%v \n", src, dst)
 		}
 		si, err := os.Stat(src)
 		checkError(err)
@@ -241,7 +248,7 @@ func (r *Req) Network(str ...string) {
 		case "value":
 			r.Value = strings.ReplaceAll(strings.Trim(fmt.Sprint(str[2:]), "[]"), " ", " ")
 		default:
-			fmt.Println("GMake2: @req: unknown method: " + fmt.Sprint(str[1:]))
+			Println("GMake2: @req: unknown method: " + fmt.Sprint(str[1:]))
 		}
 	default:
 		r.Request()
@@ -275,15 +282,15 @@ func (r *Req) Request() {
 	checkError(err)
 	defer r.Resp.RawBody().Close()
 	if r.Resp.StatusCode() != 200 {
-		fmt.Println("GMake2: @req: Server returned error code:" + cast.ToString(r.Resp.StatusCode()))
+		Println("GMake2: @req: Server returned error code:" + cast.ToString(r.Resp.StatusCode()))
 	} else {
-		fmt.Println("GMake2: @req: 200 ok")
+		Println("GMake2: @req: 200 ok")
 	}
 	body := pkg.String(r.Resp.Body())
 	if body != "" {
 		if r.Value != "" {
 			vars[r.Value] = body
 		}
-		fmt.Println(body)
+		Println(body)
 	}
 }
