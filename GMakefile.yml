@@ -5,7 +5,7 @@ init: |
   @if {{.inits}} != use then get_info
 
 hello: |
-  @wait 请输入密码 pass
+  @wait PleaseEnterPassword pass
   @echo {{.pass}}
 
 all: |
