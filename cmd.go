@@ -58,6 +58,9 @@ func CMD(c *cli.Context) error {
 	ym := parseConfig(c.String("c"))
 	parseMap(ym)
 	commands_args := ""
+	if ym["init"] != nil {
+		run(ym, "init")
+	}
 	if c.Args().Len() != 0 {
 		commands_args = c.Args().First()
 	} else {
