@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/3JoB/telebot/pkg"
 	"github.com/3JoB/ulib/json"
+	"github.com/3JoB/ulib/reflect"
 	"github.com/cavaliergopher/grab/v3"
 	"github.com/go-resty/resty/v2"
 	"github.com/gookit/goutil/fsutil"
@@ -64,59 +64,59 @@ func val(r []string, c *exec.Cmd) {
 	c.Stderr = &stderr
 	err := c.Run()
 	checkError(err)
-	outStr, errStr := pkg.String(stdout.Bytes()), pkg.String(stderr.Bytes())
+	outStr, errStr := reflect.String(stdout.Bytes()), reflect.String(stderr.Bytes())
 	if errStr != "" {
 		ErrPrintf("GMake: Val Failed!!!\nGMake2: Error Command: %v \n", errStr)
 	}
 	vars[r[0]] = outStr
 }
 
-/*
-api.json:
 
-	{
-		"msg": "666"
-	}
-
-@json url https://example.com/api.json string msg vb
-
-@echo {{.vb}}
-*/
-func get_json_url(r []string) error {
-	if len(r) != 5 {
-		ErrPrintf("GMake2: Illegal instruction!!!\nGMake2: Error Command: %v \n", fmt.Sprint(r[:]))
-	}
-	if _, err := url.Parse(r[1]); err != nil {
-		ErrPrint("GMake2: Url check failed!!!\nGMake2: " + err.Error())
-	}
-
-	resp, err := resty.New().R().
-		SetHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.52").
-		SetHeader("APP-User-Agent", "github.com/3JoB/gmake2 Version/2").
-		Get(r[1])
-
-	checkError(err)
-
-	if resp.StatusCode() != 200 {
-		ErrPrintf("GMake2: Server returned status code: %v \n", resp.StatusCode())
-	}
-
-	fmt.Printf("GMake2: Parsing json from %v \n", r[1])
-	result := gjson.Get(pkg.String(resp.Body()), r[3])
-
-	switch r[2] {
-	case "string", "String":
-		vars[r[4]] = result.String()
-	case "bool", "Bool":
-		vars[r[4]] = result.Bool()
-	case "int", "int8", "int16", "int32", "int64":
-		vars[r[4]] = result.Int()
-	case "uint", "uint8", "uint16", "uint32", "uint64":
-		vars[r[4]] = result.Uint()
-	case "float", "float32", "float64":
-		vars[r[4]] = result.Float()
+func JsonUrl(r []string) error {
+	switch r[0] {
+	case "parse":
+		if len(r) != 5 {
+			ErrPrintf("GMake2: Illegal instruction!!!\nGMake2: Error Command: %v \n", fmt.Sprint(r[:]))
+		}
+		result := gjson.Get(JsonData[r[1]], r[3])
+		switch r[2] {
+		case "string", "String":
+			vars[r[4]] = result.String()
+		case "bool", "Bool":
+			vars[r[4]] = result.Bool()
+		case "int", "int8", "int16", "int32", "int64":
+			vars[r[4]] = result.Int()
+		case "uint", "uint8", "uint16", "uint32", "uint64":
+			vars[r[4]] = result.Uint()
+		case "float", "float32", "float64":
+			vars[r[4]] = result.Float()
+		default:
+			vars[r[4]] = result.String()
+		}
 	default:
-		vars[r[4]] = result.String()
+		if len(r) != 2 {
+			ErrPrintf("GMake2: Illegal instruction!!!\nGMake2: Error Command: %v \n", fmt.Sprint(r[:]))
+		}
+		if _, err := url.Parse(r[0]); err != nil {
+			ErrPrint("GMake2: Url check failed!!!\nGMake2: " + err.Error())
+		}
+
+		resp, err := resty.New().R().
+			SetHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.52").
+			SetHeader("APP-User-Agent", "github.com/3JoB/gmake2 Version/2").
+			Get(r[0])
+
+		checkError(err)
+
+		if resp.StatusCode() != 200 {
+			ErrPrintf("GMake2: Server returned status code: %v \n", resp.StatusCode())
+		}
+
+		rd := reflect.String(resp.Body())
+
+		if rd != "" {
+			JsonData[r[1]] = rd
+		}
 	}
 	return nil
 }
@@ -287,7 +287,7 @@ func (r *Req) Request() {
 	} else {
 		Println("GMake2: @req: 200 ok")
 	}
-	body := pkg.String(r.Resp.Body())
+	body := reflect.String(r.Resp.Body())
 	if body != "" {
 		if r.Value != "" {
 			vars[r.Value] = body

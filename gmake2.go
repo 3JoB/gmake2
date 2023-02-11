@@ -17,6 +17,7 @@ import (
 var (
 	vars  map[string]any
 	cfg   map[string]any
+	JsonData map[string]string
 	R     Req
 	debug bool
 )
@@ -78,7 +79,7 @@ func run(ym map[string]any, commands string) {
 				case "@rm":
 					rm(args[0])
 				case "@json":
-					get_json_url(args)
+					JsonUrl(args)
 				case "@mkdir":
 					mkdir(args[0])
 				case "@touch":
