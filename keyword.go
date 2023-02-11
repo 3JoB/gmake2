@@ -99,8 +99,7 @@ func JsonUrl(r []string) error {
 		if _, err := url.Parse(r[0]); err != nil {
 			ErrPrint("GMake2: Url check failed!!!\nGMake2: " + err.Error())
 		}
-
-		resp, err := resty.New().R().
+		resp, err := resty.NewWithClient(Client).R().
 			SetHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.52").
 			SetHeader("APP-User-Agent", "github.com/3JoB/gmake2 Version/2").
 			Get(r[0])
