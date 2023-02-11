@@ -16,12 +16,12 @@ import (
 )
 
 var (
-	vars  map[string]any
-	cfg   map[string]any
+	vars     map[string]any
+	cfg      map[string]any
 	JsonData map[string]string
-	R     Req
-	Client *http.Client
-	debug bool
+	R        Req
+	Client   *http.Client
+	debug    bool
 )
 
 func run(ym map[string]any, commands string) {

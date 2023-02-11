@@ -71,7 +71,6 @@ func val(r []string, c *exec.Cmd) {
 	vars[r[0]] = outStr
 }
 
-
 func JsonUrl(r []string) error {
 	switch r[0] {
 	case "parse":
