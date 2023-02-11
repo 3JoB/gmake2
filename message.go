@@ -9,6 +9,7 @@ CommitID: ` + SoftCommit
 
 	InitFileContent string = `config:
   default: all
+  proxy:
   req: false
 
 var:

@@ -77,21 +77,7 @@ func JsonUrl(r []string) error {
 		if len(r) != 5 {
 			ErrPrintf("GMake2: Illegal instruction!!!\nGMake2: Error Command: %v \n", fmt.Sprint(r[:]))
 		}
-		result := gjson.Get(JsonData[r[1]], r[3])
-		switch r[2] {
-		case "string", "String":
-			vars[r[4]] = result.String()
-		case "bool", "Bool":
-			vars[r[4]] = result.Bool()
-		case "int", "int8", "int16", "int32", "int64":
-			vars[r[4]] = result.Int()
-		case "uint", "uint8", "uint16", "uint32", "uint64":
-			vars[r[4]] = result.Uint()
-		case "float", "float32", "float64":
-			vars[r[4]] = result.Float()
-		default:
-			vars[r[4]] = result.String()
-		}
+		vars[r[4]] = gjson.Get(JsonData[r[1]], r[3]).String()
 	default:
 		if len(r) != 2 {
 			ErrPrintf("GMake2: Illegal instruction!!!\nGMake2: Error Command: %v \n", fmt.Sprint(r[:]))
@@ -99,6 +85,7 @@ func JsonUrl(r []string) error {
 		if _, err := url.Parse(r[0]); err != nil {
 			ErrPrint("GMake2: Url check failed!!!\nGMake2: " + err.Error())
 		}
+
 		resp, err := resty.NewWithClient(Client).R().
 			SetHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.52").
 			SetHeader("APP-User-Agent", "github.com/3JoB/gmake2 Version/2").
