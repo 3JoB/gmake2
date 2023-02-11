@@ -53,6 +53,11 @@ func main() {
 				Usage:  "Initialize in the current directory.",
 				Action: InitFile,
 			},
+			{
+				Name: "update",
+				Usage: "Check for GMake2 updates (not applicable to distributions installed via choco,apt)",
+				Action: CheckUpdate,
+			},
 		},
 		Action: CMD,
 	}
@@ -120,5 +125,10 @@ func InitFile(c *cli.Context) error {
 		ErrPrintf("GMake2: Error! %v \n", err.Error())
 	}
 	Println("GMake2: GMakefile.yml file has been generated in the current directory.")
+	return nil
+}
+
+// Check for updates
+func CheckUpdate(c *cli.Context) error {
 	return nil
 }
