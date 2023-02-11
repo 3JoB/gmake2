@@ -142,6 +142,7 @@ func touch(path string) {
 
 func downloadFile(filepath string, url string) {
 	client := grab.NewClient()
+	client.HTTPClient = Client
 	client.UserAgent = "github.com/3JoB/gmake2 grab/3"
 
 	req, _ := grab.NewRequest(filepath, url)
@@ -263,7 +264,7 @@ func (r *Req) Network(str ...string) {
 func (r *Req) Request() {
 	_, err := url.Parse(r.Uri)
 	checkError(err)
-	client := resty.New()
+	client := resty.NewWithClient(Client)
 	r.Req = client.R().SetHeaders(r.Header).SetBody(r.Body)
 	if r.File != "" {
 		r.Req = r.Req.SetFile(r.File, r.File)

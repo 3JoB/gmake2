@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"net/http"
+	"net/url"
 	"os"
 	"time"
 
@@ -15,7 +17,7 @@ var (
 	SoftCommit  string
 )
 
-func init(){
+func init() {
 	JsonData = make(map[string]string)
 }
 
@@ -69,6 +71,16 @@ func CMD(c *cli.Context) error {
 	// Parse Map
 	parseMap(ym)
 
+	if cfg["proxy"] != nil {
+		u, err := url.Parse(cfg["proxy"].(string))
+		checkError(err)
+		Client = &http.Client{
+			Transport: &http.Transport{Proxy: http.ProxyURL(u)},
+		}
+	} else {
+		Client = http.DefaultClient
+	}
+
 	commands_args := ""
 
 	// Check if the initialization command group exists
@@ -85,6 +97,7 @@ func CMD(c *cli.Context) error {
 			commands_args = "all"
 		}
 	}
+
 	// Execution command group
 	run(ym, commands_args)
 	return nil

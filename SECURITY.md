@@ -2,13 +2,16 @@
 
 ## Supported Versions
 
-Currently, versions prior to 2.2.0 are no longer supported.
+Currently, versions prior to 2.3.0 are no longer supported.
 
 APT source servers distribute only the latest version of each package.
 
 |   Version  |   Supported        |
 | ---------- | ------------------ |
-| 2.2.x >=   | :white_check_mark: |
+| 2.3.0 LTS  | :white_check_mark: |
+| 2.3.0 RC   | :x:                |
+| 2.2.0      | :white_check_mark: |
+| 2.2.0 RC   | :x:                |
 | 2.1.x      | :x:                |
 | 2.0.x      | :x:                |
 | 1.x.x      | :x:                |

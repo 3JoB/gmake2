@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -19,6 +20,7 @@ var (
 	cfg   map[string]any
 	JsonData map[string]string
 	R     Req
+	Client *http.Client
 	debug bool
 )
 
@@ -102,6 +104,8 @@ func run(ym map[string]any, commands string) {
 					} else {
 						Println("GMake2: The @req tag has been deprecated.")
 					}
+				case "@async":
+					go run(ym, args[0])
 				default:
 					cmd := exec.Command(bin, args...)
 					if cmdDir != "" {
