@@ -70,7 +70,11 @@ Since the review of chocolatey takes a long time, it takes about a day for choco
 Chocolatey only provides GMake2 for amd64 architecture.
 
 ```sh
-choco install gmake2
+choco install gmake2 --version=[latest version]
+
+# Example: GMake2 v2.3.0-LTS
+choco install gmake2 --version=2.3.0
+
 ```
 
 ## Install from Github Releases
