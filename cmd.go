@@ -84,8 +84,10 @@ func CMD(c *cli.Context) error {
 	commands_args := ""
 
 	// Check if the initialization command group exists
-	if ym["init"] != nil {
-		run(ym, "init")
+	if cfg["init"].(bool) {
+		if ym["init"] != nil {
+			run(ym, "init")
+		}
 	}
 
 	if c.Args().Len() != 0 {
