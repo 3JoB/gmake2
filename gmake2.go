@@ -24,7 +24,7 @@ var (
 	debug    bool
 )
 
-func init(){
+func init() {
 	JsonData = make(map[string]string)
 }
 

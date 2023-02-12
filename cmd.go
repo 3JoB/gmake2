@@ -40,7 +40,7 @@ func main() {
 				Usage:   "GMake2 Config File",
 			},
 			&cli.BoolFlag{
-				Name: "upgrade",
+				Name:  "upgrade",
 				Value: false,
 				Usage: "Mandatory upgrade channel edition",
 			},
@@ -154,28 +154,32 @@ func CheckUpdate(c *cli.Context) error {
 	version := gjson.Get(rd, "version").String()
 	update_url := gjson.Get(rd, "url").String()
 
+	if c.Bool("upgrade") {
+		run_path = "n"
+	}
+
 	if version_code > cast.ToInt64(SoftVersionCode) {
-		if c.Bool("upgrade") {
-			run_path = "n"
-		}
 		switch run_path {
 		case `C:\ProgramData\chocolatey\lib\gmake2\tools`:
-			Println("Sorry, Chocolatey does not support automatic updates, please use the command 'choco update gmake2 --version="+version+"' to update gmake2")
+			Println("Sorry, Chocolatey does not support automatic updates, please use the command 'choco update gmake2 --version=" + version + "' to update gmake2")
+			return nil
 		case "/usr/bin":
 			Println("Sorry, apt does not support automatic updates, please use the command 'apt update && apt upgrade' to update gmake2")
+			return nil
 		default:
-			filename:= "gmake2"
+			filename := "gmake2"
 			if runtime.GOOS == "windows" {
 				filename = filename + ".exe"
 				downloadPath = run_path + `\` + filename
 			} else {
 				downloadPath = run_path + `/` + filename
 			}
-			downloadUrl := update_url+"?arch="+runtime.GOARCH+"&os="+runtime.GOOS+"&version="+version
+
+			downloadUrl := update_url + "?arch=" + runtime.GOARCH + "&os=" + runtime.GOOS + "&version=" + version
 
 			downloadFile(downloadPath, downloadUrl)
 
-			Println("GMake2 has been updated to "+version+"("+cast.ToString(version_code)+")")
+			Println("GMake2 has been updated to " + version + "(" + cast.ToString(version_code) + ")")
 		}
 	} else {
 		Println("Currently using the latest version of GMake2, no update required!")
