@@ -5,16 +5,21 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"path/filepath"
 	"time"
 
 	ufs "github.com/3JoB/ulib/fsutil"
+	"github.com/3JoB/ulib/reflect"
+	"github.com/go-resty/resty/v2"
 	"github.com/spf13/cast"
+	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v2"
 )
 
 var (
-	SoftVersion string
-	SoftCommit  string
+	SoftVersion     string
+	SoftVersionCode string
+	SoftCommit      string
 )
 
 func init() {
@@ -54,8 +59,8 @@ func main() {
 				Action: InitFile,
 			},
 			{
-				Name: "update",
-				Usage: "Check for GMake2 updates (not applicable to distributions installed via choco,apt)",
+				Name:   "update",
+				Usage:  "Check for GMake2 updates (not applicable to distributions installed via choco,apt)",
 				Action: CheckUpdate,
 			},
 		},
@@ -77,7 +82,7 @@ func CMD(c *cli.Context) error {
 	parseMap(ym)
 
 	if cfg["proxy"] != nil {
-		u, err := url.Parse(cfg["proxy"].(string))
+		u, err := url.Parse(cast.ToString(cfg["proxy"]))
 		checkError(err)
 		Client = &http.Client{
 			Transport: &http.Transport{Proxy: http.ProxyURL(u)},
@@ -89,10 +94,8 @@ func CMD(c *cli.Context) error {
 	commands_args := ""
 
 	// Check if the initialization command group exists
-	if cfg["init"].(bool) {
-		if ym["init"] != nil {
-			run(ym, "init")
-		}
+	if ym["init"] != nil {
+		run(ym, "init")
 	}
 
 	if c.Args().Len() != 0 {
@@ -130,5 +133,46 @@ func InitFile(c *cli.Context) error {
 
 // Check for updates
 func CheckUpdate(c *cli.Context) error {
+	run_path, _ := filepath.Abs(filepath.Dir(os.Args[0]))
+	downloadPath := ""
+	resp, err := resty.NewWithClient(Client).R().
+		SetHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.52").
+		SetHeader("APP-User-Agent", "github.com/3JoB/gmake2 Version/2").
+		Get("https://raw.githubusercontent.com/3JoB/data/master/version/gmake2.json")
+
+	checkError(err)
+	if resp.StatusCode() != 200 {
+		ErrPrintf("GMake2: Server returned status code: %v \n", resp.StatusCode())
+	}
+
+	defer resp.RawBody().Close()
+
+	rd := reflect.String(resp.Body())
+
+	version_code := gjson.Get(rd, "version_code").Int()
+	version := gjson.Get(rd, "version").String()
+	update_url := gjson.Get(rd, "url").String()
+
+	if version_code > cast.ToInt64(SoftVersionCode) {
+		switch run_path {
+		case `C:\ProgramData\chocolatey\lib\gmake2\tools`:
+			Println("Sorry, Chocolatey does not support automatic updates, please use the command 'choco update gmake2 --version="+version+"' to update gmake2")
+		case "/usr/bin":
+			Println("Sorry, apt does not support automatic updates, please use the command 'apt update && apt upgrade' to update gmake2")
+		default:
+			filename:= "gmake2"
+			if cast.ToString(vars["runtime.os"]) == "windows" {
+				filename = filename + ".exe"
+				downloadPath = run_path + `\` + filename
+			} else {
+				downloadPath = run_path + `/` + filename
+			}
+			downloadUrl := update_url+"?arch="+cast.ToString(vars["runtime.arch"])+"&os="+cast.ToString(vars["runtime.os"])+"&version="+version
+
+			downloadFile(downloadPath, downloadUrl)
+
+			Println("GMake2 has been updated to "+version+"("+cast.ToString(version_code)+")")
+		}
+	}
 	return nil
 }

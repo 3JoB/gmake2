@@ -20,7 +20,7 @@ all: |
 build: |
   @env CGO_ENABLED 0
   @env GOARCH amd64
-  go build -ldflags "-s -w -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}'" -o ./example/gmake2.exe
+  go build -ldflags "-s -w -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}'  -X 'main.SoftVersionCode={{.version_code}}'" -o ./example/gmake2.exe
 
 clean: |
   @rm bin
@@ -29,23 +29,25 @@ linux: |
   @env GOOS linux
   @env CGO_ENABLED 0
   @env GOARCH amd64
-  go build -ldflags "-s -w -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}'" -o ./bin/gmake2_Linux_amd64
+  go build -ldflags "-s -w -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}' -X 'main.SoftVersionCode={{.version_code}}'" -o ./bin/gmake2_Linux_amd64
   @env GOARCH arm64
-  go build -ldflags "-s -w -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}'" -o ./bin/gmake2_Linux_aarch64
+  go build -ldflags "-s -w -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}' -X 'main.SoftVersionCode={{.version_code}}'" -o ./bin/gmake2_Linux_aarch64
   @env GOARCH mips64
-  go build -ldflags "-s -w -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}'" -o ./bin/gmake2_Linux_mips64
+  go build -ldflags "-s -w -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}' -X 'main.SoftVersionCode={{.version_code}}'" -o ./bin/gmake2_Linux_mips64
 
 windows: |
   @env GOOS windows
   @env CGO_ENABLED 0
   @env GOARCH amd64
-  go build -ldflags "-s -w -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}'" -o ./bin/gmake2_Windows_amd64.exe
+  go build -ldflags "-s -w -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}' -X 'main.SoftVersionCode={{.version_code}}'" -o ./bin/gmake2_Windows_amd64.exe
   @env GOARCH arm64
-  go build -ldflags "-s -w -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}'" -o ./bin/gmake2_Windows_aarch64.exe
+  go build -ldflags "-s -w -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}' -X 'main.SoftVersionCode={{.version_code}}'" -o ./bin/gmake2_Windows_aarch64.exe
 
 get_info: |
   @echo Get version info...
   #@json https://raw.githubusercontent.com/3JoB/data/master/version/gmake2.json gmake2_version
   #@json parse gmake2_version version version
+  #@json parse gmake2_version version_code version_code
   @var version 2.4.0-Preview-1
+  @var version_code 1
   @val commit git log --pretty=format:'%h' -1
