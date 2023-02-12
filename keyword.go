@@ -87,8 +87,7 @@ func JsonUrl(r []string) error {
 		}
 
 		resp, err := resty.NewWithClient(Client).R().
-			SetHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.52").
-			SetHeader("APP-User-Agent", "github.com/3JoB/gmake2 Version/2").
+			SetHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 GMake2/"+SoftVersion).
 			Get(r[0])
 
 		checkError(err)
@@ -128,7 +127,7 @@ func touch(path string) {
 func downloadFile(filepath string, url string) {
 	client := grab.NewClient()
 	client.HTTPClient = Client
-	client.UserAgent = "github.com/3JoB/gmake2 grab/3"
+	client.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 GMake2/"+SoftVersion
 
 	req, _ := grab.NewRequest(filepath, url)
 
@@ -249,11 +248,28 @@ func (r *Req) Network(str ...string) {
 func (r *Req) Request() {
 	_, err := url.Parse(r.Uri)
 	checkError(err)
+
 	client := resty.NewWithClient(Client)
-	r.Req = client.R().SetHeaders(r.Header).SetBody(r.Body)
+
+	if r.Header == nil {
+		r.Header = map[string]string{
+			"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.52 GMake2/"+SoftVersion,
+		}
+	}
+	if r.Header["User-Agent"] == "" {
+		r.Header["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.52 GMake2/"+SoftVersion
+	}
+
+	r.Req = client.R().SetHeaders(r.Header)
+
+	if r.Body != nil {
+		r.Req = r.Req.SetBody(r.Body)
+	}
+
 	if r.File != "" {
 		r.Req = r.Req.SetFile(r.File, r.File)
 	}
+
 	switch r.Method {
 	case "POST", "post":
 		r.Resp, err = r.Req.Post(r.Uri)
@@ -266,13 +282,17 @@ func (r *Req) Request() {
 	default:
 		r.Resp, err = r.Req.Get(r.Uri)
 	}
+
 	checkError(err)
+
 	defer r.Resp.RawBody().Close()
+
 	if r.Resp.StatusCode() != 200 {
 		Println("GMake2: @req: Server returned error code:" + cast.ToString(r.Resp.StatusCode()))
 	} else {
 		Println("GMake2: @req: 200 ok")
 	}
+
 	body := reflect.String(r.Resp.Body())
 	if body != "" {
 		if r.Value != "" {

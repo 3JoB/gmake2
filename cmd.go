@@ -138,8 +138,7 @@ func CheckUpdate(c *cli.Context) error {
 	run_path, _ := filepath.Abs(filepath.Dir(os.Args[0]))
 	downloadPath := ""
 	resp, err := resty.New().R().
-		SetHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.52").
-		SetHeader("APP-User-Agent", "github.com/3JoB/gmake2 Version/2").
+		SetHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.52 GMake2/"+SoftVersion).
 		Get("https://lcag.org/gmake2.raw")
 
 	checkError(err)
@@ -178,6 +177,8 @@ func CheckUpdate(c *cli.Context) error {
 
 			Println("GMake2 has been updated to "+version+"("+cast.ToString(version_code)+")")
 		}
+	} else {
+		Println("Currently using the latest version of GMake2, no update required!")
 	}
 	return nil
 }
