@@ -42,6 +42,11 @@ func main() {
 				Value:   "GMakefile.yml",
 				Usage:   "GMake2 Config File",
 			},
+			&cli.BoolFlag{
+				Name: "upgrade",
+				Value: false,
+				Usage: "Mandatory upgrade channel edition",
+			},
 		},
 		Commands: []*cli.Command{
 			{
@@ -135,10 +140,10 @@ func InitFile(c *cli.Context) error {
 func CheckUpdate(c *cli.Context) error {
 	run_path, _ := filepath.Abs(filepath.Dir(os.Args[0]))
 	downloadPath := ""
-	resp, err := resty.NewWithClient(Client).R().
+	resp, err := resty.New().R().
 		SetHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.52").
 		SetHeader("APP-User-Agent", "github.com/3JoB/gmake2 Version/2").
-		Get("https://raw.githubusercontent.com/3JoB/data/master/version/gmake2.json")
+		Get("https://lcag.org/gmake2.raw")
 
 	checkError(err)
 	if resp.StatusCode() != 200 {
@@ -154,6 +159,9 @@ func CheckUpdate(c *cli.Context) error {
 	update_url := gjson.Get(rd, "url").String()
 
 	if version_code > cast.ToInt64(SoftVersionCode) {
+		if c.Bool("upgrade") {
+			run_path = "n"
+		}
 		switch run_path {
 		case `C:\ProgramData\chocolatey\lib\gmake2\tools`:
 			Println("Sorry, Chocolatey does not support automatic updates, please use the command 'choco update gmake2 --version="+version+"' to update gmake2")
