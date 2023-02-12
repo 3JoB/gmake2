@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"runtime"
 	"time"
 
 	ufs "github.com/3JoB/ulib/fsutil"
@@ -165,13 +166,13 @@ func CheckUpdate(c *cli.Context) error {
 			Println("Sorry, apt does not support automatic updates, please use the command 'apt update && apt upgrade' to update gmake2")
 		default:
 			filename:= "gmake2"
-			if cast.ToString(vars["runtime.os"]) == "windows" {
+			if runtime.GOOS == "windows" {
 				filename = filename + ".exe"
 				downloadPath = run_path + `\` + filename
 			} else {
 				downloadPath = run_path + `/` + filename
 			}
-			downloadUrl := update_url+"?arch="+cast.ToString(vars["runtime.arch"])+"&os="+cast.ToString(vars["runtime.os"])+"&version="+version
+			downloadUrl := update_url+"?arch="+runtime.GOARCH+"&os="+runtime.GOOS+"&version="+version
 
 			downloadFile(downloadPath, downloadUrl)
 
