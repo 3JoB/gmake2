@@ -74,10 +74,10 @@ func val(r []string, c *exec.Cmd) {
 func JsonUrl(r []string) error {
 	switch r[0] {
 	case "parse":
-		if len(r) != 5 {
+		if len(r) != 4 {
 			ErrPrintf("GMake2: Illegal instruction!!!\nGMake2: Error Command: %v \n", fmt.Sprint(r[:]))
 		}
-		vars[r[4]] = gjson.Get(JsonData[r[1]], r[3]).String()
+		vars[r[3]] = gjson.Get(JsonData[r[1]], r[2]).String()
 	default:
 		if len(r) != 2 {
 			ErrPrintf("GMake2: Illegal instruction!!!\nGMake2: Error Command: %v \n", fmt.Sprint(r[:]))

@@ -22,10 +22,6 @@ var (
 	SoftCommit      string
 )
 
-func init() {
-	JsonData = make(map[string]string)
-}
-
 func main() {
 	app := &cli.App{
 		Name:  "GMake2",

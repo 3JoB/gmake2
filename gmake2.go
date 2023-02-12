@@ -24,6 +24,10 @@ var (
 	debug    bool
 )
 
+func init(){
+	JsonData = make(map[string]string)
+}
+
 func run(ym map[string]any, commands string) {
 	for _, e := range os.Environ() {
 		pair := strings.SplitN(e, "=", 2)
