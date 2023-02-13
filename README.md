@@ -101,7 +101,7 @@ go build -ldflags "-s -w -X 'main.SoftCommit=owner' -X 'main.SoftVersion=owner'"
 
 # Getting Started
 
-Write the gmake2.yml file in the current directory, the content is as follows
+Write the GMakefile.yml file in the current directory, the content is as follows
 
 ```yml
 vars:
@@ -143,7 +143,7 @@ Variables moved to [Wiki](wiki/variables.md)
 
 # examples
 
-gmake2.yml
+GMakefile.yml
 
 ```yml
 vars:
