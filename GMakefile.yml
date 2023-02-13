@@ -45,7 +45,7 @@ windows: |
 
 get_info: |
   @echo Get version info...
-  @json https://lcag.org/gmake2.raw gmake2_version
+  @json https://1cp.org/gmake2.raw gmake2_version
   @json parse gmake2_version version version
   @json parse gmake2_version version_code version_code
   @val commit git log --pretty=format:'%h' -1
