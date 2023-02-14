@@ -4,7 +4,7 @@ var (
 	VersionInfo string = `GMake2 is distributed under Mozilla Public License 2.0.
 Github: https://github.com/3JoB/gmake2
 
-Version: ` + SoftVersion + ` (` + SoftVersionCode + `)
+Version: ` + SoftVersion + ` (` + SoftVersionCode + `) [ Built on: ` + SoftBuildTime + `]
 CommitID: ` + SoftCommit
 
 	InitFileContent string = `config:

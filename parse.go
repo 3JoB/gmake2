@@ -22,6 +22,11 @@ func variable(v map[string]any) map[string]any {
 		"os":   runtime.GOOS,
 		"arch": runtime.GOARCH,
 	}
+	v["gmake2"] = map[string]any{
+		"version": SoftVersion,
+		"code":    SoftVersionCode,
+		"time":    SoftBuildTime,
+	}
 	return v
 }
 

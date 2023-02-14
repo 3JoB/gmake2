@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"net/url"
 	"os"
@@ -20,51 +19,23 @@ import (
 var (
 	SoftVersion     string
 	SoftVersionCode string
+	SoftBuildTime   string
 	SoftCommit      string
 )
 
 func main() {
 	app := &cli.App{
 		Name:  "GMake2",
-		Usage: "program like make",
+		Usage: "Lightning-like GMake-like programs.",
 		Flags: []cli.Flag{
-			&cli.BoolFlag{
-				Name:  "debug",
-				Value: false,
-				Usage: "debug mode",
-			},
-			&cli.StringFlag{
-				Name:    "config",
-				Aliases: []string{"c"},
-				Value:   "GMakefile.yml",
-				Usage:   "GMake2 Config File",
-			},
-			&cli.BoolFlag{
-				Name:  "upgrade",
-				Value: false,
-				Usage: "Mandatory upgrade channel edition",
-			},
+			CliFlagDebug,
+			CliFlagConfig,
+			CliFlagUpgrade,
 		},
 		Commands: []*cli.Command{
-			{
-				Name:    "version",
-				Aliases: []string{"v"},
-				Usage:   "GMake2 Version",
-				Action: func(ctx *cli.Context) error {
-					fmt.Println(VersionInfo)
-					return nil
-				},
-			},
-			{
-				Name:   "init",
-				Usage:  "Initialize in the current directory.",
-				Action: InitFile,
-			},
-			{
-				Name:   "update",
-				Usage:  "Check for GMake2 updates (not applicable to distributions installed via choco,apt)",
-				Action: CheckUpdate,
-			},
+			CliCommandVersion,
+			CliCommandInit,
+			CliCommandUpdate,
 		},
 		Action: CMD,
 	}

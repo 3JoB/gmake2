@@ -12,6 +12,9 @@ For the convenience of use, gmake2 has some built-in available variables, which 
     - [time.utc\_unix](#timeutc_unix)
     - [runtime.os](#runtimeos)
     - [runtime.arch](#runtimearch)
+    - [gmake2.version](#gmake2version)
+    - [gmake2.code](#gmake2code)
+    - [gmake2.time](#gmake2time)
 
 ### time.now
 Current time
@@ -53,4 +56,25 @@ Current System Architecture
 
 ```
 @echo {{.runtime.arch}}
+```
+
+### gmake2.version
+Current GMake2 Version
+
+```
+@echo {{.gmake2.version}}
+```
+
+### gmake2.code
+Current GMake2 Version Code
+
+```
+@echo {{.gmake2.code}}
+```
+
+### gmake2.time
+Current GMake2 Build Time
+
+```
+@echo {{.gmake2.time}}
 ```
