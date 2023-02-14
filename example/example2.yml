@@ -8,4 +8,4 @@ test1: |
   @echo test1
 test2: |
   @echo test2
-  @var ec 傻逼
+  @var ec 66666

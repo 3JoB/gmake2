@@ -9,7 +9,7 @@ Keywords are some built-in instructions of GMake2, which can be used to quickly 
     - [comment](#comment)
     - [@cmd](#cmd)
     - [@cd](#cd)
-    - [@download](#download)
+    - [@dl](#dl)
     - [@echo](#echo)
     - [@env](#env)
     - [@wait](#wait)
@@ -20,7 +20,7 @@ Keywords are some built-in instructions of GMake2, which can be used to quickly 
     - [@sleep](#sleep)
     - [@touch](#touch)
     - [@mv](#mv)
-    - [@copy](#copy)
+    - [@cp](#cp)
     - [@rm](#rm)
     - [@mkdir](#mkdir)
   - [system command](#system-command)
@@ -54,8 +54,10 @@ Set the directory to make subsequent console commands run in the specified direc
 @cd from
 ```
 
-### @download
+### @dl
 Download a file from the server.
+
+Changed: In 2.4.0, this keyword was renamed from `@download` to `@dl`
 
 Example: save the file as-is to the current directory.
 ```sh
@@ -204,9 +206,11 @@ Move a file or directory
 @mv from.txt to.txt
 ```
 
-### @copy
+### @cp
 
 Copy a file or directory
+
+Changed: In 2.4.0, this keyword was renamed from `@copy` to `@cp`
 
 ```
 @copy to.txt from.txt

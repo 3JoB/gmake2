@@ -6,7 +6,7 @@ config:
 all: |
   @var name 2
   @echo {{.name}}
-  # @copy test D:/tmp/test
+  # @cp test D:/tmp/test
   @mkdir tests
   @touch tests/test
   @rm tests/test
