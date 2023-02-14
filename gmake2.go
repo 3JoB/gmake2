@@ -66,6 +66,8 @@ func run(ym map[string]any, commands string) {
 					run(ym, args[0])
 				case "@wait":
 					wait(args...)
+				case "@sleep":
+					time.Sleep(time.Second * cast.ToDuration(args[0]))
 				case "@if":
 					ifelse(ym, args)
 				case "@val":
@@ -77,7 +79,7 @@ func run(ym map[string]any, commands string) {
 					val(args, cmd)
 				case "#":
 				case "@echo":
-					fmt.Println(strings.Join(args, " "))
+					Println(strings.Join(args, " "))
 				case "@mv":
 					mv(args[0], args[1])
 				case "@copy":
@@ -90,8 +92,6 @@ func run(ym map[string]any, commands string) {
 					mkdir(args[0])
 				case "@touch":
 					touch(args[0])
-				case "@sleep":
-					time.Sleep(time.Second * cast.ToDuration(args[0]))
 				case "@download":
 					if len(args) == 1 {
 						downloadFile(".", args[0])
@@ -106,7 +106,7 @@ func run(ym map[string]any, commands string) {
 					if cast.ToBool(cfg["req"]) {
 						R.Network(args...)
 					} else {
-						Println("GMake2: The @req tag has been deprecated.")
+						ErrPrint("GMake2: The @req tag has been deprecated.")
 					}
 				case "@async":
 					go run(ym, args[0])

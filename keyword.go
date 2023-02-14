@@ -289,7 +289,7 @@ func (r *Req) Request() {
 	defer r.Resp.RawBody().Close()
 
 	if r.Resp.StatusCode() != 200 {
-		Println("GMake2: @req: Server returned error code:" + cast.ToString(r.Resp.StatusCode()))
+		ErrPrint("GMake2: @req: Server returned error code:" + cast.ToString(r.Resp.StatusCode()))
 	} else {
 		Println("GMake2: @req: 200 ok")
 	}
