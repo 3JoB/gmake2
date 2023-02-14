@@ -72,10 +72,10 @@ func run(ym map[string]any, commands string) {
 					"@json":  KW_Json,
 					"@dl":    KW_Downloads,
 				}
-				if function, ok := BinMap[bin]; ok {
-					checkError(function(ym, args))
+				if fc, ok := BinMap[bin]; ok {
+					checkError(fc(ym, args))
 				} else {
-					KW_Default(bin, args)
+					checkError(KW_Default(bin, args))
 				}
 			}
 		}
