@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -107,7 +106,7 @@ func KW_Req(ym map[string]any, args []string) error {
 	if cast.ToBool(cfg["req"]) {
 		R.Network(args...)
 	} else {
-		return errors.New("GMake2: The @req tag has been deprecated.")
+		ErrPrint("GMake2: The @req tag has been deprecated.")
 	}
 	return nil
 }
