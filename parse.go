@@ -4,10 +4,26 @@ import (
 	"bytes"
 	"errors"
 	"os"
+	"runtime"
 	"text/template"
+	"time"
 
 	"gopkg.in/yaml.v3"
 )
+
+func variable(v map[string]any) map[string]any {
+	v["time"] = map[string]any{
+		"now":      time.Now().Format("2006-01-02 15:04"),
+		"utc":      time.Now().UTC().Format("2006-01-02 15:04"),
+		"unix":     time.Now().Unix(),
+		"utc_unix": time.Now().UTC().Unix(),
+	}
+	v["runtime"] = map[string]any{
+		"os":   runtime.GOOS,
+		"arch": runtime.GOARCH,
+	}
+	return v
+}
 
 func parseConfig(cfgFile string) map[string]any {
 	ymlData, err := os.ReadFile(cfgFile)

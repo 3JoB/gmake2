@@ -121,7 +121,7 @@ func InitFile(c *cli.Context) error {
 	if isFile("GMakefile.yml") {
 		Println("GMake2: Note! There are already GMakefile.yml files in the directory! Now you still have 12 seconds to prevent GMAKE2 from covering the file!")
 		time.Sleep(time.Second * 12)
-		rm("GMakefile.yml")
+		os.RemoveAll("GMakefile.yml")
 		Println("GMake2: File is being covered.")
 	}
 

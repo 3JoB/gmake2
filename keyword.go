@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"io"
 	"net/url"
 	"os"
 	"os/exec"
@@ -20,7 +21,33 @@ import (
 	"github.com/tidwall/gjson"
 )
 
-func ifelse(ym map[string]any, f []string) error {
+func ExecCmd(c *exec.Cmd) {
+	Println(c.String())
+	stdout, err := c.StdoutPipe()
+	checkError(err)
+	stderr, err := c.StderrPipe()
+	checkError(err)
+	err = c.Start()
+	checkError(err)
+	io.Copy(os.Stdout, stdout)
+	io.Copy(os.Stderr, stderr)
+	c.Wait()
+}
+
+func val(r []string, c *exec.Cmd) {
+	var stdout, stderr bytes.Buffer
+	c.Stdout = &stdout
+	c.Stderr = &stderr
+	err := c.Run()
+	checkError(err)
+	outStr, errStr := reflect.String(stdout.Bytes()), reflect.String(stderr.Bytes())
+	if errStr != "" {
+		ErrPrintf("GMake: Val Failed!!!\nGMake2: Error Command: %v \n", errStr)
+	}
+	vars[r[0]] = outStr
+}
+
+func operation(ym map[string]any, f []string) error {
 	switch f[1] {
 	case "==":
 		if f[0] == f[2] {
@@ -53,22 +80,9 @@ func ifelse(ym map[string]any, f []string) error {
 		}
 		return if_func2(f, ym)
 	default:
-		ErrPrintf("GMake2: Invalid operator!\nGMake2: Error Command: %v \n", fmt.Sprint(f[:]))
+		ErrPrintf("GMake2: Invalid operator!\nGMake2: Error Command: %v \n", strings.Join(f, " "))
 	}
 	return nil
-}
-
-func val(r []string, c *exec.Cmd) {
-	var stdout, stderr bytes.Buffer
-	c.Stdout = &stdout
-	c.Stderr = &stderr
-	err := c.Run()
-	checkError(err)
-	outStr, errStr := reflect.String(stdout.Bytes()), reflect.String(stderr.Bytes())
-	if errStr != "" {
-		ErrPrintf("GMake: Val Failed!!!\nGMake2: Error Command: %v \n", errStr)
-	}
-	vars[r[0]] = outStr
 }
 
 func JsonUrl(r []string) error {
@@ -103,15 +117,6 @@ func JsonUrl(r []string) error {
 		}
 	}
 	return nil
-}
-
-func mv(from, to string) {
-	copy(from, to)
-	rm(from)
-}
-
-func rm(path string) {
-	checkError(os.RemoveAll(path))
 }
 
 func mkdir(path string) {

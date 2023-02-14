@@ -1,0 +1,61 @@
+Here's the original selector, which uses switch...case, which makes it look bloated.
+
+
+switch bin {
+	case "@var":
+		vars[args[0]] = strings.Join(args[1:], " ")
+	case "@env":
+		os.Setenv(args[0], strings.Join(args[1:], " "))
+	case "@cmd":
+		run(ym, args[0])
+	case "@wait":
+		wait(args...)
+	case "@sleep":
+		time.Sleep(time.Second * cast.ToDuration(args[0]))
+	case "@if":
+		operation(ym, args)
+	case "@val":
+		arg := args[2:]
+		cmd := exec.Command(args[1], arg...)
+		if cmdDir != "" {
+			cmd.Dir = cmdDir
+		}
+		val(args, cmd)
+	case "#":
+	case "@echo":
+		Println(strings.Join(args, " "))
+	case "@mv":
+		mv(args[0], args[1])
+	case "@cp":
+		copy(args[0], args[1])
+	case "@rm":
+		rm(args[0])
+	case "@json":
+		JsonUrl(args)
+	case "@mkdir":
+		mkdir(args[0])
+	case "@touch":
+		touch(args[0])
+	case "@download":
+		if len(args) == 1 {
+			downloadFile(".", args[0])
+		} else {
+			downloadFile(args[1], args[0])
+		}
+	case "@cd":
+		abs, err := filepath.Abs(args[0])
+		checkError(err)
+		cmdDir = abs
+	case "@req":
+		if cast.ToBool(cfg["req"]) {
+			R.Network(args...)
+		} else {
+			ErrPrint("GMake2: The @req tag has been deprecated.")
+		}
+	default:
+		cmd := exec.Command(bin, args...)
+		if cmdDir != "" {
+			cmd.Dir = cmdDir
+		}
+		ExecCmd(cmd)
+}
