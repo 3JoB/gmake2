@@ -155,7 +155,7 @@ func CheckUpdate(c *cli.Context) error {
 	update_url := gjson.Get(rd, "url").String()
 
 	if c.Bool("upgrade") {
-		run_path = "n"
+		run_path = " "
 	}
 
 	if version_code > cast.ToInt64(SoftVersionCode) {
@@ -167,12 +167,10 @@ func CheckUpdate(c *cli.Context) error {
 			Println("Sorry, apt does not support automatic updates, please use the command 'apt update && apt upgrade' to update gmake2")
 			return nil
 		default:
-			filename := "gmake2"
 			if runtime.GOOS == "windows" {
-				filename = filename + ".exe"
-				downloadPath = run_path + `\` + filename
+				downloadPath = run_path + `\gmake2.exe`
 			} else {
-				downloadPath = run_path + `/` + filename
+				downloadPath = run_path + `/gmake2`
 			}
 
 			downloadUrl := update_url + "?arch=" + runtime.GOARCH + "&os=" + runtime.GOOS + "&version=" + version
