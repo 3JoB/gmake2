@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 	"strings"
@@ -56,7 +55,7 @@ func run(ym map[string]any, commands string) {
 			}
 			bin, args := cmdStrs[0], cmdStrs[1:]
 			if len(args) == 0 {
-				ErrPrintf("GMake2: Illegal instruction!\nGMake2: Error Command: %v \n", fmt.Sprint(cmdStrs[:]))
+				ErrPrintf("GMake2: Illegal instruction!\nGMake2: Error Command: %v \n", strings.Join(cmdStrs, " "))
 			}
 			if fc, ok := BinMap[bin]; ok {
 				checkError(fc(ym, args))

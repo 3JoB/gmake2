@@ -9,6 +9,7 @@
         "gmake",
         "GOARCH",
         "goccy",
+        "gomod",
         "gookit",
         "goutil",
         "kballard",
