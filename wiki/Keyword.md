@@ -7,7 +7,8 @@ Keywords are some built-in instructions of GMake2, which can be used to quickly 
 - [GMake2 KeyWord](#gmake2-keyword)
 - [Menu](#menu)
     - [comment](#comment)
-    - [@cmd](#cmd)
+    - [@run](#run)
+    - [@end](#end)
     - [@cd](#cd)
     - [@dl](#dl)
     - [@echo](#echo)
@@ -34,7 +35,7 @@ Keywords are some built-in instructions of GMake2, which can be used to quickly 
 # comment
 ```
 
-### @cmd
+### @run
 Execute other configured commands.
 
 Example:
@@ -44,6 +45,22 @@ all: |
 
 readme: |
   @echo I Like It
+```
+
+### @end
+To stop running, use this keyword
+
+If:
+```yml
+all: |
+  @if {{.runtime.os}} == windows then end
+```
+
+Base:
+```yml
+all: |
+  @echo 6
+  @end
 ```
 
 ### @cd

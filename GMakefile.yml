@@ -2,17 +2,17 @@ config:
   default: all
 
 init: |
-  @cmd get_info
+  @run get_info
 
 fmt: |
   gorgeous ./...
 
 all: |
-  @cmd clean
+  @run clean
   go mod tidy
   @mkdir bin
-  @cmd windows
-  @cmd linux
+  @run windows
+  @run linux
   @echo Done!
 
 build: |
@@ -26,8 +26,8 @@ clean: |
 linux: |
   @env GOOS linux
   @env CGO_ENABLED 0
-  @cmd linux_arm64
-  @cmd linux_amd64
+  @run linux_arm64
+  @run linux_amd64
   @env GOARCH mips64
   go build -ldflags "-s -w -X 'main.SoftBuildTime={{.time.utc}}' -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}' -X 'main.SoftVersionCode={{.version_code}}'" -o ./bin/gmake2_Linux_mips64
 
