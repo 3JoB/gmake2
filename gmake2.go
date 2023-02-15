@@ -58,6 +58,7 @@ func run(ym map[string]any, commands string) {
 					"@cmd":   KW_Run,
 					"@echo":  KW_Echo,
 					"@wait":  KW_Wait,
+					"@end":   KW_End,
 					"@if":    KW_Operation,
 					"@sleep": KW_Sleep,
 					"@val":   KW_Val,

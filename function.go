@@ -10,6 +10,11 @@ import (
 	"github.com/spf13/cast"
 )
 
+func KW_End(ym map[string]any, args []string) error {
+	Exit()
+	return nil
+}
+
 func KW_Note(ym map[string]any, args []string) error {
 	return nil
 }

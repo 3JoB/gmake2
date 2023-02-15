@@ -21,7 +21,7 @@ var (
 	SoftVersionCode string
 	SoftBuildTime   string
 	SoftCommit      string
-	//Context *cli.Context
+	// Context *cli.Context
 )
 
 func main() {
@@ -33,9 +33,9 @@ func main() {
 	}()
 
 	app := &cli.App{
-		Name:     "GMake2",
-		Usage:    "Lightning-like GMake-like programs.",
-		Flags:    CliFlag,
+		Name:  "GMake2",
+		Usage: "Lightning-like GMake-like programs.",
+		Flags: CliFlag,
 		Before: func(c *cli.Context) error {
 			// Read debug information
 			debug = c.Bool("debug")

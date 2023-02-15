@@ -123,7 +123,7 @@ func touch(path string) {
 	f.Close()
 }
 
-func downloadFile(filepath string, url string) error {
+func downloadFile(filepath string, url string) {
 	resp := request(url)
 	if resp.StatusCode() != 200 {
 		ErrPrintf("GMake2: Connection failed! Server returned status code: %v\nUrl: %v\nUser-Agent: %v", resp.StatusCode(), resp.Request.URL, resp.RawResponse.Request.UserAgent())
@@ -139,7 +139,6 @@ func downloadFile(filepath string, url string) error {
 	defer file.Close()
 	file.Write(resp.Body())
 	Printf("GMake2: Download saved to ./%v \n", filename)
-	return nil
 }
 
 func copy(src, dst string) {

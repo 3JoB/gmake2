@@ -95,7 +95,7 @@ func ErrPrint(a ...any) {
 		log.Panic(a...)
 	}
 	fmt.Println(a...)
-	os.Exit(0)
+	Exit()
 }
 
 func ErrPrintf(format string, v ...any) {
@@ -103,6 +103,10 @@ func ErrPrintf(format string, v ...any) {
 		log.Panicf(format, v...)
 	}
 	fmt.Printf(format, v...)
+	Exit()
+}
+
+func Exit() {
 	os.Exit(0)
 }
 
