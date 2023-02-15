@@ -130,9 +130,10 @@ func downloadFile(filepath string, url string) error {
 		ErrPrintf("GMake2: Connection failed! Server returned status code: %v\nUrl: %v\nUser-Agent: %v", resp.StatusCode(), resp.Request.URL, resp.RawResponse.Request.UserAgent())
 	}
 
-	fmt.Printf("GMake2: Connection info: %v\n", resp.Status())
+	Printf("GMake2: Connection info: %v\n", resp.Status())
 
 	filename, _ := guessFilename(resp.RawResponse)
+	Println(filename)
 	if filepath != "." {
 		filename = filepath
 	}
@@ -145,7 +146,7 @@ func downloadFile(filepath string, url string) error {
 	)
 	io.Copy(io.MultiWriter(file, bar), resp.RawBody())
 
-	fmt.Printf("GMake2: Download saved to ./%v \n", filepath)
+	Printf("\nGMake2: Download saved to ./%v \n", filename)
 	return nil
 }
 
