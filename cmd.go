@@ -35,21 +35,23 @@ func main() {
 	app := &cli.App{
 		Name:  "GMake2",
 		Usage: "Lightning-like GMake-like programs.",
+		Before: BeforeFunc,
 		Flags: CliFlag,
-		Before: func(c *cli.Context) error {
-			// Read debug information
-			debug = c.Bool("debug")
-			return nil
-		},
 		Commands: CliCommands,
-		Action:   CMD,
+		Action:   CliAction,
 	}
 
 	err := app.Run(os.Args)
 	checkError(err)
 }
 
-func CMD(c *cli.Context) error {
+func BeforeFunc(c *cli.Context) error {
+	// Read debug information
+	debug = c.Bool("debug")
+	return nil
+}
+
+func CliAction(c *cli.Context) error {
 	// Parsing GMakefile
 	ym := parseConfig(c.String("c"))
 

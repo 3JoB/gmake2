@@ -10,6 +10,36 @@ import (
 	"github.com/spf13/cast"
 )
 
+type HandlerFunc func(ym map[string]any, args []string) error
+
+var BinMap map[string]HandlerFunc
+
+func init(){
+	BinMap = make(map[string]HandlerFunc)
+	BinMap = map[string]HandlerFunc{
+		"@var":   KW_Var,
+		"@env":   KW_Env,
+		"@run":   KW_Run,
+		"@echo":  KW_Echo,
+		"@wait":  KW_Wait,
+		"@end":   KW_End,
+		"@if":    KW_Operation,
+		"@sleep": KW_Sleep,
+		"@val":   KW_Val,
+		"#":      KW_Note,
+		"@cd":    KW_Cd,
+		"@touch": KW_Touch,
+		"@mkdir": KW_Mkdir,
+		"@mv":    KW_Mv,
+		"@cp":    KW_Copy,
+		"@rm":    KW_Del,
+		"@req":   KW_Req,
+		"@json":  KW_Json,
+		"@dl":    KW_Downloads,
+	}
+}
+
+
 func KW_End(ym map[string]any, args []string) error {
 	Exit()
 	return nil

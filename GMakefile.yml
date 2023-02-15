@@ -28,12 +28,18 @@ clean: |
 linux: |
   @env GOOS linux
   @env CGO_ENABLED 0
-  @env GOARCH amd64
-  go build -ldflags "-s -w -X 'main.SoftBuildTime={{.time.utc}}' -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}' -X 'main.SoftVersionCode={{.version_code}}'" -o ./bin/gmake2_Linux_amd64
-  @env GOARCH arm64
-  go build -ldflags "-s -w -X 'main.SoftBuildTime={{.time.utc}}' -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}' -X 'main.SoftVersionCode={{.version_code}}'" -o ./bin/gmake2_Linux_aarch64
+  @cmd linux_arm64
+  @cmd linux_amd64
   @env GOARCH mips64
   go build -ldflags "-s -w -X 'main.SoftBuildTime={{.time.utc}}' -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}' -X 'main.SoftVersionCode={{.version_code}}'" -o ./bin/gmake2_Linux_mips64
+
+linux_arm64: |
+  @env GOARCH arm64
+  go build -ldflags "-s -w -X 'main.SoftBuildTime={{.time.utc}}' -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}' -X 'main.SoftVersionCode={{.version_code}}'" -o ./bin/gmake2_Linux_aarch64
+
+linux_amd64: |
+  @env GOARCH amd64
+  go build -ldflags "-s -w -X 'main.SoftBuildTime={{.time.utc}}' -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}' -X 'main.SoftVersionCode={{.version_code}}'" -o ./bin/gmake2_Linux_amd64
 
 windows: |
   @env GOOS windows
