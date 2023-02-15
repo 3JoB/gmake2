@@ -28,7 +28,7 @@ func run(ym map[string]any, commands string) {
 	if ym[commands] == nil {
 		ErrPrintf("GMake2: Command not found %v\n", commands)
 	}
-	if commands == "init" || commands == "vars" || commands == "config" {
+	if commands == "vars" || commands == "config" {
 		ErrPrintf("GMake2: Illegal command group name!")
 	}
 	if commands == "end" {
