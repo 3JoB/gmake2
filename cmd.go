@@ -21,23 +21,28 @@ var (
 	SoftVersionCode string
 	SoftBuildTime   string
 	SoftCommit      string
+	//Context *cli.Context
 )
 
 func main() {
+	defer func() {
+		err := recover()
+		if err != nil {
+			ErrPrintf("GMake2: %v", err)
+		}
+	}()
+
 	app := &cli.App{
-		Name:  "GMake2",
-		Usage: "Lightning-like GMake-like programs.",
-		Flags: []cli.Flag{
-			CliFlagDebug,
-			CliFlagConfig,
-			CliFlagUpgrade,
+		Name:     "GMake2",
+		Usage:    "Lightning-like GMake-like programs.",
+		Flags:    CliFlag,
+		Before: func(c *cli.Context) error {
+			// Read debug information
+			debug = c.Bool("debug")
+			return nil
 		},
-		Commands: []*cli.Command{
-			CliCommandVersion,
-			CliCommandInit,
-			CliCommandUpdate,
-		},
-		Action: CMD,
+		Commands: CliCommands,
+		Action:   CMD,
 	}
 
 	err := app.Run(os.Args)
@@ -47,9 +52,6 @@ func main() {
 func CMD(c *cli.Context) error {
 	// Parsing GMakefile
 	ym := parseConfig(c.String("c"))
-
-	// Read debug information
-	debug = c.Bool("debug")
 
 	// Parse Map
 	parseMap(ym)
@@ -127,6 +129,10 @@ func CheckUpdate(c *cli.Context) error {
 
 	if c.Bool("upgrade") {
 		run_path = " "
+	}
+
+	if c.Bool("x") {
+		version_code = version_code + cast.ToInt64(SoftVersionCode)
 	}
 
 	if version_code > cast.ToInt64(SoftVersionCode) {

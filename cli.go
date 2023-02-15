@@ -2,6 +2,19 @@ package main
 
 import "github.com/urfave/cli/v2"
 
+var CliFlag = []cli.Flag{
+	CliFlagConfig,
+	CliFlagDebug,
+	CliFlagUpgrade,
+	CliFlagUpgradeX,
+}
+
+var CliCommands = []*cli.Command{
+	CliCommandInit,
+	CliCommandUpdate,
+	CliCommandVersion,
+}
+
 var CliFlagDebug = &cli.BoolFlag{
 	Name:  "debug",
 	Value: false,
@@ -19,6 +32,12 @@ var CliFlagUpgrade = &cli.BoolFlag{
 	Name:  "upgrade",
 	Value: false,
 	Usage: "Mandatory upgrade channel edition",
+}
+
+var CliFlagUpgradeX = &cli.BoolFlag{
+	Name:  "x",
+	Value: false,
+	Usage: "Force an update to be downloaded from the server",
 }
 
 var CliCommandVersion = &cli.Command{

@@ -2,7 +2,10 @@ config:
   default: all
 
 init: |
-  @cmd get_info
+  # @cmd get_info
+
+dts: |
+  @dl https://github.com/3JoB/gmake2/releases/download/v2.3.0/gmake2_2.3.0-debian_aarch64.deb
 
 hello: |
   @wait Please Enter Password pass
@@ -13,8 +16,8 @@ all: |
   @cmd clean
   go mod tidy
   @mkdir bin
-  @cmd linux
   @cmd windows
+  @cmd linux
   @echo Done!
 
 build: |

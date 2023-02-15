@@ -10,13 +10,12 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
-	"time"
 
 	"github.com/3JoB/ulib/json"
 	"github.com/3JoB/ulib/reflect"
-	"github.com/cavaliergopher/grab/v3"
 	"github.com/go-resty/resty/v2"
 	"github.com/gookit/goutil/fsutil"
+	"github.com/schollz/progressbar/v3"
 	"github.com/spf13/cast"
 	"github.com/tidwall/gjson"
 )
@@ -100,11 +99,7 @@ func JsonUrl(r []string) error {
 			ErrPrint("GMake2: Url check failed!!!\nGMake2: " + err.Error())
 		}
 
-		resp, err := resty.NewWithClient(Client).R().
-			SetHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 GMake2/"+SoftVersion).
-			Get(r[0])
-
-		checkError(err)
+		resp := request(r[0])
 
 		if resp.StatusCode() != 200 {
 			ErrPrintf("GMake2: Server returned status code: %v \n", resp.StatusCode())
@@ -129,45 +124,29 @@ func touch(path string) {
 	f.Close()
 }
 
-func downloadFile(filepath string, url string) {
-	client := grab.NewClient()
-	client.HTTPClient = Client
-	client.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 GMake2/" + SoftVersion
-
-	req, _ := grab.NewRequest(filepath, url)
-
-	fmt.Printf("GMake2: Downloading %v...\n", req.URL())
-
-	resp := client.Do(req)
-
-	fmt.Printf("GMake2: Connection info: %v\n", resp.HTTPResponse.Status)
-
-	fsize := cast.ToString(resp.Size)
-
-	if fsize == "" {
-		fsize = "unknown"
+func downloadFile(filepath string, url string) error {
+	resp := request(url)
+	if resp.StatusCode() != 200 {
+		ErrPrintf("GMake2: Connection failed! Server returned status code: %v\nUrl: %v\nUser-Agent: %v", resp.StatusCode(), resp.Request.URL, resp.RawResponse.Request.UserAgent())
 	}
 
-	t := time.NewTicker(500 * time.Millisecond)
-	defer t.Stop()
+	fmt.Printf("GMake2: Connection info: %v\n", resp.Status())
 
-Loop:
-	for {
-		select {
-		case <-t.C:
-			fmt.Printf("GMake2: transferred %v/%v bytes (%.2f%%)\n", resp.BytesComplete(), fsize, 100*resp.Progress())
-		case <-resp.Done:
-			break Loop
-		}
+	filename, _ := guessFilename(resp.RawResponse)
+	if filepath != "." {
+		filename = filepath
 	}
+	file, _ := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0644)
+	defer file.Close()
 
-	// check for errors
-	if err := resp.Err(); err != nil {
-		fmt.Fprintf(os.Stderr, "GMake2: Download failed: %v\n", err)
-		return
-	}
+	bar := progressbar.DefaultBytes(
+		resp.RawResponse.ContentLength,
+		"Downloading...",
+	)
+	io.Copy(io.MultiWriter(file, bar), resp.RawBody())
 
-	fmt.Printf("GMake2: Download saved to ./%v \n", resp.Filename)
+	fmt.Printf("GMake2: Download saved to ./%v \n", filepath)
+	return nil
 }
 
 func copy(src, dst string) {
