@@ -1,7 +1,7 @@
 # GMake2
 
 <p align="center">
-    <p align="center"><img src="wiki/gmake2.png"></p>
+    <p align="center"><img width="120" src="wiki/gmake2.png"></p>
     <p align="center">This image is from <a href="https://quasilyte.dev/gopherkon/">Gopher Konstructor</a></p>
     <p align="center"><strong>Build a GMakefile at lightning speed!</strong></p>
     <p align="center">
