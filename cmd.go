@@ -33,10 +33,10 @@ func main() {
 	}()
 
 	app := &cli.App{
-		Name:  "GMake2",
-		Usage: "Lightning-like GMake-like programs.",
-		Before: BeforeFunc,
-		Flags: CliFlag,
+		Name:     "GMake2",
+		Usage:    "Lightning-like GMake-like programs.",
+		Before:   BeforeFunc,
+		Flags:    CliFlag,
 		Commands: CliCommands,
 		Action:   CliAction,
 	}

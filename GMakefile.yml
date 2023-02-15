@@ -4,10 +4,8 @@ config:
 init: |
   @cmd get_info
 
-hello: |
-  @wait Please Enter Password pass
-  @echo {{.pass}}
-  @echo 114
+fmt: |
+  gorgeous ./...
 
 all: |
   @cmd clean
@@ -20,7 +18,7 @@ all: |
 build: |
   @env CGO_ENABLED 0
   @env GOARCH amd64
-  go build -ldflags "-s -w -X 'main.SoftBuildTime={{.time.utc}}' -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}'  -X 'main.SoftVersionCode={{.version_code}}'" -o ./example/gmake2.exe
+  go build -ldflags "-s -w -X 'main.SoftBuildTime={{.time.utc}}' -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}'  -X 'main.SoftVersionCode={{.version_code}}'"
 
 clean: |
   @rm bin

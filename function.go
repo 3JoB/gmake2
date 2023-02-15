@@ -14,7 +14,7 @@ type HandlerFunc func(ym map[string]any, args []string) error
 
 var BinMap map[string]HandlerFunc
 
-func init(){
+func init() {
 	BinMap = make(map[string]HandlerFunc)
 	BinMap = map[string]HandlerFunc{
 		"@var":   KW_Var,
@@ -38,7 +38,6 @@ func init(){
 		"@dl":    KW_Downloads,
 	}
 }
-
 
 func KW_End(ym map[string]any, args []string) error {
 	Exit()
