@@ -15,7 +15,6 @@ import (
 	"github.com/3JoB/ulib/reflect"
 	"github.com/go-resty/resty/v2"
 	"github.com/gookit/goutil/fsutil"
-	"github.com/schollz/progressbar/v3"
 	"github.com/spf13/cast"
 	"github.com/tidwall/gjson"
 )
@@ -133,20 +132,13 @@ func downloadFile(filepath string, url string) error {
 	Printf("GMake2: Connection info: %v\n", resp.Status())
 
 	filename, _ := guessFilename(resp.RawResponse)
-	Println(filename)
 	if filepath != "." {
 		filename = filepath
 	}
 	file, _ := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0644)
 	defer file.Close()
-
-	bar := progressbar.DefaultBytes(
-		resp.RawResponse.ContentLength,
-		"Downloading...",
-	)
-	io.Copy(io.MultiWriter(file, bar), resp.RawBody())
-
-	Printf("\nGMake2: Download saved to ./%v \n", filename)
+	file.Write(resp.Body())
+	Printf("GMake2: Download saved to ./%v \n", filename)
 	return nil
 }
 
