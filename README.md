@@ -31,7 +31,8 @@ This project is the follow-up maintenance of [go-gmake](https://github.com/fdxxw
   - [Keywords](#keywords)
   - [Reserved Keyword](#reserved-keyword)
   - [Variables](#variables)
-- [examples](#examples)
+- [Examples](#examples)
+- [Other information](#other-information)
 - [License](#license)
 
 # Installing
@@ -141,7 +142,7 @@ View in [Wiki](wiki/Reserved_Keyword.md)
 Variables moved to [Wiki](wiki/variables.md)
 
 
-# examples
+# Examples
 
 GMakefile.yml
 
@@ -156,12 +157,12 @@ all: |
   # Create a file
   @touch from.txt
   @mv from.txt to.txt
-  @copy to.txt from.txt
+  @cp to.txt from.txt
   @rm from.txt
   @rm to.txt
   @mkdir from
   @mv from to
-  @copy to from
+  @cp to from
   @rm from
   @rm to
   @env GOOS linux
@@ -171,6 +172,18 @@ all: |
 ```sh
 gmake2
 ```
+
+# Other information
+- Due to unsigned and some high-risk operations, GMake2 may be blocked by some anti-virus software. If you have installed anti-virus software on your device, please manually set GMake2 to the whitelist.
+- The binary released by GMake2 is compiled directly from the git library, the specific steps: 
+  - 1_ Write the update 
+  - 2_ Push to github 
+  - 3_ Run the gmake2 command to compile the binary
+- GMake2 only has the following binary distribution channels, and cannot guarantee that other channels are safe: 
+  - [DEB Server](https://deb.lcag.org)
+  - [Chocolatey](https://lcag.org/gmake2.choco) 
+  - [Github Release](https://lcag.org/gmake2.releases). 
+- If GMake2 is installed using apt or chocolatey, GMake2's built-in self-update command cannot be used unless the `--upgrade` tag is used to force an update
 
 # License
 This software is distributed under MPL-2.0 license.
