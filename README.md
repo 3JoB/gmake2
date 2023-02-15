@@ -1,20 +1,27 @@
 # GMake2
-Build a GMakefile at lightning speed!
+
+<p align="center">
+    <p align="center"><img src="wiki/gmake2.png"></p>
+    <p align="center">This image is from <a href="https://quasilyte.dev/gopherkon/">Gopher Konstructor</a></p>
+    <p align="center"><strong>Build a GMakefile at lightning speed!</strong></p>
+    <p align="center">
+        <a href="https://github.com/3JoB/gmake2/actions"><img src="https://img.shields.io/github/actions/workflow/status/3JoB/gmake2/codeql.yml?label=CodeQL%20Scanner&style=flat-square" alt="GitHub Workflow Status"></a>
+        <a href="https://app.fossa.com/projects/git%2Bgithub.com%2F3JoB%2Fgmake2?ref=badge_smail"><img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2F3JoB%2Fgmake2.svg?type=smail" alt="FOSSA Status"></a>
+        <a href="https://github.com/3JoB/gmake2/blob/master/LICENSE"><img src="https://img.shields.io/github/license/3JoB/gmake2?style=flat-square" alt="MPL-2.0"></a>
+        <a href="#"><img src="https://img.shields.io/github/go-mod/go-version/3JoB/gmake2?label=Go%20Version&style=flat-square" alt="Go Version"></a>
+        <a href="https://github.com/3JoB/gmake2/release"><img src="https://img.shields.io/github/v/release/3JoB/gmake2?label=Release%20Version&style=flat-square" alt="GitHub release (latest by date)"></a>
+    </p>
+    <p align="center">
+        <a href="https://github.com/3JoB/gmake2/issues"><img src="https://img.shields.io/github/issues/3JoB/gmake2?label=GMake2%20Issues&style=flat-square" alt="GitHub Issues"></a>
+        <a href="https://github.com/3JoB/gmake2/stargazers"><img src="https://img.shields.io/github/stars/3JoB/gmake2?label=Stars&style=flat-square" alt="GitHub Repo stars"></a>
+        <a href="#"><img src="https://img.shields.io/github/downloads/3JoB/gmake2/latest/total?label=Downloads%40Latest&style=flat-square" alt="GitHub release (latest by date)"></a>
+        <a href="#"><img src="https://img.shields.io/github/repo-size/3JoB/gmake2?style=flat-square" alt="GitHub repo size"></a>
+        <a href="#"><img src="https://img.shields.io/github/commit-activity/m/3JoB/gmake2?style=flat-square" alt="GitHub commit activity"></a>
+    </p>
+</p>
+
 
 This project is the follow-up maintenance of [go-gmake](https://github.com/fdxxw/gmake).
-
-
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/3JoB/gmake2/codeql.yml?label=CodeQL%20Scanner&style=flat-square)](https://github.com/3JoB/gmake2/actions)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2F3JoB%2Fgmake2.svg?type=smail)](https://app.fossa.com/projects/git%2Bgithub.com%2F3JoB%2Fgmake2?ref=badge_smail)
-[![MPL-2.0](https://img.shields.io/github/license/3JoB/gmake2?style=flat-square)](https://github.com/3JoB/gmake2/blob/master/LICENSE)
-![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/3JoB/gmake2?label=Go%20Version&style=flat-square)
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/3JoB/gmake2?label=Release%20Version&style=flat-square)](https://github.com/3JoB/gmake2/release)
-
-[![GitHub issues](https://img.shields.io/github/issues/3JoB/gmake2?label=GMake2%20Issues&style=flat-square)](https://github.com/3JoB/gmake2/issues)
-[![GitHub Repo stars](https://img.shields.io/github/stars/3JoB/gmake2?label=Stars&style=flat-square)](https://github.com/3JoB/gmake2/stargazers)
-![GitHub release (latest by date)](https://img.shields.io/github/downloads/3JoB/gmake2/latest/total?label=Downloads%40Latest&style=flat-square)
-![GitHub repo size](https://img.shields.io/github/repo-size/3JoB/gmake2?style=flat-square)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/3JoB/gmake2?style=flat-square)
 
 
 # Menu
@@ -50,7 +57,7 @@ wget -qO - https://deb.lcag.org/public.key | sudo apt-key --keyring /etc/apt/tru
 sudo apt update && sudo apt install gmake2
 ```
 
-Please execute the following commands in the order they were written.
+Upgrade GMake2
 ```sh
 apt update && apt upgrade
 ```
