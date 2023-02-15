@@ -61,3 +61,20 @@ var CliCommandUpdate = &cli.Command{
 	Usage:  "Check for GMake2 updates (not applicable to distributions installed via choco,apt)",
 	Action: CheckUpdate,
 }
+
+var VersionInfo = `GMake2 is distributed under Mozilla Public License 2.0.
+Github: https://github.com/3JoB/gmake2
+
+Version: ` + SoftVersion + ` (` + SoftVersionCode + `) [ Built on: ` + SoftBuildTime + ` ]
+CommitID: ` + SoftCommit
+
+var InitFileContent = `config:
+  default: all
+  proxy:
+  req: false
+
+var:
+  msg: GMake2
+  
+all: |
+  @echo Hello! {{.msg}}!`

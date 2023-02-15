@@ -19,6 +19,17 @@ import (
 	"github.com/tidwall/gjson"
 )
 
+type Req struct {
+	Header map[string]string
+	Body   any
+	File   string
+	Method string
+	Uri    string
+	Value  string
+	Req    *resty.Request
+	Resp   *resty.Response
+}
+
 func ExecCmd(c *exec.Cmd) {
 	Println(c.String())
 	stdout, err := c.StdoutPipe()
@@ -49,34 +60,34 @@ func operation(ym map[string]any, f []string) error {
 	switch f[1] {
 	case "==":
 		if f[0] == f[2] {
-			return if_func(f, ym)
+			return operation_1(f, ym)
 		}
-		return if_func2(f, ym)
+		return operation_2(f, ym)
 	case "!=":
 		if f[0] != f[2] {
-			return if_func(f, ym)
+			return operation_1(f, ym)
 		}
-		return if_func2(f, ym)
+		return operation_2(f, ym)
 	case "<":
 		if cast.ToInt64(f[0]) < cast.ToInt64(f[2]) {
-			return if_func(f, ym)
+			return operation_1(f, ym)
 		}
-		return if_func2(f, ym)
+		return operation_2(f, ym)
 	case "<=":
 		if cast.ToInt64(f[0]) <= cast.ToInt64(f[2]) {
-			return if_func(f, ym)
+			return operation_1(f, ym)
 		}
-		return if_func2(f, ym)
+		return operation_2(f, ym)
 	case ">":
 		if cast.ToInt64(f[0]) > cast.ToInt64(f[2]) {
-			return if_func(f, ym)
+			return operation_1(f, ym)
 		}
-		return if_func2(f, ym)
+		return operation_2(f, ym)
 	case ">=":
 		if cast.ToInt64(f[0]) >= cast.ToInt64(f[2]) {
-			return if_func(f, ym)
+			return operation_1(f, ym)
 		}
-		return if_func2(f, ym)
+		return operation_2(f, ym)
 	default:
 		ErrPrintf("GMake2: Invalid operator!\nGMake2: Error Command: %v \n", strings.Join(f, " "))
 	}
@@ -87,18 +98,19 @@ func JsonUrl(r []string) error {
 	switch r[0] {
 	case "parse":
 		if len(r) != 4 {
-			ErrPrintf("GMake2: Illegal instruction!!!\nGMake2: Error Command: %v \n", fmt.Sprint(r[:]))
+			ErrPrintf("GMake2: Illegal instruction!!!\nGMake2: Error Command: %v \n", strings.Join(r, " "))
 		}
 		vars[r[3]] = gjson.Get(JsonData[r[1]], r[2]).String()
 	default:
 		if len(r) != 2 {
-			ErrPrintf("GMake2: Illegal instruction!!!\nGMake2: Error Command: %v \n", fmt.Sprint(r[:]))
+			ErrPrintf("GMake2: Illegal instruction!!!\nGMake2: Error Command: %v \n", strings.Join(r, " "))
 		}
 		if _, err := url.Parse(r[0]); err != nil {
 			ErrPrint("GMake2: Url check failed!!!\nGMake2: " + err.Error())
 		}
 
 		resp := request(r[0])
+		defer resp.RawBody().Close()
 
 		if resp.StatusCode() != 200 {
 			ErrPrintf("GMake2: Server returned status code: %v \n", resp.StatusCode())
@@ -125,6 +137,7 @@ func touch(path string) {
 
 func downloadFile(filepath string, url string) {
 	resp := request(url)
+	defer resp.RawBody().Close()
 	if resp.StatusCode() != 200 {
 		ErrPrintf("GMake2: Connection failed! Server returned status code: %v\nUrl: %v\nUser-Agent: %v", resp.StatusCode(), resp.Request.URL, resp.RawResponse.Request.UserAgent())
 	}
@@ -178,27 +191,17 @@ func copy(src, dst string) {
 	}
 }
 
-type Req struct {
-	Header map[string]string
-	Body   any
-	File   string
-	Method string
-	Uri    string
-	Value  string
-	Req    *resty.Request
-	Resp   *resty.Response
-}
-
-// Deprecated: This method is about to be deprecated and is no longer supported
-func (r *Req) Network(str ...string) {
+// Deprecated
+//
+//This method is about to be deprecated and is no longer supported
+func (r *Req) Do(str ...string) {
 	switch str[0] {
 	case "def":
 		d := strings.ReplaceAll(strings.Trim(fmt.Sprint(str[2:]), "[]"), " ", " ")
 		switch str[1] {
 		case "header":
-			headers := make(map[string]string)
-			json.UnmarshalString(d, &headers)
-			r.Header = headers
+			r.Header = make(map[string]string)
+			json.UnmarshalString(d, &r.Header)
 		case "body":
 			r.Body = d
 		case "file":

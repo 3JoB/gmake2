@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"errors"
 	"os"
 	"runtime"
 	"text/template"
@@ -64,7 +63,7 @@ func ResolveVars(vars any, templateStr string) string {
 	return s
 }
 
-func parseCommandLine(command string) ([]string, error) {
+/*func parseCommandLine(command string) ([]string, error) {
 	var args []string
 	state := "start"
 	current := ""
@@ -128,3 +127,4 @@ func parseCommandLine(command string) ([]string, error) {
 
 	return args, nil
 }
+*/

@@ -20,21 +20,13 @@ var (
 	SoftVersionCode string
 	SoftBuildTime   string
 	SoftCommit      string
-	// Context *cli.Context
 )
 
 func main() {
-	defer func() {
-		err := recover()
-		if err != nil {
-			ErrPrintf("GMake2: %v", err)
-		}
-	}()
-
 	app := &cli.App{
 		Name:     "GMake2",
 		Usage:    "Lightning-like GMake-like programs.",
-		Before:   BeforeFunc,
+		Before:   CliBeforeFunc,
 		Flags:    CliFlag,
 		Commands: CliCommands,
 		Action:   CliAction,
@@ -44,7 +36,7 @@ func main() {
 	checkError(err)
 }
 
-func BeforeFunc(c *cli.Context) error {
+func CliBeforeFunc(c *cli.Context) error {
 	// Read debug information
 	debug = c.Bool("debug")
 	return nil
@@ -112,6 +104,7 @@ func CheckUpdate(c *cli.Context) error {
 	run_path, _ := filepath.Abs(filepath.Dir(os.Args[0]))
 	downloadPath := ""
 	resp := request("https://lcag.org/gmake2.raw")
+	defer resp.RawBody().Close()
 
 	if resp.StatusCode() != 200 {
 		ErrPrintf("GMake2: Server returned status code: %v \n", resp.StatusCode())
@@ -119,9 +112,7 @@ func CheckUpdate(c *cli.Context) error {
 
 	rd := reflect.String(resp.Body())
 
-	version_code := gjson.Get(rd, "version_code").Int()
-	version := gjson.Get(rd, "version").String()
-	update_url := gjson.Get(rd, "url").String()
+	version_code, version, update_url := gjson.Get(rd, "version_code").Int(), gjson.Get(rd, "version").String(), gjson.Get(rd, "url").String()
 
 	if c.Bool("upgrade") {
 		run_path = " "

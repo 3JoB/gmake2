@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"mime"
 	"net/http"
 	"os"
@@ -14,7 +13,7 @@ import (
 	"github.com/gookit/goutil/fsutil"
 )
 
-func if_func(f []string, ym map[string]any) error {
+func operation_1(f []string, ym map[string]any) error {
 	if f[3] != "then" {
 		ErrPrintf("GMake2: Invalid operator at %v \n", f[3])
 	}
@@ -25,7 +24,7 @@ func if_func(f []string, ym map[string]any) error {
 	return nil
 }
 
-func if_func2(f []string, ym map[string]any) error {
+func operation_2(f []string, ym map[string]any) error {
 	if len(f) != 7 {
 		return nil
 	}
@@ -47,8 +46,6 @@ func request(url string) *resty.Response {
 		SetHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 GMake2/"+SoftVersion).
 		Get(url)
 	checkError(err)
-	defer resp.RawBody().Close()
-
 	return resp
 }
 
@@ -75,24 +72,16 @@ func checkError(err error) {
 }
 
 func Println(a ...any) {
-	if debug {
-		log.Fatal(a...)
-	} else {
-		fmt.Println(a...)
-	}
+	fmt.Println(a...)
 }
 
 func Printf(format string, v ...any) {
-	if debug {
-		log.Fatalf(format, v...)
-	} else {
-		fmt.Printf(format, v...)
-	}
+	fmt.Printf(format, v...)
 }
 
 func ErrPrint(a ...any) {
 	if debug {
-		log.Panic(a...)
+		panic(fmt.Sprintln(a...))
 	}
 	fmt.Println(a...)
 	Exit()
@@ -100,7 +89,7 @@ func ErrPrint(a ...any) {
 
 func ErrPrintf(format string, v ...any) {
 	if debug {
-		log.Panicf(format, v...)
+		panic(fmt.Sprintf(format, v...))
 	}
 	fmt.Printf(format, v...)
 	Exit()

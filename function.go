@@ -138,7 +138,7 @@ func KW_Downloads(ym map[string]any, args []string) error {
 
 func KW_Req(ym map[string]any, args []string) error {
 	if cast.ToBool(cfg["req"]) {
-		R.Network(args...)
+		R.Do(args...)
 	} else {
 		ErrPrint("GMake2: The @req tag has been deprecated.")
 	}
