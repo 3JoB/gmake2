@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/3JoB/ulib v0.0.11
 	github.com/go-resty/resty/v2 v2.7.0
-	github.com/gookit/goutil v0.6.1
+	github.com/gookit/goutil v0.6.4
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51
 	github.com/spf13/cast v1.5.0
 	github.com/tidwall/gjson v1.14.4
