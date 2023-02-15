@@ -10,7 +10,6 @@ import (
 
 	ufs "github.com/3JoB/ulib/fsutil"
 	"github.com/3JoB/ulib/reflect"
-	"github.com/go-resty/resty/v2"
 	"github.com/spf13/cast"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v2"
