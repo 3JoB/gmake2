@@ -3,7 +3,7 @@ module gmake2
 go 1.20
 
 require (
-	github.com/3JoB/ulib v0.0.12
+	github.com/3JoB/ulib v0.0.13
 	github.com/3JoB/unsafeConvert v0.0.1
 	github.com/go-resty/resty/v2 v2.7.0
 	github.com/gookit/goutil v0.6.4

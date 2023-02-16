@@ -193,7 +193,7 @@ func copy(src, dst string) {
 
 // Deprecated
 //
-//This method is about to be deprecated and is no longer supported
+// This method is about to be deprecated and is no longer supported
 func (r *Req) Do(str ...string) {
 	switch str[0] {
 	case "def":

@@ -146,10 +146,18 @@ func KW_Req(ym map[string]any, args []string) error {
 }
 
 func KW_Default(bin string, args []string) error {
-	cmd := exec.Command(bin, args...)
-	if cmdDir != "" {
-		cmd.Dir = cmdDir
+	vs := bin[0:1]
+	switch vs {
+	case "#":
+	case "@":
+		ErrPrintf("GMake2: GMake2 keyword %v unregistered", bin)
+	default:
+		cmd := exec.Command(bin, args...)
+		if cmdDir != "" {
+			cmd.Dir = cmdDir
+		}
+		ExecCmd(cmd)
 	}
-	ExecCmd(cmd)
+
 	return nil
 }
