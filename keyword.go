@@ -161,10 +161,10 @@ func copy(src, dst string) {
 		if !isDir(dst) {
 			ErrPrintf("GMake2: Cannot copy directory to file src=%v dst=%v \n", src, dst)
 		}
-		si, err := os.Stat(src)
+		s, err := os.Stat(src)
 		checkError(err)
 		// dst = path.Join(dst, filepath.Base(src))
-		err = os.MkdirAll(dst, si.Mode())
+		err = os.MkdirAll(dst, s.Mode())
 		checkError(err)
 		entries, err := os.ReadDir(src)
 		checkError(err)
@@ -233,11 +233,11 @@ func (r *Req) Request() {
 	if r.Header == nil {
 		r.Header = make(map[string]string)
 		r.Header = map[string]string{
-			"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.52 GMake2/" + SoftVersion,
+			"User-Agent": UserAgent,
 		}
 	}
 	if r.Header["User-Agent"] == "" {
-		r.Header["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.52 GMake2/" + SoftVersion
+		r.Header["User-Agent"] = UserAgent
 	}
 
 	r.Req = client.R().SetHeaders(r.Header)

@@ -43,7 +43,7 @@ func request(url string) *resty.Response {
 		Client = http.DefaultClient
 	}
 	resp, err := resty.NewWithClient(Client).R().
-		SetHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 GMake2/"+SoftVersion).
+		SetHeader("User-Agent", UserAgent).
 		Get(url)
 	checkError(err)
 	return resp

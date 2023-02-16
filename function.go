@@ -146,8 +146,7 @@ func KW_Req(ym map[string]any, args []string) error {
 }
 
 func KW_Default(bin string, args []string) error {
-	vs := bin[0:1]
-	switch vs {
+	switch bin[0:1] {
 	case "#":
 	case "@":
 		ErrPrintf("GMake2: GMake2 keyword %v unregistered", bin)
@@ -158,6 +157,5 @@ func KW_Default(bin string, args []string) error {
 		}
 		ExecCmd(cmd)
 	}
-
 	return nil
 }
