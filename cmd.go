@@ -9,7 +9,7 @@ import (
 	"time"
 
 	ufs "github.com/3JoB/ulib/fsutil"
-	"github.com/3JoB/ulib/reflect"
+	"github.com/3JoB/unsafeConvert"
 	"github.com/spf13/cast"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v2"
@@ -110,7 +110,7 @@ func CheckUpdate(c *cli.Context) error {
 		ErrPrintf("GMake2: Server returned status code: %v \n", resp.StatusCode())
 	}
 
-	rd := reflect.String(resp.Body())
+	rd := unsafeConvert.String(resp.Body())
 
 	version_code, version, update_url := gjson.Get(rd, "version_code").Int(), gjson.Get(rd, "version").String(), gjson.Get(rd, "url").String()
 

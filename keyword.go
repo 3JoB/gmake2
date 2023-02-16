@@ -12,7 +12,7 @@ import (
 	"strings"
 
 	"github.com/3JoB/ulib/json"
-	"github.com/3JoB/ulib/reflect"
+	"github.com/3JoB/unsafeConvert"
 	"github.com/go-resty/resty/v2"
 	"github.com/gookit/goutil/fsutil"
 	"github.com/spf13/cast"
@@ -49,7 +49,7 @@ func val(r []string, c *exec.Cmd) {
 	c.Stderr = &stderr
 	err := c.Run()
 	checkError(err)
-	outStr, errStr := reflect.String(stdout.Bytes()), reflect.String(stderr.Bytes())
+	outStr, errStr := unsafeConvert.String(stdout.Bytes()), unsafeConvert.String(stderr.Bytes())
 	if errStr != "" {
 		ErrPrintf("GMake: Val Failed!!!\nGMake2: Error Command: %v \n", errStr)
 	}
@@ -116,7 +116,7 @@ func JsonUrl(r []string) error {
 			ErrPrintf("GMake2: Server returned status code: %v \n", resp.StatusCode())
 		}
 
-		rd := reflect.String(resp.Body())
+		rd := unsafeConvert.String(resp.Body())
 
 		if rd != "" {
 			JsonData[r[1]] = rd
@@ -273,7 +273,7 @@ func (r *Req) Request() {
 		Println("GMake2: @req: 200 ok")
 	}
 
-	body := reflect.String(r.Resp.Body())
+	body := unsafeConvert.String(r.Resp.Body())
 	if body != "" {
 		if r.Value != "" {
 			vars[r.Value] = body
