@@ -11,7 +11,6 @@ var CliFlag = []cli.Flag{
 
 var CliCommands = []*cli.Command{
 	CliCommandInit,
-	CliCommandUpdate,
 	CliCommandVersion,
 }
 
@@ -54,12 +53,6 @@ var CliCommandInit = &cli.Command{
 	Name:   "init",
 	Usage:  "Initialize in the current directory.",
 	Action: InitFile,
-}
-
-var CliCommandUpdate = &cli.Command{
-	Name:   "update",
-	Usage:  "Check for GMake2 updates (not applicable to distributions installed via choco,apt)",
-	Action: CheckUpdate,
 }
 
 var VersionInfo = `GMake2 is distributed under Mozilla Public License 2.0.
