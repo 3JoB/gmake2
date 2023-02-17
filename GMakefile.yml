@@ -31,7 +31,7 @@ linux: |
   @run linux_x86
   @run linux_amd64
 
-linux_arm64: |
+linux_arm: |
   @env GOARCH arm
   go build -ldflags "-s -w -X 'main.SoftBuildTime={{.time.utc}}' -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}' -X 'main.SoftVersionCode={{.version_code}}'" -o ./bin/gmake2_v{{.version}}_linux_arm
 

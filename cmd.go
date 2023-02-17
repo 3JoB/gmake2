@@ -9,6 +9,7 @@ import (
 	"time"
 
 	ufs "github.com/3JoB/ulib/fsutil"
+	"github.com/3JoB/ulib/fsutil/compress"
 	"github.com/3JoB/unsafeConvert"
 	"github.com/spf13/cast"
 	"github.com/tidwall/gjson"
@@ -87,7 +88,7 @@ func InitFile(c *cli.Context) error {
 	if isFile("GMakefile.yml") {
 		Println("GMake2: Note! There are already GMakefile.yml files in the directory! Now you still have 12 seconds to prevent GMAKE2 from covering the file!")
 		time.Sleep(time.Second * 12)
-		os.RemoveAll("GMakefile.yml")
+		remove("GMakefile.yml")
 		Println("GMake2: File is being covered.")
 	}
 
@@ -101,6 +102,7 @@ func InitFile(c *cli.Context) error {
 
 // Check for updates
 func CheckUpdate(c *cli.Context) error {
+	Println("GMake2: Checking for updates...")
 	run_path, _ := filepath.Abs(filepath.Dir(os.Args[0]))
 	downloadPath := ""
 	resp := request("https://lcag.org/gmake2.raw")
@@ -123,6 +125,7 @@ func CheckUpdate(c *cli.Context) error {
 	}
 
 	if version_code > cast.ToInt64(SoftVersionCode) {
+		Printf("GMake2: From v%v(%v) to v%v(%v)\n", SoftVersion, SoftVersionCode, version, version_code)
 		switch run_path {
 		case `C:\ProgramData\chocolatey\lib\gmake2\tools`:
 			Println("Sorry, Chocolatey does not support automatic updates, please use the command 'choco update gmake2 --version=" + version + "' to update gmake2")
@@ -131,17 +134,31 @@ func CheckUpdate(c *cli.Context) error {
 			Println("Sorry, apt does not support automatic updates, please use the command 'apt update && apt upgrade' to update gmake2")
 			return nil
 		default:
+			sourcePath := run_path
 			if runtime.GOOS == "windows" {
-				downloadPath = run_path + `\gmake2.exe`
+				downloadPath = run_path + `\gmake2.7z`
+				sourcePath = sourcePath + `\gmake2.exe`
 			} else {
-				downloadPath = run_path + `/gmake2`
+				downloadPath = `/tmp/gmake2.zip`
+				sourcePath = sourcePath + `/gmake2`
 			}
 
 			downloadUrl := update_url + "?arch=" + runtime.GOARCH + "&os=" + runtime.GOOS + "&version=" + version
 
 			downloadFile(downloadPath, downloadUrl)
 
-			Println("GMake2 has been updated to " + version + "(" + cast.ToString(version_code) + ")")
+			Println("GMake2: The update package has been downloaded, start decompression.")
+			if runtime.GOOS == "windows" {
+				_, err := compress.NewSevenZip().Extract(downloadPath, run_path)
+				checkError(err)
+			} else {
+				_, err := compress.NewZip().Extract(downloadPath, run_path)
+				checkError(err)
+			}
+			checkError(os.Chmod(sourcePath, 0777))
+			Println("GMake2: Cleaning up cache files in...")
+			remove(downloadPath)
+			Printf("GMake2 has been updated to v%v(%v)", version, version_code)
 		}
 	} else {
 		Println("Currently using the latest version of GMake2, no update required!")

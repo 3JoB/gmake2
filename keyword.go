@@ -129,6 +129,10 @@ func mkdir(path string) {
 	checkError(os.MkdirAll(path, os.ModePerm))
 }
 
+func remove(path string) {
+	checkError(os.RemoveAll(path))
+}
+
 func touch(path string) {
 	f, err := fsutil.CreateFile(path, 0664, 0666)
 	checkError(err)
