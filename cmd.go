@@ -104,6 +104,7 @@ func InitFile(c *cli.Context) error {
 func CheckUpdate(c *cli.Context) error {
 	Println("GMake2: Checking for updates...")
 	run_path, _ := filepath.Abs(filepath.Dir(os.Args[0]))
+	paths := run_path
 	downloadPath := ""
 	resp := request("https://lcag.org/gmake2.raw")
 	defer resp.RawBody().Close()
@@ -134,9 +135,9 @@ func CheckUpdate(c *cli.Context) error {
 			Println("Sorry, apt does not support automatic updates, please use the command 'apt update && apt upgrade' to update gmake2")
 			return nil
 		default:
-			sourcePath := run_path
+			sourcePath := paths
 			if runtime.GOOS == "windows" {
-				downloadPath = run_path + `\gmake2.7z`
+				downloadPath = paths + `\gmake2.7z`
 				sourcePath = sourcePath + `\gmake2.exe`
 			} else {
 				downloadPath = `/tmp/gmake2.zip`
@@ -149,10 +150,10 @@ func CheckUpdate(c *cli.Context) error {
 
 			Println("GMake2: The update package has been downloaded, start decompression.")
 			if runtime.GOOS == "windows" {
-				_, err := compress.NewSevenZip().Extract(downloadPath, run_path)
+				_, err := compress.NewSevenZip().Extract(downloadPath, paths)
 				checkError(err)
 			} else {
-				_, err := compress.NewZip().Extract(downloadPath, run_path)
+				_, err := compress.NewZip().Extract(downloadPath, paths)
 				checkError(err)
 			}
 			checkError(os.Chmod(sourcePath, 0777))
