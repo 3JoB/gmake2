@@ -30,7 +30,6 @@ This project is the follow-up maintenance of [go-gmake](https://github.com/fdxxw
 - [Menu](#menu)
 - [Installing](#installing)
   - [Install from software source](#install-from-software-source)
-  - [Install using Chocolatey \[Windows\]](#install-using-chocolatey-windows)
   - [Install from Github Releases](#install-from-github-releases)
   - [Install from source code](#install-from-source-code)
 - [Getting Started](#getting-started)
@@ -67,22 +66,6 @@ apt update && apt upgrade
 
 ```sh
 wget -qO - https://deb.lcag.org/public.key | sudo gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/malonan.gpg --import
-```
-
-## Install using Chocolatey [Windows]
-
-chocolatey is a package manager on windows, windows users can quickly install GMake2 through `choco` command.
-
-Since the review of chocolatey takes a long time, it takes about a day for chocolatey to be updated synchronously after each update of GMake2.
-
-Chocolatey only provides GMake2 for amd64 architecture.
-
-```sh
-choco install gmake2 --version=[latest version]
-
-# Example: GMake2 v2.3.0-LTS
-choco install gmake2 --version=2.3.0
-
 ```
 
 ## Install from Github Releases
