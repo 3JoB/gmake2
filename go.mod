@@ -10,7 +10,7 @@ require (
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51
 	github.com/spf13/cast v1.5.0
 	github.com/tidwall/gjson v1.14.4
-	github.com/urfave/cli/v2 v2.24.3
+	github.com/urfave/cli/v2 v2.24.4
 	gopkg.in/yaml.v3 v3.0.1
 )
 
