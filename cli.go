@@ -1,6 +1,10 @@
 package main
 
-import "github.com/urfave/cli/v2"
+import (
+	"fmt"
+
+	"github.com/urfave/cli/v2"
+)
 
 var CliFlag = []cli.Flag{
 	CliFlagConfig,
@@ -55,18 +59,19 @@ var CliCommandInit = &cli.Command{
 	Action: InitFile,
 }
 
-var VersionInfo = `GMake2 is distributed under Mozilla Public License 2.0.
+var VersionInfo = fmt.Sprintf(`GMake2 is distributed under Mozilla Public License 2.0.
 Github: https://github.com/3JoB/gmake2
 
-Version: ` + SoftVersion + ` (` + SoftVersionCode + `) [ Built on: ` + SoftBuildTime + ` ]
-CommitID: ` + SoftCommit
+Version: %v (%v)
+Built on: %v
+CommitID: %v`, SoftVersion, SoftVersionCode, SoftBuildTime, SoftCommit)
 
 var InitFileContent = `config:
   default: all
   proxy:
   req: false
 
-var:
+vars:
   msg: GMake2
   
 all: |
