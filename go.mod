@@ -6,7 +6,7 @@ require (
 	github.com/3JoB/ulib v0.1.4
 	github.com/3JoB/unsafeConvert v0.0.1
 	github.com/go-resty/resty/v2 v2.7.0
-	github.com/gookit/goutil v0.6.4
+	github.com/gookit/goutil v0.6.5
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51
 	github.com/spf13/cast v1.5.0
 	github.com/tidwall/gjson v1.14.4
