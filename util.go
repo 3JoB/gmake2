@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"mime"
 	"net/http"
+	"net/url"
 	"os"
 	"path"
 	"path/filepath"
@@ -11,6 +12,7 @@ import (
 
 	"github.com/go-resty/resty/v2"
 	"github.com/gookit/goutil/fsutil"
+	"github.com/spf13/cast"
 )
 
 func operation_1(f []string, ym map[string]any) error {
@@ -121,4 +123,16 @@ func guessFilename(resp *http.Response) (string, error) {
 	}
 
 	return filename, nil
+}
+
+func ImportProxy(v any) {
+	if v != nil {
+		u, err := url.Parse(cast.ToString(cfg["proxy"]))
+		checkError(err)
+		Client = &http.Client{
+			Transport: &http.Transport{Proxy: http.ProxyURL(u)},
+		}
+	} else {
+		Client = http.DefaultClient
+	}
 }

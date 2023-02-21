@@ -1,8 +1,6 @@
 package main
 
 import (
-	"net/http"
-	"net/url"
 	"os"
 	"time"
 
@@ -41,19 +39,10 @@ func CliBeforeFunc(c *cli.Context) error {
 func CliAction(c *cli.Context) error {
 	// Parsing GMakefile
 	ym := parseConfig(c.String("c"))
-
 	// Parse Map
 	parseMap(ym)
-
-	if cfg["proxy"] != nil {
-		u, err := url.Parse(cast.ToString(cfg["proxy"]))
-		checkError(err)
-		Client = &http.Client{
-			Transport: &http.Transport{Proxy: http.ProxyURL(u)},
-		}
-	} else {
-		Client = http.DefaultClient
-	}
+	// Import Proxy Config
+	ImportProxy(cfg["proxy"])
 
 	commands_args := ""
 
