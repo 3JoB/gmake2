@@ -2,19 +2,27 @@
 
 ## Supported Versions
 
-Currently, versions prior to 2.3.0 are no longer supported.
+**There will be no long-term support releases anymore, gmake2 will only support the latest release of the main branch.**
+
 
 APT source servers distribute only the latest version of each package.
 
 |   Version  |   Supported        |
 | ---------- | ------------------ |
-| 2.3.0 LTS  | :white_check_mark: |
+| 2.4.1      | :white_check_mark: |
+| 2.4.0      | :x:                |
+| 2.3.0 LTS  | :x:                |
 | 2.3.0 RC   | :x:                |
-| 2.2.0      | :white_check_mark: |
+| 2.2.0      | :x:                |
 | 2.2.0 RC   | :x:                |
 | 2.1.x      | :x:                |
 | 2.0.x      | :x:                |
 | 1.x.x      | :x:                |
+
+### Changelog
+
+#### 2023/02/21
+Added support for 2.4.1, removed support for 2.4.0, 2.3.0 LTS and 2.2.0 .
 
 ## Reporting a Vulnerability
 
