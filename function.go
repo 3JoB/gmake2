@@ -109,7 +109,8 @@ func KW_Copy(ym map[string]any, args []string) error {
 }
 
 func KW_Del(ym map[string]any, args []string) error {
-	return os.RemoveAll(args[0])
+	remove(args[0])
+	return nil
 }
 
 func KW_Mkdir(ym map[string]any, args []string) error {
