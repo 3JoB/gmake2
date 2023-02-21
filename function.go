@@ -15,7 +15,6 @@ type HandlerFunc func(ym map[string]any, args []string) error
 var BinMap map[string]HandlerFunc
 
 func init() {
-	BinMap = make(map[string]HandlerFunc)
 	BinMap = map[string]HandlerFunc{
 		"@var":   KW_Var,
 		"@env":   KW_Env,

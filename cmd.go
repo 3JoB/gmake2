@@ -9,13 +9,6 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-var (
-	SoftVersion     string
-	SoftVersionCode string
-	SoftBuildTime   string
-	SoftCommit      string
-)
-
 func main() {
 	app := &cli.App{
 		Name:     "GMake2",
