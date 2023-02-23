@@ -62,12 +62,6 @@ apt update && apt upgrade
 ```
 
 
-<strong>The following method is proven to be no longer available, it causes apt not to read the installed key, the workaround is to delete the key and re-add it using apt-key.</strong>
-
-```sh
-wget -qO - https://deb.lcag.org/public.key | sudo gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/malonan.gpg --import
-```
-
 ## Install from Github Releases
 Download the latest version from github.
 
@@ -84,8 +78,7 @@ git clone https://github.com/3JoB/gmake2 && cd gmake2
 gmake2
 
 # gmake2 is not installed
-export CGO_ENABLED=0
-go build -ldflags "-s -w -X 'main.SoftCommit=owner' -X 'main.SoftVersion=owner'"
+go build -ldflags "-s -w -X 'main.SoftBuildTime=owner' -X 'main.SoftCommit=owner' -X 'main.SoftVersion=owner' -X 'main.SoftVersionCode=owner'"
 ```
 
 
@@ -173,7 +166,6 @@ gmake2
   - [DEB Server](https://deb.lcag.org)
   - [Chocolatey](https://lcag.org/gmake2.choco) 
   - [Github Release](https://lcag.org/gmake2.releases). 
-- If GMake2 is installed using apt or chocolatey, GMake2's built-in self-update command cannot be used unless the `--upgrade` tag is used to force an update
 
 # License
 This software is distributed under MPL-2.0 license.
