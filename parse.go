@@ -52,6 +52,8 @@ func parseMap(ym map[string]any) {
 	vars = variable(vars)
 }
 
+func parseTags(v string) {}
+
 func ResolveVars(vars any, templateStr string) string {
 	if vars == nil {
 		return templateStr

@@ -25,6 +25,7 @@ func main() {
 func CliBeforeFunc(c *cli.Context) error {
 	// Read debug information
 	debug = c.Bool("debug")
+	Tags = c.String("tags")
 	return nil
 }
 
@@ -33,6 +34,8 @@ func CliAction(c *cli.Context) error {
 	ym := parseConfig(c.String("c"))
 	// Parse Map
 	parseMap(ym)
+	// Parse Tags
+	parseTags(Tags)
 	// Import Proxy Config
 	ImportProxy(cfg["proxy"])
 

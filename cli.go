@@ -11,10 +11,8 @@ var (
 	SoftVersionCode string
 	SoftBuildTime   string
 	SoftCommit      string
-)
-
-const (
-	e string = "GMakefile.yml"
+	Tags            string
+	e               string = "GMakefile.yml"
 )
 
 var VersionInfo = fmt.Sprintf(`GMake2 is distributed under Mozilla Public License 2.0.
@@ -59,6 +57,13 @@ var CliFlagConfig = &cli.StringFlag{
 	Name:    "config",
 	Aliases: []string{"c"},
 	Value:   e,
+	Usage:   "GMake2 Config File",
+}
+
+var CliFlagTags = &cli.StringFlag{
+	Name:    "tags",
+	Aliases: []string{"t"},
+	Value:   Tags,
 	Usage:   "GMake2 Config File",
 }
 
