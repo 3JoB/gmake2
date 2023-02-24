@@ -13,6 +13,10 @@ var (
 	SoftCommit      string
 )
 
+const (
+	e string = "GMakefile.yml"
+)
+
 var VersionInfo = fmt.Sprintf(`GMake2 is distributed under Mozilla Public License 2.0.
 Github: https://github.com/3JoB/gmake2
 
@@ -54,7 +58,7 @@ var CliFlagDebug = &cli.BoolFlag{
 var CliFlagConfig = &cli.StringFlag{
 	Name:    "config",
 	Aliases: []string{"c"},
-	Value:   "GMakefile.yml",
+	Value:   e,
 	Usage:   "GMake2 Config File",
 }
 

@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	ufs "github.com/3JoB/ulib/fsutil"
 	"github.com/go-resty/resty/v2"
 	"github.com/gookit/goutil/fsutil"
 	"github.com/spf13/cast"
@@ -51,9 +52,9 @@ func request(url string) *resty.Response {
 	return resp
 }
 
-/*func write(path string, v any) {
-	checkError(fsutil.WriteFile(path, v, 0664))
-}*/
+func write(path, v string) error {
+	return ufs.File(path).SetTrunc().Write(v)
+}
 
 func copyFile(src, dst string) error {
 	return fsutil.CopyFile(src, dst)

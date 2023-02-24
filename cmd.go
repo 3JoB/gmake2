@@ -4,7 +4,6 @@ import (
 	"os"
 	"time"
 
-	ufs "github.com/3JoB/ulib/fsutil"
 	"github.com/spf13/cast"
 	"github.com/urfave/cli/v2"
 )
@@ -62,17 +61,18 @@ func CliAction(c *cli.Context) error {
 // Create a GMakefile
 func InitFile(c *cli.Context) error {
 	// If GMakefile exists, make it wait 12 seconds
-	if isFile("GMakefile.yml") {
+	if isFile(e) {
 		Println("GMake2: Note! There are already GMakefile.yml files in the directory! Now you still have 12 seconds to prevent GMAKE2 from covering the file!")
 		time.Sleep(time.Second * 12)
-		remove("GMakefile.yml")
+		remove(e)
 		Println("GMake2: File is being covered.")
 	}
 
 	// Then write to the file
-	if err := ufs.File("GMakefile.yml").SetTrunc().Write(InitFileContent); err != nil {
+	checkError(write(e, InitFileContent))
+	/*if err := ufs.File("GMakefile.yml").SetTrunc().Write(InitFileContent); err != nil {
 		ErrPrintf("GMake2: Error! %v \n", err.Error())
-	}
+	}*/
 	Println("GMake2: GMakefile.yml file has been generated in the current directory.")
 	return nil
 }
