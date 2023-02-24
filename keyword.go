@@ -201,7 +201,7 @@ func copy(src, dst string) {
 func (r *Req) Do(str ...string) {
 	switch str[0] {
 	case "def":
-		d := strings.ReplaceAll(strings.Trim(fmt.Sprint(str[2:]), "[]"), " ", " ")
+		d := replace(str[2:])
 		switch str[1] {
 		case "header":
 			r.Header = make(map[string]string)
@@ -292,7 +292,7 @@ func wait(v ...string) {
 		ErrPrint("GMake2: @wait bad format!")
 	}
 	// v[0] print
-	Println(v[:ar-1])
+	Println(replace(v[:ar-1]))
 	var t string
 	fmt.Print("=> ")
 	fmt.Scan(&t)
