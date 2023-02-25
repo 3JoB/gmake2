@@ -12,7 +12,6 @@ import (
 
 	ufs "github.com/3JoB/ulib/fsutil"
 	"github.com/go-resty/resty/v2"
-	"github.com/gookit/goutil/fsutil"
 	"github.com/spf13/cast"
 )
 
@@ -57,15 +56,15 @@ func write(path, v string) error {
 }
 
 func copyFile(src, dst string) error {
-	return fsutil.CopyFile(src, dst)
+	return ufs.File(src).CopyTo(dst)
 }
 
 func isDir(path string) bool {
-	return fsutil.IsDir(path)
+	return ufs.IsDir(path)
 }
 
 func isFile(path string) bool {
-	return fsutil.IsFile(path)
+	return ufs.IsFile(path)
 }
 
 func replace(v []string) string {

@@ -54,8 +54,7 @@ func KW_Var(ym map[string]any, args []string) error {
 }
 
 func KW_Env(ym map[string]any, args []string) error {
-	os.Setenv(args[0], strings.Join(args[1:], " "))
-	return nil
+	return os.Setenv(args[0], strings.Join(args[1:], " "))
 }
 
 func KW_Run(ym map[string]any, args []string) error {
@@ -100,7 +99,7 @@ func KW_Cd(ym map[string]any, args []string) error {
 
 func KW_Mv(ym map[string]any, args []string) error {
 	copy(args[0], args[1])
-	os.RemoveAll(args[0])
+	remove(args[0])
 	return nil
 }
 

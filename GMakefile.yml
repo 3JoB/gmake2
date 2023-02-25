@@ -7,6 +7,10 @@ init: |
 fmt: |
   gorgeous ./...
 
+tc: |
+  @mkdir sbin
+  @cp bin sbin
+
 all: |
   @run clean
   go mod tidy

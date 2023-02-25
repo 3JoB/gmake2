@@ -163,7 +163,10 @@ func copy(src, dst string) {
 	dst = filepath.Clean(dst)
 	if isDir(src) {
 		if !isDir(dst) {
-			ErrPrintf("GMake2: Cannot copy directory to file src=%v dst=%v \n", src, dst)
+			if isFile(dst) {
+				ErrPrintf("GMake2: Cannot copy directory to file src=%v dst=%v \n", src, dst)
+			}
+			mkdir(dst)
 		}
 		s, err := os.Stat(src)
 		checkError(err)
