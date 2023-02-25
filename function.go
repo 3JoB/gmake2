@@ -35,6 +35,7 @@ func init() {
 		"@req":   KW_Req,
 		"@json":  KW_Json,
 		"@dl":    KW_Downloads,
+		"@hash":  KW_Hash,
 	}
 }
 
@@ -142,6 +143,10 @@ func KW_Req(ym map[string]any, args []string) error {
 	} else {
 		ErrPrint("GMake2: The @req tag has been deprecated.")
 	}
+	return nil
+}
+
+func KW_Hash(ym map[string]any, args []string) error {
 	return nil
 }
 
