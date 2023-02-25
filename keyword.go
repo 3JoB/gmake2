@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"io/fs"
 	"net/url"
 	"os"
 	"os/exec"
@@ -125,8 +126,12 @@ func JsonUrl(r []string) error {
 	return nil
 }
 
-func mkdir(path string) {
-	checkError(os.MkdirAll(path, os.ModePerm))
+func mkdir(path string, mode ...fs.FileMode) {
+	if len(mode) != 0 {
+		checkError(os.MkdirAll(path, mode[0]))
+	} else {
+		checkError(os.MkdirAll(path, os.ModePerm))
+	}
 }
 
 func remove(path string) {
@@ -171,8 +176,7 @@ func copy(src, dst string) {
 		s, err := os.Stat(src)
 		checkError(err)
 		// dst = path.Join(dst, filepath.Base(src))
-		err = os.MkdirAll(dst, s.Mode())
-		checkError(err)
+		mkdir(dst, s.Mode())
 		entries, err := os.ReadDir(src)
 		checkError(err)
 		for _, entry := range entries {
