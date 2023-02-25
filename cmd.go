@@ -2,7 +2,6 @@ package main
 
 import (
 	"os"
-	"time"
 
 	"github.com/spf13/cast"
 	"github.com/urfave/cli/v2"
@@ -25,7 +24,7 @@ func main() {
 func CliBeforeFunc(c *cli.Context) error {
 	// Read debug information
 	debug = c.Bool("debug")
-	Tags = c.String("tags")
+	Tags = c.String("tag")
 	return nil
 }
 
@@ -66,7 +65,7 @@ func InitFile(c *cli.Context) error {
 	// If GMakefile exists, make it wait 12 seconds
 	if isFile(e) {
 		Println("GMake2: Note! There are already GMakefile.yml files in the directory! Now you still have 12 seconds to prevent GMAKE2 from covering the file!")
-		time.Sleep(time.Second * 12)
+		sleep(12)
 		remove(e)
 		Println("GMake2: File is being covered.")
 	}

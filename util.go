@@ -9,6 +9,7 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
+	"time"
 
 	ufs "github.com/3JoB/ulib/fsutil"
 	"github.com/go-resty/resty/v2"
@@ -65,6 +66,10 @@ func isDir(path string) bool {
 
 func isFile(path string) bool {
 	return ufs.IsFile(path)
+}
+
+func sleep(t any) {
+	time.Sleep(time.Second * cast.ToDuration(t))
 }
 
 func replace(v []string) string {

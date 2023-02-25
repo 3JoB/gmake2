@@ -37,9 +37,8 @@ var UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (K
 
 var CliFlag = []cli.Flag{
 	CliFlagConfig,
+	CliFlagTags,
 	CliFlagDebug,
-	CliFlagUpgrade,
-	CliFlagUpgradeX,
 }
 
 var CliCommands = []*cli.Command{
@@ -61,22 +60,11 @@ var CliFlagConfig = &cli.StringFlag{
 }
 
 var CliFlagTags = &cli.StringFlag{
-	Name:    "tags",
+	Name:    "tag",
+	Hidden:  true,
 	Aliases: []string{"t"},
 	Value:   Tags,
 	Usage:   "GMake2 Config File",
-}
-
-var CliFlagUpgrade = &cli.BoolFlag{
-	Name:  "upgrade",
-	Value: false,
-	Usage: "Mandatory upgrade channel edition",
-}
-
-var CliFlagUpgradeX = &cli.BoolFlag{
-	Name:  "x",
-	Value: false,
-	Usage: "Force an update to be downloaded from the server",
 }
 
 var CliCommandVersion = &cli.Command{

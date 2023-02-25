@@ -5,7 +5,6 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
-	"time"
 
 	"github.com/spf13/cast"
 )
@@ -68,7 +67,7 @@ func KW_Wait(ym map[string]any, args []string) error {
 }
 
 func KW_Sleep(ym map[string]any, args []string) error {
-	time.Sleep(time.Second * cast.ToDuration(args[0]))
+	sleep(args[0])
 	return nil
 }
 
