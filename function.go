@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/cast"
 )
 
-type HandlerFunc func(ym map[string]any, args []string) error
+type HandlerFunc func(ym map[string]any, args []string, line int) error
 
 var BinMap map[string]HandlerFunc
 
@@ -39,41 +39,41 @@ func init() {
 }
 
 // Terminate operation
-func KW_End(ym map[string]any, args []string) error {
+func KW_End(ym map[string]any, args []string, line int) error {
 	Exit()
 	return nil
 }
 
 // Note
-func KW_Note(ym map[string]any, args []string) error {
+func KW_Note(ym map[string]any, args []string, line int) error {
 	return nil
 }
 
 // Add/override GMakefile variables
-func KW_Var(ym map[string]any, args []string) error {
+func KW_Var(ym map[string]any, args []string, line int) error {
 	vars[args[0]] = strings.Join(args[1:], " ")
 	return nil
 }
 
 // Set terminal environment variables
-func KW_Env(ym map[string]any, args []string) error {
+func KW_Env(ym map[string]any, args []string, line int) error {
 	if len(args) < 2 {
 		return exec.ErrNotFound
 	}
 	return os.Setenv(args[0], strings.Join(args[1:], " "))
 }
 
-func KW_Run(ym map[string]any, args []string) error {
+func KW_Run(ym map[string]any, args []string, line int) error {
 	run(ym, args[0])
 	return nil
 }
 
-func KW_Wait(ym map[string]any, args []string) error {
+func KW_Wait(ym map[string]any, args []string, line int) error {
 	wait(args...)
 	return nil
 }
 
-func KW_Sleep(ym map[string]any, args []string) error {
+func KW_Sleep(ym map[string]any, args []string, line int) error {
 	if len(args) != 1 {
 		return ErrCommand()
 	}
@@ -81,11 +81,11 @@ func KW_Sleep(ym map[string]any, args []string) error {
 	return nil
 }
 
-func KW_Operation(ym map[string]any, args []string) error {
+func KW_Operation(ym map[string]any, args []string, line int) error {
 	return operation(ym, args)
 }
 
-func KW_Val(ym map[string]any, args []string) error {
+func KW_Val(ym map[string]any, args []string, line int) error {
 	arg := args[2:]
 	cmd := exec.Command(args[1], arg...)
 	if cmdDir != "" {
@@ -95,48 +95,48 @@ func KW_Val(ym map[string]any, args []string) error {
 	return nil
 }
 
-func KW_Echo(ym map[string]any, args []string) error {
+func KW_Echo(ym map[string]any, args []string, line int) error {
 	Println(strings.Join(args, " "))
 	return nil
 }
 
-func KW_Cd(ym map[string]any, args []string) error {
+func KW_Cd(ym map[string]any, args []string, line int) error {
 	abs, err := filepath.Abs(replace(args))
 	cmdDir = abs
 	return err
 }
 
-func KW_Mv(ym map[string]any, args []string) error {
+func KW_Mv(ym map[string]any, args []string, line int) error {
 	copy(args[0], args[1])
 	remove(args[0])
 	return nil
 }
 
-func KW_Copy(ym map[string]any, args []string) error {
+func KW_Copy(ym map[string]any, args []string, line int) error {
 	copy(args[0], args[1])
 	return nil
 }
 
-func KW_Del(ym map[string]any, args []string) error {
+func KW_Del(ym map[string]any, args []string, line int) error {
 	remove(replace(args))
 	return nil
 }
 
-func KW_Mkdir(ym map[string]any, args []string) error {
+func KW_Mkdir(ym map[string]any, args []string, line int) error {
 	mkdir(replace(args))
 	return nil
 }
 
-func KW_Touch(ym map[string]any, args []string) error {
+func KW_Touch(ym map[string]any, args []string, line int) error {
 	touch(replace(args))
 	return nil
 }
 
-func KW_Json(ym map[string]any, args []string) error {
+func KW_Json(ym map[string]any, args []string, line int) error {
 	return JsonUrl(args)
 }
 
-func KW_Downloads(ym map[string]any, args []string) error {
+func KW_Downloads(ym map[string]any, args []string, line int) error {
 	if len(args) == 1 {
 		downloadFile(".", args[0])
 	} else {
@@ -145,7 +145,7 @@ func KW_Downloads(ym map[string]any, args []string) error {
 	return nil
 }
 
-func KW_Req(ym map[string]any, args []string) error {
+func KW_Req(ym map[string]any, args []string, line int) error {
 	if cast.ToBool(cfg["req"]) {
 		R.Do(args...)
 	} else {
@@ -154,11 +154,11 @@ func KW_Req(ym map[string]any, args []string) error {
 	return nil
 }
 
-func KW_Hash(ym map[string]any, args []string) error {
+func KW_Hash(ym map[string]any, args []string, line int) error {
 	return nil
 }
 
-func KW_Default(bin string, args []string) error {
+func KW_Default(bin string, args []string, line int) error {
 	switch bin[0:1] {
 	case "#":
 	case "@":

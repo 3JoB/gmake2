@@ -42,7 +42,7 @@ func run(ym map[string]any, commands string) {
 	}
 
 	lines := strings.Split(cast.ToString(ym[commands]), "\n")
-	for _, line := range lines {
+	for is, line := range lines {
 		if line != "" {
 			if strings.TrimSpace(line)[0] == '#' {
 				continue
@@ -58,9 +58,9 @@ func run(ym map[string]any, commands string) {
 				ErrPrintf("GMake2: Illegal instruction!\nGMake2: Error Command: %v \n", strings.Join(cmdStrs, " "))
 			}
 			if fc, ok := BinMap[bin]; ok {
-				checkError(fc(ym, args))
+				checkError(fc(ym, args, is))
 			} else {
-				checkError(KW_Default(bin, args))
+				checkError(KW_Default(bin, args, is))
 			}
 		}
 	}
