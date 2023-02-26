@@ -12,6 +12,7 @@ var (
 	SoftBuildTime   string
 	SoftCommit      string
 	Tags            string
+	// Config file (GMakefile)
 	e               string = "GMakefile.yml"
 )
 
@@ -33,6 +34,7 @@ vars:
 all: |
   @echo Hello! {{.msg}}!`
 
+// User-Agent
 var UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.52 GMake2/" + SoftVersion
 
 var CliFlag = []cli.Flag{

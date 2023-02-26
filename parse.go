@@ -10,6 +10,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+// Built-in variables
 func variable(v map[string]any) map[string]any {
 	v["time"] = map[string]any{
 		"now":      time.Now().Format("2006-01-02 15:04"),
@@ -29,6 +30,7 @@ func variable(v map[string]any) map[string]any {
 	return v
 }
 
+// Parse GMakefile data into global Maps
 func parseConfig(cfgFile string) map[string]any {
 	ymlData, err := os.ReadFile(cfgFile)
 	checkError(err)
@@ -38,6 +40,7 @@ func parseConfig(cfgFile string) map[string]any {
 	return m
 }
 
+// Parse GMakefile related configuration data to global Maps
 func parseMap(ym map[string]any) {
 	if v, ok := ym["vars"]; ok {
 		vars = v.(map[string]any)
@@ -52,6 +55,7 @@ func parseMap(ym map[string]any) {
 	vars = variable(vars)
 }
 
+// Parsing Tags
 func parseTags(v string) {
 	tags := split(v, ",")
 	if len(tags) == 0 {

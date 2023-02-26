@@ -107,7 +107,7 @@ func JsonUrl(r []string) error {
 			ErrPrintf("GMake2: Illegal instruction!!!\nGMake2: Error Command: %v \n", strings.Join(r, " "))
 		}
 		if _, err := url.Parse(r[0]); err != nil {
-			ErrPrint("GMake2: Url check failed!!!\nGMake2: " + err.Error())
+			ErrPrintln("GMake2: Url check failed!!!\nGMake2: " + err.Error())
 		}
 
 		resp := request(r[0])
@@ -279,7 +279,7 @@ func (r *Req) Request() {
 	defer r.Resp.RawBody().Close()
 
 	if r.Resp.StatusCode() != 200 {
-		ErrPrint("GMake2: @req: Server returned error code:" + cast.ToString(r.Resp.StatusCode()))
+		ErrPrintln("GMake2: @req: Server returned error code:" + cast.ToString(r.Resp.StatusCode()))
 	} else {
 		Println("GMake2: @req: 200 ok")
 	}
@@ -296,7 +296,7 @@ func (r *Req) Request() {
 func wait(v ...string) {
 	ar := len(v)
 	if ar < 2 {
-		ErrPrint("GMake2: @wait bad format!")
+		ErrPrintln("GMake2: @wait bad format!")
 	}
 	// v[0] print
 	Println(replace(v[:ar-1]))

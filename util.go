@@ -90,24 +90,36 @@ func Println(a ...any) {
 	fmt.Println(a...)
 }
 
-func Printf(format string, v ...any) {
-	fmt.Printf(format, v...)
+func Printf(f string, v ...any) {
+	fmt.Printf(f, v...)
 }
 
-func ErrPrint(a ...any) {
+func Sprintf(f string, v ...any) string {
+	return fmt.Sprintf(f, v...)
+}
+
+func Sprintln(v ...any) string{
+	return fmt.Sprintln(v...)
+}
+
+func ErrPrintln(a ...any) {
 	if debug {
-		panic(fmt.Sprintln(a...))
+		panic(Sprintln(a...))
 	}
-	fmt.Println(a...)
+	Println(a...)
 	Exit()
 }
 
 func ErrPrintf(format string, v ...any) {
 	if debug {
-		panic(fmt.Sprintf(format, v...))
+		panic(Sprintf(format, v...))
 	}
-	fmt.Printf(format, v...)
+	Printf(format, v...)
 	Exit()
+}
+
+func ErrCommand() error {
+	return nil
 }
 
 func Exit() {

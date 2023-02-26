@@ -38,21 +38,28 @@ func init() {
 	}
 }
 
+// Terminate operation
 func KW_End(ym map[string]any, args []string) error {
 	Exit()
 	return nil
 }
 
+// Note
 func KW_Note(ym map[string]any, args []string) error {
 	return nil
 }
 
+// Add/override GMakefile variables
 func KW_Var(ym map[string]any, args []string) error {
 	vars[args[0]] = strings.Join(args[1:], " ")
 	return nil
 }
 
+// Set terminal environment variables
 func KW_Env(ym map[string]any, args []string) error {
+	if len(args) < 2 {
+		return exec.ErrNotFound
+	}
 	return os.Setenv(args[0], strings.Join(args[1:], " "))
 }
 
@@ -67,6 +74,9 @@ func KW_Wait(ym map[string]any, args []string) error {
 }
 
 func KW_Sleep(ym map[string]any, args []string) error {
+	if len(args) != 1 {
+		return ErrCommand()
+	}
 	sleep(args[0])
 	return nil
 }
@@ -91,7 +101,7 @@ func KW_Echo(ym map[string]any, args []string) error {
 }
 
 func KW_Cd(ym map[string]any, args []string) error {
-	abs, err := filepath.Abs(args[0])
+	abs, err := filepath.Abs(replace(args))
 	cmdDir = abs
 	return err
 }
@@ -108,17 +118,17 @@ func KW_Copy(ym map[string]any, args []string) error {
 }
 
 func KW_Del(ym map[string]any, args []string) error {
-	remove(args[0])
+	remove(replace(args))
 	return nil
 }
 
 func KW_Mkdir(ym map[string]any, args []string) error {
-	mkdir(args[0])
+	mkdir(replace(args))
 	return nil
 }
 
 func KW_Touch(ym map[string]any, args []string) error {
-	touch(args[0])
+	touch(replace(args))
 	return nil
 }
 
@@ -139,7 +149,7 @@ func KW_Req(ym map[string]any, args []string) error {
 	if cast.ToBool(cfg["req"]) {
 		R.Do(args...)
 	} else {
-		ErrPrint("GMake2: The @req tag has been deprecated.")
+		ErrPrintln("GMake2: The @req tag has been deprecated.")
 	}
 	return nil
 }
