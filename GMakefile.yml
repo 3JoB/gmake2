@@ -2,7 +2,6 @@ config:
   default: all
 
 init: |
-  @if aui ! s
   @run get_info
 
 fmt: |
