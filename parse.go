@@ -54,8 +54,14 @@ func parseMap(ym map[string]any) {
 
 func parseTags(v string) {
 	tags := split(v, ",")
+	if len(tags) == 0 {
+		return
+	}
 	for _, tag := range tags {
 		data := split(tag, "=")
+		if len(data) == 0 {
+			continue
+		}
 		vars[data[0]] = data[1]
 	}
 }

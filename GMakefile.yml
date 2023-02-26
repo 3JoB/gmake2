@@ -7,6 +7,10 @@ init: |
 fmt: |
   gorgeous ./...
 
+tag_test: |
+  @echo {{.test1}}
+  @echo {{.test2}}
+
 tc: |
   @mkdir sbin
   @cp bin sbin
