@@ -14,6 +14,7 @@ type HandlerFunc func(c BinConfig)
 type BinConfig struct {
 	YamlConfig   map[string]any // Raw data of command group
 	YamlData     []string       // Commands within a command group
+	YamlDataBin string // Yaml Data Bin
 	YamlDataLine int            // The number of lines of the command in the command group
 	CommandGroup string         // The name of the group where the command is located
 	CommandLine  int            // The line where the command is

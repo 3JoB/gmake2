@@ -83,7 +83,7 @@ func split(v, r string) []string {
 
 func checkError(err error) {
 	if err != nil {
-		ErrPrintln(err)
+		ErrPrintf("GMake2: %v", err.Error())
 	}
 }
 
@@ -122,9 +122,9 @@ func ErrPrintf(format string, v ...any) {
 func E(c BinConfig, err error) {
 	if err != nil {
 		if c.YamlData == nil {
-			ErrPrintln(ErrCommand(c.CommandLine, c.CommandGroup, err))
+			ErrPrintln(ErrCommand(c.CommandLine, c.CommandGroup, err, ""))
 		} else {
-			ErrPrintln(ErrCommand(c.CommandLine, c.CommandGroup, err, c.YamlData...))
+			ErrPrintln(ErrCommand(c.CommandLine, c.CommandGroup, err, c.YamlDataBin+" "+replace(c.YamlData)))
 		}
 	}
 }
@@ -133,11 +133,12 @@ func Errors(errs string) error {
 	return errors.New(errs)
 }
 
-func ErrCommand(line int, group, msg any, command ...string) error {
-	if command == nil {
-		return errors.New(Sprintf("GMake: %v\n    Errored command group: %v\n    Errored row count: %v", msg, group, line))
+func ErrCommand(line int, group, msg any, command string) error {
+	line++
+	if command == "" {
+		return errors.New(Sprintf("GMake2: %v\n    Errored command group: %v\n    Errored row count: %v", msg, group, line))
 	}
-	return errors.New(Sprintf("GMake: %v\n    Errored command group: %v\n    Errored command: %v\n    Errored row count: %v", msg, group, replace(command), line))
+	return errors.New(Sprintf("GMake2: %v\n    Errored command group: %v\n    Errored command: %v\n    Errored row count: %v", msg, group, command, line))
 }
 
 func Exit() {
