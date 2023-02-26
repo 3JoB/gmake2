@@ -76,6 +76,10 @@ func replace(v []string) string {
 	return strings.ReplaceAll(strings.Trim(fmt.Sprint(v), "[]"), " ", " ")
 }
 
+func split(v, r string) []string {
+	return strings.Split(v, r)
+}
+
 func checkError(err error) {
 	if err != nil {
 		ErrPrintf("GMake2: Something went wrong, you must examine the following error messages to determine what went wrong. \n%v \n", err)

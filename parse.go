@@ -52,7 +52,13 @@ func parseMap(ym map[string]any) {
 	vars = variable(vars)
 }
 
-func parseTags(v string) {}
+func parseTags(v string) {
+	tags := split(v, ",")
+	for _, tag := range tags {
+		data := split(tag, "=")
+		vars[data[0]] = data[1]
+	}
+}
 
 func ResolveVars(vars any, templateStr string) string {
 	if vars == nil {
