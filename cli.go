@@ -12,8 +12,9 @@ var (
 	SoftBuildTime   string
 	SoftCommit      string
 	Tags            string
+
 	// Config file (GMakefile)
-	e               string = "GMakefile.yml"
+	e string = "GMakefile.yml"
 )
 
 var VersionInfo = fmt.Sprintf(`GMake2 is distributed under Mozilla Public License 2.0.
@@ -84,3 +85,7 @@ var CliCommandInit = &cli.Command{
 	Usage:  "Initialize in the current directory.",
 	Action: InitFile,
 }
+
+var Message_Invaild string = "Invalid operator!"
+
+var Error_Invalid error = Errors(Message_Invaild)

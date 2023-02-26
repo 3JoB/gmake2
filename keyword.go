@@ -10,12 +10,10 @@ import (
 	"os/exec"
 	"path"
 	"path/filepath"
-	"strings"
 
 	"github.com/3JoB/ulib/json"
 	"github.com/3JoB/unsafeConvert"
 	"github.com/go-resty/resty/v2"
-	"github.com/gookit/goutil/fsutil"
 	"github.com/spf13/cast"
 	"github.com/tidwall/gjson"
 )
@@ -31,30 +29,38 @@ type Req struct {
 	Resp   *resty.Response
 }
 
-func ExecCmd(c *exec.Cmd) {
+func ExecCmd(c *exec.Cmd) error {
 	Println(c.String())
 	stdout, err := c.StdoutPipe()
-	checkError(err)
+	if err != nil {
+		return err
+	}
 	stderr, err := c.StderrPipe()
-	checkError(err)
-	err = c.Start()
-	checkError(err)
+	if err != nil {
+		return err
+	}
+	if err := c.Start(); err != nil {
+		return err
+	}
 	io.Copy(os.Stdout, stdout)
 	io.Copy(os.Stderr, stderr)
 	c.Wait()
+	return nil
 }
 
-func val(r []string, c *exec.Cmd) {
+func val(r []string, c *exec.Cmd) error {
 	var stdout, stderr bytes.Buffer
 	c.Stdout = &stdout
 	c.Stderr = &stderr
-	err := c.Run()
-	checkError(err)
+	if err := c.Run(); err != nil {
+		return err
+	}
 	outStr, errStr := unsafeConvert.String(stdout.Bytes()), unsafeConvert.String(stderr.Bytes())
 	if errStr != "" {
-		ErrPrintf("GMake: Val Failed!!!\nGMake2: Error Command: %v \n", errStr)
+		return Errors(errStr)
 	}
 	vars[r[0]] = outStr
+	return nil
 }
 
 func operation(ym map[string]any, f []string) error {
@@ -90,31 +96,30 @@ func operation(ym map[string]any, f []string) error {
 		}
 		return operation_2(f, ym)
 	default:
-		ErrPrintf("GMake2: Invalid operator!\nGMake2: Error Command: %v \n", strings.Join(f, " "))
+		return Error_Invalid
 	}
-	return nil
 }
 
 func JsonUrl(r []string) error {
 	switch r[0] {
 	case "parse":
 		if len(r) != 4 {
-			ErrPrintf("GMake2: Illegal instruction!!!\nGMake2: Error Command: %v \n", strings.Join(r, " "))
+			return Error_Invalid
 		}
 		vars[r[3]] = gjson.Get(JsonData[r[1]], r[2]).String()
 	default:
 		if len(r) != 2 {
-			ErrPrintf("GMake2: Illegal instruction!!!\nGMake2: Error Command: %v \n", strings.Join(r, " "))
+			return Error_Invalid
 		}
 		if _, err := url.Parse(r[0]); err != nil {
-			ErrPrintln("GMake2: Url check failed!!!\nGMake2: " + err.Error())
+			return err
 		}
 
 		resp := request(r[0])
 		defer resp.RawBody().Close()
 
 		if resp.StatusCode() != 200 {
-			ErrPrintf("GMake2: Server returned status code: %v \n", resp.StatusCode())
+			return Errors(Sprintf("Server returned status code: %v", (resp.StatusCode())))
 		}
 
 		rd := unsafeConvert.String(resp.Body())
@@ -126,29 +131,30 @@ func JsonUrl(r []string) error {
 	return nil
 }
 
-func mkdir(path string, mode ...fs.FileMode) {
+func mkdir(path string, mode ...fs.FileMode) error {
 	if len(mode) != 0 {
-		checkError(os.MkdirAll(path, mode[0]))
-	} else {
-		checkError(os.MkdirAll(path, os.ModePerm))
+		return os.MkdirAll(path, mode[0])
 	}
+	return os.MkdirAll(path, os.ModePerm)
 }
 
-func remove(path string) {
-	checkError(os.RemoveAll(path))
+func remove(path string) error {
+	return os.RemoveAll(path)
 }
 
-func touch(path string) {
-	f, err := fsutil.CreateFile(path, 0664, 0666)
-	checkError(err)
-	f.Close()
+func touch(path string) error {
+	f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		return err
+	}
+	return f.Close()
 }
 
-func downloadFile(filepath string, url string) {
+func downloadFile(filepath string, url string) error {
 	resp := request(url)
 	defer resp.RawBody().Close()
 	if resp.StatusCode() != 200 {
-		ErrPrintf("GMake2: Connection failed! Server returned status code: %v\nUrl: %v\nUser-Agent: %v", resp.StatusCode(), resp.Request.URL, resp.RawResponse.Request.UserAgent())
+		return Errors(Sprintf("GMake2: Connection failed! Server returned status code: %v\nUrl: %v\nUser-Agent: %v\n", resp.StatusCode(), resp.Request.URL, resp.RawResponse.Request.UserAgent()))
 	}
 
 	Printf("GMake2: Connection info: %v\n", resp.Status())
@@ -161,51 +167,56 @@ func downloadFile(filepath string, url string) {
 	defer file.Close()
 	file.Write(resp.Body())
 	Printf("GMake2: Download saved to ./%v \n", filename)
+	return nil
 }
 
-func copy(src, dst string) {
+func copy(src, dst string) error {
 	src = filepath.Clean(src)
 	dst = filepath.Clean(dst)
 	if isDir(src) {
 		if !isDir(dst) {
 			if isFile(dst) {
-				ErrPrintf("GMake2: Cannot copy directory to file src=%v dst=%v \n", src, dst)
+				return Errors(Sprintf("Cannot copy directory to file src=%v dst=%v \n", src, dst))
 			}
 			mkdir(dst)
 		}
 		s, err := os.Stat(src)
-		checkError(err)
+		if err != nil {
+			return err
+		}
 		// dst = path.Join(dst, filepath.Base(src))
 		mkdir(dst, s.Mode())
-		entries, err := os.ReadDir(src)
-		checkError(err)
-		for _, entry := range entries {
-			srcPath := filepath.Join(src, entry.Name())
-			dstPath := filepath.Join(dst, entry.Name())
+		if entries, err := os.ReadDir(src); err != nil {
+			return err
+		} else {
+			for _, entry := range entries {
+				srcPath := filepath.Join(src, entry.Name())
+				dstPath := filepath.Join(dst, entry.Name())
 
-			if entry.IsDir() {
-				copy(srcPath, dstPath)
-			} else {
-				// Skip symlinks.
-				if entry.Type()&os.ModeSymlink != 0 {
-					continue
+				if entry.IsDir() {
+					copy(srcPath, dstPath)
+				} else {
+					// Skip symlinks.
+					if entry.Type()&os.ModeSymlink != 0 {
+						continue
+					}
+					copyFile(srcPath, dstPath)
 				}
-				copyFile(srcPath, dstPath)
 			}
 		}
 	} else {
 		if isFile(dst) {
-			copyFile(src, dst)
-		} else {
-			copyFile(src, path.Join(dst, filepath.Base(src)))
+			return copyFile(src, dst)
 		}
+		return copyFile(src, path.Join(dst, filepath.Base(src)))
 	}
+	return nil
 }
 
 // Deprecated
 //
 // This method is about to be deprecated and is no longer supported
-func (r *Req) Do(str ...string) {
+func (r *Req) Do(str ...string) error {
 	switch str[0] {
 	case "def":
 		d := replace(str[2:])
@@ -224,20 +235,22 @@ func (r *Req) Do(str ...string) {
 		case "value":
 			r.Value = d
 		default:
-			Println("GMake2: @req: unknown method: " + fmt.Sprint(str[1:]))
+			return Errors("Unknown method")
 		}
 	default:
-		r.Request()
+		return r.Request()
 	}
 	// v := strings.ReplaceAll(strings.Trim(fmt.Sprint(str), "[]"), " ", " ")
+	return nil
 }
 
 // Deprecated
 //
 // This method is about to be deprecated and is no longer supported
-func (r *Req) Request() {
-	_, err := url.Parse(r.Uri)
-	checkError(err)
+func (r *Req) Request() (err error) {
+	if _, err := url.Parse(r.Uri); err != nil {
+		return err
+	}
 
 	client := resty.NewWithClient(Client)
 
@@ -274,15 +287,16 @@ func (r *Req) Request() {
 		r.Resp, err = r.Req.Get(r.Uri)
 	}
 
-	checkError(err)
+	if err != nil {
+		return err
+	}
 
 	defer r.Resp.RawBody().Close()
 
 	if r.Resp.StatusCode() != 200 {
-		ErrPrintln("GMake2: @req: Server returned error code:" + cast.ToString(r.Resp.StatusCode()))
-	} else {
-		Println("GMake2: @req: 200 ok")
+		return Errors(Sprintf("server returned error code: %v", r.Resp.StatusCode()))
 	}
+	Println("GMake2: @req: 200 ok")
 
 	body := unsafeConvert.String(r.Resp.Body())
 	if body != "" {
@@ -291,17 +305,21 @@ func (r *Req) Request() {
 		}
 		Println(body)
 	}
+	return nil
 }
 
-func wait(v ...string) {
+func wait(v ...string) error {
 	ar := len(v)
 	if ar < 2 {
-		ErrPrintln("GMake2: @wait bad format!")
+		return Errors("@wait bad format")
 	}
 	// v[0] print
 	Println(replace(v[:ar-1]))
 	var t string
 	fmt.Print("=> ")
-	fmt.Scan(&t)
+	if _, err := fmt.Scan(&t); err != nil {
+		return err
+	}
 	vars[v[ar-1]] = t
+	return nil
 }

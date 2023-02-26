@@ -9,7 +9,15 @@ import (
 	"github.com/spf13/cast"
 )
 
-type HandlerFunc func(ym map[string]any, args []string, line int) error
+type HandlerFunc func(c BinConfig)
+
+type BinConfig struct {
+	YamlConfig   map[string]any // Raw data of command group
+	YamlData     []string       // Commands within a command group
+	YamlDataLine int            // The number of lines of the command in the command group
+	CommandGroup string         // The name of the group where the command is located
+	CommandLine  int            // The line where the command is
+}
 
 var BinMap map[string]HandlerFunc
 
@@ -39,136 +47,122 @@ func init() {
 }
 
 // Terminate operation
-func KW_End(ym map[string]any, args []string, line int) error {
+func KW_End(c BinConfig) {
 	Exit()
-	return nil
 }
 
 // Note
-func KW_Note(ym map[string]any, args []string, line int) error {
-	return nil
-}
+func KW_Note(c BinConfig) {}
 
 // Add/override GMakefile variables
-func KW_Var(ym map[string]any, args []string, line int) error {
-	vars[args[0]] = strings.Join(args[1:], " ")
-	return nil
+func KW_Var(c BinConfig) {
+	vars[c.YamlData[0]] = strings.Join(c.YamlData[1:], " ")
 }
 
 // Set terminal environment variables
-func KW_Env(ym map[string]any, args []string, line int) error {
-	if len(args) < 2 {
-		return exec.ErrNotFound
+func KW_Env(c BinConfig) {
+	if c.YamlDataLine < 2 {
+		E(c, Error_Invalid)
 	}
-	return os.Setenv(args[0], strings.Join(args[1:], " "))
+	E(c, os.Setenv(c.YamlData[0], strings.Join(c.YamlData[1:], " ")))
 }
 
-func KW_Run(ym map[string]any, args []string, line int) error {
-	run(ym, args[0])
-	return nil
-}
-
-func KW_Wait(ym map[string]any, args []string, line int) error {
-	wait(args...)
-	return nil
-}
-
-func KW_Sleep(ym map[string]any, args []string, line int) error {
-	if len(args) != 1 {
-		return ErrCommand()
+func KW_Run(c BinConfig) {
+	if c.YamlDataLine != 1 {
+		E(c, Error_Invalid)
 	}
-	sleep(args[0])
-	return nil
+	run(c.YamlConfig, c.YamlData[0])
 }
 
-func KW_Operation(ym map[string]any, args []string, line int) error {
-	return operation(ym, args)
+func KW_Wait(c BinConfig) {
+	E(c, wait(c.YamlData...))
 }
 
-func KW_Val(ym map[string]any, args []string, line int) error {
-	arg := args[2:]
-	cmd := exec.Command(args[1], arg...)
+func KW_Sleep(c BinConfig) {
+	if c.YamlDataLine != 1 {
+		E(c, Error_Invalid)
+	}
+	sleep(c.YamlData[0])
+}
+
+func KW_Operation(c BinConfig) {
+	E(c, operation(c.YamlConfig, c.YamlData))
+}
+
+func KW_Val(c BinConfig) {
+	arg := c.YamlData[2:]
+	cmd := exec.Command(c.YamlData[1], arg...)
 	if cmdDir != "" {
 		cmd.Dir = cmdDir
 	}
-	val(args, cmd)
-	return nil
+	E(c, val(c.YamlData, cmd))
 }
 
-func KW_Echo(ym map[string]any, args []string, line int) error {
-	Println(strings.Join(args, " "))
-	return nil
+func KW_Echo(c BinConfig) {
+	Println(strings.Join(c.YamlData, " "))
 }
 
-func KW_Cd(ym map[string]any, args []string, line int) error {
-	abs, err := filepath.Abs(replace(args))
-	cmdDir = abs
-	return err
-}
-
-func KW_Mv(ym map[string]any, args []string, line int) error {
-	copy(args[0], args[1])
-	remove(args[0])
-	return nil
-}
-
-func KW_Copy(ym map[string]any, args []string, line int) error {
-	copy(args[0], args[1])
-	return nil
-}
-
-func KW_Del(ym map[string]any, args []string, line int) error {
-	remove(replace(args))
-	return nil
-}
-
-func KW_Mkdir(ym map[string]any, args []string, line int) error {
-	mkdir(replace(args))
-	return nil
-}
-
-func KW_Touch(ym map[string]any, args []string, line int) error {
-	touch(replace(args))
-	return nil
-}
-
-func KW_Json(ym map[string]any, args []string, line int) error {
-	return JsonUrl(args)
-}
-
-func KW_Downloads(ym map[string]any, args []string, line int) error {
-	if len(args) == 1 {
-		downloadFile(".", args[0])
+func KW_Cd(c BinConfig) {
+	if abs, err := filepath.Abs(replace(c.YamlData)); err != nil {
+		E(c, err)
 	} else {
-		downloadFile(args[1], args[0])
+		cmdDir = abs
 	}
-	return nil
 }
 
-func KW_Req(ym map[string]any, args []string, line int) error {
+func KW_Mv(c BinConfig) {
+	E(c, copy(c.YamlData[0], c.YamlData[1]))
+	E(c, remove(c.YamlData[0]))
+}
+
+func KW_Copy(c BinConfig) {
+	E(c, copy(c.YamlData[0], c.YamlData[1]))
+}
+
+func KW_Del(c BinConfig) {
+	E(c, remove(replace(c.YamlData)))
+}
+
+func KW_Mkdir(c BinConfig) {
+	E(c, mkdir(replace(c.YamlData)))
+}
+
+func KW_Touch(c BinConfig) {
+	E(c, touch(replace(c.YamlData)))
+}
+
+func KW_Json(c BinConfig) {
+	E(c, JsonUrl(c.YamlData))
+}
+
+func KW_Downloads(c BinConfig) {
+	if c.YamlDataLine == 1 {
+		E(c, downloadFile(".", c.YamlData[0]))
+	} else {
+		E(c, downloadFile(c.YamlData[1], c.YamlData[0]))
+	}
+}
+
+func KW_Req(c BinConfig) {
 	if cast.ToBool(cfg["req"]) {
-		R.Do(args...)
+		E(c, R.Do(c.YamlData...))
 	} else {
-		ErrPrintln("GMake2: The @req tag has been deprecated.")
+		E(c, Errors("GMake2: The @req tag has been deprecated."))
 	}
-	return nil
 }
 
-func KW_Hash(ym map[string]any, args []string, line int) error {
-	return nil
-}
+func KW_Hash(c BinConfig) {}
 
-func KW_Default(bin string, args []string, line int) error {
+func KW_Default(bin string, c BinConfig) {
 	switch bin[0:1] {
 	case "#":
 	case "@":
-		ErrPrintf("GMake2: GMake2 keyword %v unregistered", bin)
+		E(c, Errors(Sprintf("GMake2 keyword %v unregistered", bin)))
 	default:
-		cmd := exec.Command(bin, args...)
+		cmd := exec.Command(bin, c.YamlData...)
 		if cmdDir != "" {
 			cmd.Dir = cmdDir
 		}
-		ExecCmd(cmd)
+		E(c, ExecCmd(cmd))
 	}
-	return nil
 }

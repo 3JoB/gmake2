@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"mime"
 	"net/http"
@@ -82,7 +83,7 @@ func split(v, r string) []string {
 
 func checkError(err error) {
 	if err != nil {
-		ErrPrintf("GMake2: Something went wrong, you must examine the following error messages to determine what went wrong. \n%v \n", err)
+		ErrPrintln(err)
 	}
 }
 
@@ -98,7 +99,7 @@ func Sprintf(f string, v ...any) string {
 	return fmt.Sprintf(f, v...)
 }
 
-func Sprintln(v ...any) string{
+func Sprintln(v ...any) string {
 	return fmt.Sprintln(v...)
 }
 
@@ -118,8 +119,25 @@ func ErrPrintf(format string, v ...any) {
 	Exit()
 }
 
-func ErrCommand() error {
-	return nil
+func E(c BinConfig, err error) {
+	if err != nil {
+		if c.YamlData == nil {
+			ErrPrintln(ErrCommand(c.CommandLine, c.CommandGroup, err))
+		} else {
+			ErrPrintln(ErrCommand(c.CommandLine, c.CommandGroup, err, c.YamlData...))
+		}
+	}
+}
+
+func Errors(errs string) error {
+	return errors.New(errs)
+}
+
+func ErrCommand(line int, group, msg any, command ...string) error {
+	if command == nil {
+		return errors.New(Sprintf("GMake: %v\n    Errored command group: %v\n    Errored row count: %v", msg, group, line))
+	}
+	return errors.New(Sprintf("GMake: %v\n    Errored command group: %v\n    Errored command: %v\n    Errored row count: %v", msg, group, replace(command), line))
 }
 
 func Exit() {

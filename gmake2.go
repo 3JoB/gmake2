@@ -49,7 +49,7 @@ func run(ym map[string]any, commands string) {
 			}
 			// line = ResolveVars(vars, line)
 			cmdStrs, err := shellquote.Split(line)
-			checkError(err)
+			E(BinConfig{CommandLine: is, CommandGroup: commands}, err)
 			for i, cmdStr := range cmdStrs {
 				cmdStrs[i] = ResolveVars(vars, cmdStr)
 			}
@@ -57,10 +57,17 @@ func run(ym map[string]any, commands string) {
 			if len(args) == 0 {
 				ErrPrintf("GMake2: Illegal instruction!\nGMake2: Error Command: %v \n", strings.Join(cmdStrs, " "))
 			}
+			bins := BinConfig{
+				YamlConfig:   ym,
+				YamlData:     args,
+				YamlDataLine: len(args),
+				CommandGroup: commands,
+				CommandLine:  is,
+			}
 			if fc, ok := BinMap[bin]; ok {
-				checkError(fc(ym, args, is))
+				fc(bins)
 			} else {
-				checkError(KW_Default(bin, args, is))
+				KW_Default(bin, bins)
 			}
 		}
 	}
