@@ -34,7 +34,9 @@ func CliAction(c *cli.Context) error {
 	// Parse Map
 	parseMap(ym)
 	// Parse Tags
-	parseTags(Tags)
+	if Tags != "" {
+		parseTags(Tags)
+	}
 	// Import Proxy Config
 	ImportProxy(cfg["proxy"])
 

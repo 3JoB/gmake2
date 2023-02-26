@@ -59,10 +59,11 @@ func parseTags(v string) {
 	}
 	for _, tag := range tags {
 		data := split(tag, "=")
-		if len(data) == 0 {
+		if len(data) != 2 {
 			continue
+		} else {
+			vars[data[0]] = data[1]
 		}
-		vars[data[0]] = data[1]
 	}
 }
 
