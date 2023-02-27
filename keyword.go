@@ -118,7 +118,7 @@ func JsonUrl(r []string) error {
 		defer resp.RawBody().Close()
 
 		if resp.StatusCode() != 200 {
-			return Errors(Sprintf("Server returned status code: %v", (resp.StatusCode())))
+			return Errorf("server returned status code: %v", (resp.StatusCode()))
 		}
 
 		rd := unsafeConvert.String(resp.Body())
@@ -150,7 +150,7 @@ func downloadFile(filepath string, url string) error {
 	resp := request(url)
 	defer resp.RawBody().Close()
 	if resp.StatusCode() != 200 {
-		return Errors(Sprintf("GMake2: Connection failed! Server returned status code: %v\nUrl: %v\nUser-Agent: %v\n", resp.StatusCode(), resp.Request.URL, resp.RawResponse.Request.UserAgent()))
+		return Errorf("connection failed! Server returned status code: %v\nUrl: %v\nUser-Agent: %v\n", resp.StatusCode(), resp.Request.URL, resp.RawResponse.Request.UserAgent())
 	}
 
 	Printf("GMake2: Connection info: %v\n", resp.Status())
@@ -247,7 +247,7 @@ func (r *Req) Request() (err error) {
 	defer r.Resp.RawBody().Close()
 
 	if r.Resp.StatusCode() != 200 {
-		return Errors(Sprintf("server returned error code: %v", r.Resp.StatusCode()))
+		return Errorf("server returned error code: %v", r.Resp.StatusCode())
 	}
 	Println("GMake2: @req: 200 ok")
 

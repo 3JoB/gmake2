@@ -89,6 +89,10 @@ func Sprintln(v ...any) string {
 	return fmt.Sprintln(v...)
 }
 
+func Errorf(format string, v ...any) error {
+	return fmt.Errorf(format , v...)
+}
+
 func ErrPrintln(a ...any) {
 	if debug {
 		panic(Sprintln(a...))
