@@ -24,8 +24,7 @@ func main() {
 
 func CliBeforeFunc(c *cli.Context) error {
 	// Read debug information
-	debug = c.Bool("debug")
-	Tags = c.String("tag")
+	debug, Tags = c.Bool("debug"), c.String("tag")
 	return nil
 }
 
