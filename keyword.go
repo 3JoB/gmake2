@@ -8,9 +8,8 @@ import (
 	"net/url"
 	"os"
 	"os/exec"
-	"path"
-	"path/filepath"
 
+	"github.com/3JoB/ulib/fsutil"
 	"github.com/3JoB/ulib/json"
 	"github.com/3JoB/unsafeConvert"
 	"github.com/go-resty/resty/v2"
@@ -132,10 +131,7 @@ func JsonUrl(r []string) error {
 }
 
 func mkdir(path string, mode ...fs.FileMode) error {
-	if len(mode) != 0 {
-		return os.MkdirAll(path, mode[0])
-	}
-	return os.MkdirAll(path, os.ModePerm)
+	return fsutil.Mkdir(path, mode...)
 }
 
 func remove(path string) error {
@@ -167,49 +163,6 @@ func downloadFile(filepath string, url string) error {
 	defer file.Close()
 	file.Write(resp.Body())
 	Printf("GMake2: Download saved to ./%v \n", filename)
-	return nil
-}
-
-func copy(src, dst string) error {
-	src = filepath.Clean(src)
-	dst = filepath.Clean(dst)
-	if isDir(src) {
-		if !isDir(dst) {
-			if isFile(dst) {
-				return Errors(Sprintf("Cannot copy directory to file src=%v dst=%v \n", src, dst))
-			}
-			mkdir(dst)
-		}
-		s, err := os.Stat(src)
-		if err != nil {
-			return err
-		}
-		// dst = path.Join(dst, filepath.Base(src))
-		mkdir(dst, s.Mode())
-		if entries, err := os.ReadDir(src); err != nil {
-			return err
-		} else {
-			for _, entry := range entries {
-				srcPath := filepath.Join(src, entry.Name())
-				dstPath := filepath.Join(dst, entry.Name())
-
-				if entry.IsDir() {
-					copy(srcPath, dstPath)
-				} else {
-					// Skip symlinks.
-					if entry.Type()&os.ModeSymlink != 0 {
-						continue
-					}
-					copyFile(srcPath, dstPath)
-				}
-			}
-		}
-	} else {
-		if isFile(dst) {
-			return copyFile(src, dst)
-		}
-		return copyFile(src, path.Join(dst, filepath.Base(src)))
-	}
 	return nil
 }
 

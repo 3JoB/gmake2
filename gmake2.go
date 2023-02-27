@@ -61,7 +61,7 @@ func run(ym map[string]any, commands string) {
 				YamlConfig:   ym,
 				YamlData:     args,
 				YamlDataLine: len(args),
-				YamlDataBin: bin,
+				YamlDataBin:  bin,
 				CommandGroup: commands,
 				CommandLine:  is,
 			}

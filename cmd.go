@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 
+	"github.com/3JoB/ulib/fsutil"
 	"github.com/spf13/cast"
 	"github.com/urfave/cli/v2"
 )
@@ -65,7 +66,7 @@ func CliAction(c *cli.Context) error {
 // Create a GMakefile
 func InitFile(c *cli.Context) error {
 	// If GMakefile exists, make it wait 12 seconds
-	if isFile(e) {
+	if fsutil.IsExist(e) {
 		Println("GMake2: Note! There are already GMakefile.yml files in the directory! Now you still have 12 seconds to prevent GMAKE2 from covering the file!")
 		sleep(12)
 		remove(e)

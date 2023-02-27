@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/3JoB/ulib/fsutil"
 	"github.com/spf13/cast"
 )
 
@@ -14,7 +15,7 @@ type HandlerFunc func(c BinConfig)
 type BinConfig struct {
 	YamlConfig   map[string]any // Raw data of command group
 	YamlData     []string       // Commands within a command group
-	YamlDataBin string // Yaml Data Bin
+	YamlDataBin  string         // Yaml Data Bin
 	YamlDataLine int            // The number of lines of the command in the command group
 	CommandGroup string         // The name of the group where the command is located
 	CommandLine  int            // The line where the command is
@@ -112,12 +113,12 @@ func KW_Cd(c BinConfig) {
 }
 
 func KW_Mv(c BinConfig) {
-	E(c, copy(c.YamlData[0], c.YamlData[1]))
+	E(c, fsutil.CopyAll(c.YamlData[0], c.YamlData[1]))
 	E(c, remove(c.YamlData[0]))
 }
 
 func KW_Copy(c BinConfig) {
-	E(c, copy(c.YamlData[0], c.YamlData[1]))
+	E(c, fsutil.CopyAll(c.YamlData[0], c.YamlData[1]))
 }
 
 func KW_Del(c BinConfig) {

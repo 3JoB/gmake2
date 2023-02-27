@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/urfave/cli/v2"
 )
 
@@ -17,7 +15,7 @@ var (
 	e string = "GMakefile.yml"
 )
 
-var VersionInfo = fmt.Sprintf(`GMake2 is distributed under Mozilla Public License 2.0.
+var VersionInfo = Sprintf(`GMake2 is distributed under Mozilla Public License 2.0.
 Github: https://github.com/3JoB/gmake2
 
 Version: %v (%v)

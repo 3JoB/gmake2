@@ -7,12 +7,10 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"path"
-	"path/filepath"
 	"strings"
 	"time"
 
-	ufs "github.com/3JoB/ulib/fsutil"
+	"github.com/3JoB/ulib/fsutil"
 	"github.com/go-resty/resty/v2"
 	"github.com/spf13/cast"
 )
@@ -54,19 +52,7 @@ func request(url string) *resty.Response {
 }
 
 func write(path, v string) error {
-	return ufs.File(path).SetTrunc().Write(v)
-}
-
-func copyFile(src, dst string) error {
-	return ufs.File(src).CopyTo(dst)
-}
-
-func isDir(path string) bool {
-	return ufs.IsDir(path)
-}
-
-func isFile(path string) bool {
-	return ufs.IsFile(path)
+	return fsutil.File(path).SetTrunc().Write(v)
 }
 
 func sleep(t any) {
@@ -161,7 +147,7 @@ func guessFilename(resp *http.Response) (string, error) {
 		return "GMakeDL.tmp", nil
 	}
 
-	filename = filepath.Base(path.Clean("/" + filename))
+	filename = fsutil.BasePaths(fsutil.CleanPaths("/" + filename))
 	if filename == "" || filename == "." || filename == "/" {
 		return "GMakeDL.tmp", nil
 	}
