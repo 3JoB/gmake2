@@ -1,5 +1,5 @@
-github.com/3JoB/ulib v1.5.0 h1:zPMMhmrSggpWfTCT8Ol4qDGWMrgYIu36V6LB/apAN5c=
-github.com/3JoB/ulib v1.5.0/go.mod h1:3xpDA90YOSyczoFUu+Dqh9HQFI3GULaN5thbX+dmCIE=
+github.com/3JoB/ulib v1.5.2 h1:68J50OehubWe7ZEEb5huX0h9iVn0mw6bwKA1DgPi4SI=
+github.com/3JoB/ulib v1.5.2/go.mod h1:Onqabb/ic8UBjaypyzkd7m5Pq3t4QNagrbSxPJhZUyk=
 github.com/3JoB/unsafeConvert v0.0.1 h1:2YouOKliR6oAz7TceZYa069RcGtZ+FGdMJetIjaA1wg=
 github.com/3JoB/unsafeConvert v0.0.1/go.mod h1:iSvh1grSkQOJuPRGhfBJbG++/Z/0oHN11E4bePIbfd0=
 github.com/cpuguy83/go-md2man/v2 v2.0.2 h1:p1EgwI/C7NhT0JmVkwCD2ZBK8j4aeHQX2pMHHBfMQ6w=
