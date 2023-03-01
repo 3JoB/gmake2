@@ -126,9 +126,9 @@ func Errors(errs string) error {
 func ErrCommand(line int, group, msg any, command string) error {
 	line++
 	if command == "" {
-		return errors.New(Sprintf("GMake2: %v\n    Errored command group: %v\n    Errored row count: %v", msg, group, line))
+		return Errorf("gmake2: %v\n    Errored command group: %v\n    Errored row count: %v", msg, group, line)
 	}
-	return errors.New(Sprintf("GMake2: %v\n    Errored command group: %v\n    Errored command: %v\n    Errored row count: %v", msg, group, command, line))
+	return Errorf("gmake2: %v\n    Errored command group: %v\n    Errored command: %v\n    Errored row count: %v", msg, group, command, line)
 }
 
 func Exit() {

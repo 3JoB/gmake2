@@ -57,7 +57,7 @@ var CliFlagConfig = &cli.StringFlag{
 	Name:    "config",
 	Aliases: []string{"c"},
 	Value:   e,
-	Usage:   "GMake2 Config File",
+	Usage:   "gmake2 Config File",
 }
 
 var CliFlagTags = &cli.StringFlag{
@@ -65,13 +65,13 @@ var CliFlagTags = &cli.StringFlag{
 	Hidden:  true,
 	Aliases: []string{"t"},
 	Value:   Tags,
-	Usage:   "GMake2 Config File",
+	Usage:   "gmake2 Config File",
 }
 
 var CliCommandVersion = &cli.Command{
 	Name:    "version",
 	Aliases: []string{"v"},
-	Usage:   "GMake2 Version",
+	Usage:   "gmake2 Version",
 	Action: func(ctx *cli.Context) error {
 		Println(VersionInfo)
 		return nil
@@ -84,6 +84,4 @@ var CliCommandInit = &cli.Command{
 	Action: InitFile,
 }
 
-var Message_Invaild string = "Invalid operator!"
-
-var Error_Invalid error = Errors(Message_Invaild)
+var Error_Invalid error = Errors("invalid operator")
