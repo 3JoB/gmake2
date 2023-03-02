@@ -135,11 +135,11 @@ func mkdir(path string, mode ...fs.FileMode) error {
 }
 
 func remove(path string) error {
-	return os.RemoveAll(path)
+	return fsutil.Remove(path)
 }
 
 func touch(path string) error {
-	f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY, 0644)
+	f, err := fsutil.OpenFile(path, os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		return err
 	}
@@ -159,7 +159,7 @@ func downloadFile(filepath string, url string) error {
 	if filepath != "." {
 		filename = filepath
 	}
-	file, _ := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0644)
+	file, _ := fsutil.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0644)
 	defer file.Close()
 	file.Write(resp.Body())
 	Printf("GMake2: Download saved to ./%v \n", filename)
