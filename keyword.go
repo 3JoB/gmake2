@@ -13,7 +13,6 @@ import (
 	"github.com/3JoB/ulib/json"
 	"github.com/3JoB/unsafeConvert"
 	"github.com/go-resty/resty/v2"
-	"github.com/spf13/cast"
 	"github.com/tidwall/gjson"
 )
 
@@ -49,12 +48,11 @@ func ExecCmd(c *exec.Cmd) error {
 
 func val(r []string, c *exec.Cmd) error {
 	var stdout, stderr bytes.Buffer
-	c.Stdout = &stdout
-	c.Stderr = &stderr
+	c.Stdout, c.Stderr = &stdout, &stderr
 	if err := c.Run(); err != nil {
 		return err
 	}
-	outStr, errStr := unsafeConvert.String(stdout.Bytes()), unsafeConvert.String(stderr.Bytes())
+	outStr, errStr := unsafeConvert.StringReflect(stdout.Bytes()), unsafeConvert.StringReflect(stderr.Bytes())
 	if errStr != "" {
 		return Errors(errStr)
 	}
@@ -62,38 +60,27 @@ func val(r []string, c *exec.Cmd) error {
 	return nil
 }
 
+func op(y bool, ym map[string]any, f []string) error {
+	if y {
+		return operation_1(f, ym)
+	}
+	return operation_2(f, ym)
+}
+
 func operation(ym map[string]any, f []string) error {
 	switch f[1] {
 	case "==":
-		if f[0] == f[2] {
-			return operation_1(f, ym)
-		}
-		return operation_2(f, ym)
+		return op(f[0] == f[2], ym, f)
 	case "!=":
-		if f[0] != f[2] {
-			return operation_1(f, ym)
-		}
-		return operation_2(f, ym)
+		return op(f[0] != f[2], ym, f)
 	case "<":
-		if cast.ToInt64(f[0]) < cast.ToInt64(f[2]) {
-			return operation_1(f, ym)
-		}
-		return operation_2(f, ym)
+		return op(unsafeConvert.StringToInt64(f[0]) < unsafeConvert.StringToInt64(f[2]), ym, f)
 	case "<=":
-		if cast.ToInt64(f[0]) <= cast.ToInt64(f[2]) {
-			return operation_1(f, ym)
-		}
-		return operation_2(f, ym)
+		return op(unsafeConvert.StringToInt64(f[0]) <= unsafeConvert.StringToInt64(f[2]), ym, f)
 	case ">":
-		if cast.ToInt64(f[0]) > cast.ToInt64(f[2]) {
-			return operation_1(f, ym)
-		}
-		return operation_2(f, ym)
+		return op(unsafeConvert.StringToInt64(f[0]) > unsafeConvert.StringToInt64(f[2]), ym, f)
 	case ">=":
-		if cast.ToInt64(f[0]) >= cast.ToInt64(f[2]) {
-			return operation_1(f, ym)
-		}
-		return operation_2(f, ym)
+		return op(unsafeConvert.StringToInt64(f[0]) >= unsafeConvert.StringToInt64(f[2]), ym, f)
 	default:
 		return Error_Invalid
 	}

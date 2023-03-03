@@ -15,6 +15,13 @@ import (
 	"github.com/spf13/cast"
 )
 
+/*func Operation[T any](e bool, trueValue, falseValue T) T {
+	if e {
+		return trueValue
+	}
+	return falseValue
+}*/
+
 func operation_1(f []string, ym map[string]any) error {
 	if f[3] != "then" {
 		ErrPrintf("GMake2: Invalid operator at %v \n", f[3])
@@ -90,7 +97,7 @@ func Sprintln(v ...any) string {
 }
 
 func Errorf(format string, v ...any) error {
-	return fmt.Errorf(format , v...)
+	return fmt.Errorf(format, v...)
 }
 
 func ErrPrintln(a ...any) {
