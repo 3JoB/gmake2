@@ -1,4 +1,4 @@
-module gmake2
+module g
 
 go 1.20
 

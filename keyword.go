@@ -148,7 +148,7 @@ func downloadFile(filepath string, url string) error {
 	}
 	file, _ := fsutil.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0644)
 	defer file.Close()
-	file.Write(resp.Body())
+	io.Copy(file, resp.RawBody())
 	Printf("GMake2: Download saved to ./%v \n", filename)
 	return nil
 }
