@@ -59,7 +59,7 @@ func request(url string) *resty.Response {
 }
 
 func write(path, v string) error {
-	return fsutil.File(path).SetTrunc().Write(v)
+	return fsutil.TruncWrite(path, v)
 }
 
 func sleep(t any) {
