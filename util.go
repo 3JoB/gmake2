@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/3JoB/ulib/fsutil"
+	"github.com/3JoB/ulib/fsutil/path"
 	"github.com/go-resty/resty/v2"
 	"github.com/spf13/cast"
 )
@@ -158,7 +159,7 @@ func guessFilename(resp *http.Response) (string, error) {
 		return "GMakeDL.tmp", nil
 	}
 
-	filename = fsutil.BasePaths(fsutil.CleanPaths("/" + filename))
+	filename = path.Base(path.Clean("/" + filename))
 	if filename == "" || filename == "." || filename == "/" {
 		return "GMakeDL.tmp", nil
 	}
