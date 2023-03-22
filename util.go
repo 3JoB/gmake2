@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/3JoB/ulib/fsutil"
-	"github.com/3JoB/ulib/fsutil/path"
+	"github.com/3JoB/ulib/path"
 	"github.com/go-resty/resty/v2"
 	"github.com/spf13/cast"
 )
