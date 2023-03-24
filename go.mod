@@ -3,7 +3,7 @@ module g
 go 1.20
 
 require (
-	github.com/3JoB/ulib v1.20.0
+	github.com/3JoB/ulib v1.21.0
 	github.com/3JoB/unsafeConvert v1.3.0
 	github.com/go-resty/resty/v2 v2.7.0
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51
@@ -22,7 +22,7 @@ require (
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.1 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
-	golang.org/x/net v0.7.0 // indirect
+	golang.org/x/net v0.8.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 )
