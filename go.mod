@@ -3,7 +3,7 @@ module g
 go 1.20
 
 require (
-	github.com/3JoB/ulib v1.22.0
+	github.com/3JoB/ulib v1.22.1
 	github.com/3JoB/unsafeConvert v1.3.0
 	github.com/go-resty/resty/v2 v2.7.0
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51
