@@ -1,5 +1,9 @@
-github.com/3JoB/ulib v1.26.0 h1:ZVgnr6nN6N9Ba9VFiYV8ND80xQqcb1z7k/BdKHFq6Sw=
-github.com/3JoB/ulib v1.26.0/go.mod h1:TpvcUeJXlyG/n7CHxCGC8IYf13D1FJZgV6sIqRAOqss=
+github.com/3JoB/go-json v0.10.3 h1:LuFlaH1EhYQsyzRE59CBLrNE5vIr28z2CKrhy83WYno=
+github.com/3JoB/go-json v0.10.3/go.mod h1:mZcc16VxPgNwB9hnFumjhGNKLel5AkQpO1AOQB7odF4=
+github.com/3JoB/go-reflect v1.0.1 h1:o8FsdGDAq32rM84vjIcoEs6ezB2whS0MCR+w7HNIuqI=
+github.com/3JoB/go-reflect v1.0.1/go.mod h1:uqE8sGxe7gZKaXFFhkzOhXgAPnSdlXaT1Oy8CDYDWfE=
+github.com/3JoB/ulib v1.28.0 h1:8Y1zkgcy3IytwOzqu8pqk6w9rsDetvk8Bs+lLIWTsmA=
+github.com/3JoB/ulib v1.28.0/go.mod h1:xfGmnqpZt2u24ufTC2oUEvTdD3dEn1m0Fs2KCBfR/KE=
 github.com/3JoB/unsafeConvert v1.3.0 h1:HxWedv9pqNZjzkjdvyPToxolN+kjF55lMbsBedhuKR0=
 github.com/3JoB/unsafeConvert v1.3.0/go.mod h1:eSOZxiCOcyEi0vBO56ULYtfXJEn4vafvkebEfI0pYoE=
 github.com/cpuguy83/go-md2man/v2 v2.0.2 h1:p1EgwI/C7NhT0JmVkwCD2ZBK8j4aeHQX2pMHHBfMQ6w=
@@ -8,7 +12,6 @@ github.com/frankban/quicktest v1.14.3 h1:FJKSZTDHjyhriyC81FLQ0LY93eSai0ZyR/ZIkd3
 github.com/go-resty/resty/v2 v2.7.0 h1:me+K9p3uhSmXtrBZ4k9jcEAfJmuC8IivWHwaLZwPrFY=
 github.com/go-resty/resty/v2 v2.7.0/go.mod h1:9PWDzw47qPphMRFfhsyk0NnSgvluHcljSMVIq3w7q0I=
 github.com/goccy/go-json v0.10.2 h1:CrxCmQqYDkv1z7lO7Wbh2HN93uovUHgrECaO5ZrCXAU=
-github.com/goccy/go-json v0.10.2/go.mod h1:6MelG93GURQebXPDq3khkgXZkazVtN9CRI+MGFi0w8I=
 github.com/google/go-cmp v0.5.9 h1:O2Tfq5qg4qc4AmwVlvv0oLiVAGB7enBSJ2x2DqQFi38=
 github.com/google/go-cmp v0.5.9/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
 github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 h1:Z9n2FFNUXsshfwJMBgNA0RU6/i7WVaAegv3PtuIHPMs=
