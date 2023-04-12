@@ -3,14 +3,14 @@ module g
 go 1.20
 
 require (
-	github.com/3JoB/ulib v1.28.0
+	github.com/3JoB/ulib v1.30.0
 	github.com/3JoB/unsafeConvert v1.3.0
 	github.com/go-resty/resty/v2 v2.7.0
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51
+	github.com/pelletier/go-toml/v2 v2.0.7
 	github.com/spf13/cast v1.5.0
 	github.com/tidwall/gjson v1.14.4
 	github.com/urfave/cli/v2 v2.25.1
-	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
@@ -25,5 +25,4 @@ require (
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
 	golang.org/x/net v0.7.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
-	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 )

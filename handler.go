@@ -66,31 +66,31 @@ func KW_Var(c BinConfig) {
 // Set terminal environment variables
 func KW_Env(c BinConfig) {
 	if c.YamlDataLine < 2 {
-		E(c, Error_Invalid)
+		c.Error(Error_Invalid)
 	}
-	E(c, os.Setenv(c.YamlData[0], strings.Join(c.YamlData[1:], " ")))
+	c.Error(os.Setenv(c.YamlData[0], strings.Join(c.YamlData[1:], " ")))
 }
 
 func KW_Run(c BinConfig) {
 	if c.YamlDataLine != 1 {
-		E(c, Error_Invalid)
+		c.Error(Error_Invalid)
 	}
 	run(c.YamlConfig, c.YamlData[0])
 }
 
 func KW_Wait(c BinConfig) {
-	E(c, wait(c.YamlData...))
+	c.Error(wait(c.YamlData...))
 }
 
 func KW_Sleep(c BinConfig) {
 	if c.YamlDataLine != 1 {
-		E(c, Error_Invalid)
+		c.Error(Error_Invalid)
 	}
 	time.Sleep(time.Second * time.Duration(unsafeConvert.StringToInt64(c.YamlData[0])))
 }
 
 func KW_Operation(c BinConfig) {
-	E(c, operation(c.YamlConfig, c.YamlData))
+	c.Error(operation(c.YamlConfig, c.YamlData))
 }
 
 func KW_Val(c BinConfig) {
@@ -99,7 +99,7 @@ func KW_Val(c BinConfig) {
 	if cmdDir != "" {
 		cmd.Dir = cmdDir
 	}
-	E(c, val(c.YamlData, cmd))
+	c.Error(val(c.YamlData, cmd))
 }
 
 func KW_Echo(c BinConfig) {
@@ -108,50 +108,50 @@ func KW_Echo(c BinConfig) {
 
 func KW_Cd(c BinConfig) {
 	if abs, err := filepath.Abs(replace(c.YamlData)); err != nil {
-		E(c, err)
+		c.Error(err)
 	} else {
 		cmdDir = abs
 	}
 }
 
 func KW_Mv(c BinConfig) {
-	E(c, fsutil.CopyAll(c.YamlData[0], c.YamlData[1]))
-	E(c, remove(c.YamlData[0]))
+	c.Error(fsutil.CopyAll(c.YamlData[0], c.YamlData[1]))
+	c.Error(remove(c.YamlData[0]))
 }
 
 func KW_Copy(c BinConfig) {
-	E(c, fsutil.CopyAll(c.YamlData[0], c.YamlData[1]))
+	c.Error(fsutil.CopyAll(c.YamlData[0], c.YamlData[1]))
 }
 
 func KW_Del(c BinConfig) {
-	E(c, remove(replace(c.YamlData)))
+	c.Error(remove(replace(c.YamlData)))
 }
 
 func KW_Mkdir(c BinConfig) {
-	E(c, mkdir(replace(c.YamlData)))
+	c.Error(mkdir(replace(c.YamlData)))
 }
 
 func KW_Touch(c BinConfig) {
-	E(c, touch(replace(c.YamlData)))
+	c.Error(touch(replace(c.YamlData)))
 }
 
 func KW_Json(c BinConfig) {
-	E(c, JsonUrl(c.YamlData))
+	c.Error(JsonUrl(c.YamlData))
 }
 
 func KW_Downloads(c BinConfig) {
 	if c.YamlDataLine == 1 {
-		E(c, downloadFile(".", c.YamlData[0]))
+		c.Error(downloadFile(".", c.YamlData[0]))
 	} else {
-		E(c, downloadFile(c.YamlData[1], c.YamlData[0]))
+		c.Error(downloadFile(c.YamlData[1], c.YamlData[0]))
 	}
 }
 
 func KW_Req(c BinConfig) {
 	if cast.ToBool(cfg["req"]) {
-		E(c, R.Do(c.YamlData...))
+		c.Error(R.Do(c.YamlData...))
 	} else {
-		E(c, Errors("GMake2: The @req tag has been deprecated."))
+		c.Error(Errors("GMake2: The @req tag has been deprecated."))
 	}
 }
 
@@ -161,12 +161,12 @@ func KW_Default(bin string, c BinConfig) {
 	switch bin[0:1] {
 	case "#":
 	case "@":
-		E(c, Errors(Sprintf("GMake2 keyword %v unregistered", bin)))
+		c.Error(Errors(Sprintf("GMake2 keyword %v unregistered", bin)))
 	default:
 		cmd := exec.Command(bin, c.YamlData...)
 		if cmdDir != "" {
 			cmd.Dir = cmdDir
 		}
-		E(c, ExecCmd(cmd))
+		c.Error(ExecCmd(cmd))
 	}
 }

@@ -7,7 +7,8 @@ import (
 	"text/template"
 	"time"
 
-	"gopkg.in/yaml.v3"
+	"github.com/pelletier/go-toml/v2"
+	// "gopkg.in/yaml.v3"
 )
 
 // Built-in variables
@@ -32,10 +33,11 @@ func variable(v map[string]any) map[string]any {
 
 // Parse GMakefile data into global Maps
 func parseConfig(cfgFile string) map[string]any {
-	ymlData, err := os.ReadFile(cfgFile)
+	data, err := os.ReadFile(cfgFile)
 	checkError(err)
 	m := make(map[string]any)
-	err = yaml.Unmarshal(ymlData, &m)
+	err = toml.Unmarshal(data, &m)
+	// err = yaml.Unmarshal(data, &m)
 	checkError(err)
 	return m
 }

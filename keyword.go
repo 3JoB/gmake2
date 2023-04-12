@@ -162,8 +162,7 @@ func (r *Req) Do(str ...string) error {
 		d := replace(str[2:])
 		switch str[1] {
 		case "header":
-			r.Header = make(map[string]string)
-			json.UnmarshalString(d, &r.Header)
+			r.Header, _ = json.TUnmarshalString[map[string]string](d)
 		case "body":
 			r.Body = d
 		case "file":

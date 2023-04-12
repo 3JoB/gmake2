@@ -112,12 +112,12 @@ func ErrPrintf(format string, v ...any) {
 	Exit()
 }
 
-func E(c BinConfig, err error) {
+func (bin BinConfig) Error(err error) {
 	if err != nil {
-		if c.YamlData == nil {
-			ErrPrintln(ErrCommand(c.CommandLine, c.CommandGroup, err, ""))
+		if bin.YamlData == nil {
+			ErrPrintln(ErrCommand(bin.CommandLine, bin.CommandGroup, err, ""))
 		} else {
-			ErrPrintln(ErrCommand(c.CommandLine, c.CommandGroup, err, c.YamlDataBin+" "+replace(c.YamlData)))
+			ErrPrintln(ErrCommand(bin.CommandLine, bin.CommandGroup, err, bin.YamlDataBin+" "+replace(bin.YamlData)))
 		}
 	}
 }

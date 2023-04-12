@@ -41,15 +41,16 @@ func run(ym map[string]any, commands string) {
 		vars[pair[0]] = pair[1]
 	}
 
-	lines := strings.Split(cast.ToString(ym[commands]), "\n")
+	// lines := strings.Split(cast.ToString(ym[commands]), "\n")
+	lines := ym[commands].([]any)
 	for is, line := range lines {
-		if line != "" {
-			if strings.TrimSpace(line)[0] == '#' {
+		if line != nil {
+			if strings.TrimSpace(cast.ToString(line))[0] == '#' {
 				continue
 			}
 			// line = ResolveVars(vars, line)
-			cmdStrs, err := shellquote.Split(line)
-			E(BinConfig{CommandLine: is, CommandGroup: commands}, err)
+			cmdStrs, err := shellquote.Split(cast.ToString(line))
+			BinConfig{CommandLine: is, CommandGroup: commands}.Error(err)
 			for i, cmdStr := range cmdStrs {
 				cmdStrs[i] = ResolveVars(vars, cmdStr)
 			}
