@@ -8,7 +8,6 @@ import (
 	"net/url"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/3JoB/ulib/fsutil"
 	"github.com/3JoB/ulib/path"
@@ -61,10 +60,6 @@ func request(url string) *resty.Response {
 
 func write(path, v string) error {
 	return fsutil.TruncWrite(path, v)
-}
-
-func sleep(t any) {
-	time.Sleep(time.Second * cast.ToDuration(t))
 }
 
 func replace(v []string) string {

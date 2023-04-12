@@ -5,8 +5,10 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/3JoB/ulib/fsutil"
+	"github.com/3JoB/unsafeConvert"
 	"github.com/spf13/cast"
 )
 
@@ -84,7 +86,7 @@ func KW_Sleep(c BinConfig) {
 	if c.YamlDataLine != 1 {
 		E(c, Error_Invalid)
 	}
-	sleep(c.YamlData[0])
+	time.Sleep(time.Second * time.Duration(unsafeConvert.StringToInt64(c.YamlData[0])))
 }
 
 func KW_Operation(c BinConfig) {

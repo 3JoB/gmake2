@@ -1,54 +1,66 @@
-config:
-  default: all
+init = [
+  "@run get_info"
+]
 
-init: |
-  @run get_info
+[config]
+  default = "all"
+  proxy = ""
 
-fmt: |
-  gorgeous ./...
+[run]
+  fmt = [
+    "gorgeous ./..."
+  ]
 
-tag_test: |
-  @echo {{.test1}}
-  @echo {{.test2}}
+  tag_test = [
+    "@echo {{.test1}}",
+    "@echo {{.test2}}"
+  ]
+  
+  tc = [
+    "@mkdir sbin",
+    "@cp bin sbin"
+  ]
 
-tc: |
-  @mkdir sbin
-  @cp bin sbin
+  all = [
+    "@run clean",
+    "go mod tidy",
+    "@mkdir bin",
+    "@run windows",
+    "@run linux",
+    "@echo Done!"
+  ]
 
-all: |
-  @run clean
-  go mod tidy
-  @mkdir bin
-  @run windows
-  @run linux
-  @echo Done!
+  build = [
+    "@env CGO_ENABLED 0",
+    "@env GOARCH amd64",
+    "go build -ldflags \"-s -w -X 'main.SoftBuildTime={{.time.utc}}' -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}'  -X 'main.SoftVersionCode={{.version_code}}'\""
+  ]
 
-build: |
-  @env CGO_ENABLED 0
-  @env GOARCH amd64
-  go build -ldflags "-s -w -X 'main.SoftBuildTime={{.time.utc}}' -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}'  -X 'main.SoftVersionCode={{.version_code}}'"
+  clean = [
+    "@rm bin"
+  ]
 
-clean: |
-  @rm bin
+  linux = [
+    "@env GOOS linux",
+    "@env CGO_ENABLED 0",
+    "@run linux_arm",
+    "@run linux_arm64",
+    "@run linux_x86",
+    "@run linux_amd64"
+  ]
 
-linux: |
-  @env GOOS linux
-  @env CGO_ENABLED 0
-  @run linux_arm
-  @run linux_arm64
-  @run linux_x86
-  @run linux_amd64
+linux_arm = [
+  "@env GOARCH arm",
+  "go build -ldflags \"-s -w -X 'main.SoftBuildTime={{.time.utc}}' -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}' -X 'main.SoftVersionCode={{.version_code}}'\" -o ./bin/gmake2_v{{.version}}_linux_arm"
+]
 
-linux_arm: |
-  @env GOARCH arm
-  go build -ldflags "-s -w -X 'main.SoftBuildTime={{.time.utc}}' -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}' -X 'main.SoftVersionCode={{.version_code}}'" -o ./bin/gmake2_v{{.version}}_linux_arm
+linux_arm64 = [
+  "@env GOARCH arm64",
+  "go build -ldflags \"-s -w -X 'main.SoftBuildTime={{.time.utc}}' -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}' -X 'main.SoftVersionCode={{.version_code}}'\" -o ./bin/gmake2_v{{.version}}_linux_arm64"
+]
 
-linux_arm64: |
-  @env GOARCH arm64
-  go build -ldflags "-s -w -X 'main.SoftBuildTime={{.time.utc}}' -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}' -X 'main.SoftVersionCode={{.version_code}}'" -o ./bin/gmake2_v{{.version}}_linux_arm64
-
-linux_x86: |
-  @env GOARCH 386
+linux_x86 = [
+  "@env GOARCH 386",
   go build -ldflags "-s -w -X 'main.SoftBuildTime={{.time.utc}}' -X 'main.SoftCommit={{.commit}}' -X 'main.SoftVersion={{.version}}' -X 'main.SoftVersionCode={{.version_code}}'" -o ./bin/gmake2_v{{.version}}_linux_386
 
 linux_amd64: |

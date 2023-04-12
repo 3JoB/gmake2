@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"time"
 
 	"github.com/3JoB/ulib/fsutil"
 	"github.com/spf13/cast"
@@ -67,7 +68,7 @@ func InitFile(c *cli.Context) error {
 	// If GMakefile exists, make it wait 12 seconds
 	if fsutil.IsExist(e) {
 		Println("GMake2: Note! There are already GMakefile.yml files in the directory! Now you still have 12 seconds to prevent GMAKE2 from covering the file!")
-		sleep(12)
+		time.Sleep(time.Second * 12)
 		remove(e)
 		Println("GMake2: File is being covered.")
 	}

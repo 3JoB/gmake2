@@ -12,7 +12,7 @@ var (
 	Tags            string
 
 	// Config file (GMakefile)
-	e string = "GMakefile.yml"
+	e string = "G.toml"
 )
 
 var VersionInfo = Sprintf(`GMake2 is distributed under Mozilla Public License 2.0.
