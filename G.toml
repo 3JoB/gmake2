@@ -1,6 +1,6 @@
-init = [
-  "@run get_info"
-]
+[init]
+
+["@run get_info"]
 
 fmt = [
   "gorgeous ./..."
