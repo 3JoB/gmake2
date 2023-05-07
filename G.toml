@@ -1,6 +1,10 @@
-[init]
+[config]
+default = "all"
 
-["@run get_info"]
+[g]
+init = [
+  "@run get_info"
+]
 
 fmt = [
   "gorgeous ./..."
@@ -100,6 +104,3 @@ get_info = [
   "@json parse gmake2_version version_code version_code",
   "@val commit git log --pretty=format:'%h' -1",
 ]
-
-[config]
-default = "all"
