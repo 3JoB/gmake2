@@ -1,5 +1,7 @@
 # GMake2
 
+<strong>This project is currently being reconstructed, please use the Release version instead of building it directly from the repo.</strong>
+
 <p align="center">
     <p align="center"><img width="120" src="wiki/gmake2.png"></p>
     <p align="center">This image is from <a href="https://quasilyte.dev/gopherkon/">Gopher Konstructor</a></p>
