@@ -172,6 +172,6 @@ gmake2
   - [Github Release](https://lcag.org/gmake2.releases). 
 
 # License
-This software is distributed under MPL-2.0 license.
+This software is distributed under MPL-2.0 license. :)
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2F3JoB%2Fgmake2.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2F3JoB%2Fgmake2?ref=badge_large)
