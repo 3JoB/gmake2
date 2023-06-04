@@ -10,7 +10,7 @@ require (
 	github.com/pelletier/go-toml/v2 v2.0.8
 	github.com/spf13/cast v1.5.1
 	github.com/tidwall/gjson v1.14.4
-	github.com/urfave/cli/v2 v2.25.3
+	github.com/urfave/cli/v2 v2.25.5
 )
 
 require (
