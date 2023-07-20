@@ -4,8 +4,8 @@ github.com/3JoB/go-reflect v1.0.1 h1:o8FsdGDAq32rM84vjIcoEs6ezB2whS0MCR+w7HNIuqI
 github.com/3JoB/go-reflect v1.0.1/go.mod h1:uqE8sGxe7gZKaXFFhkzOhXgAPnSdlXaT1Oy8CDYDWfE=
 github.com/3JoB/ulib v1.30.0 h1:SdkTKKZyDw13wsU4cXzOFVUa46dHBi7p5CYzMSujyRg=
 github.com/3JoB/ulib v1.30.0/go.mod h1:xfGmnqpZt2u24ufTC2oUEvTdD3dEn1m0Fs2KCBfR/KE=
-github.com/3JoB/unsafeConvert v1.4.0 h1:S6cgfWjZNQ0++/djthTX5i73LVcdJmNU6X9iMuImVx4=
-github.com/3JoB/unsafeConvert v1.4.0/go.mod h1:eSOZxiCOcyEi0vBO56ULYtfXJEn4vafvkebEfI0pYoE=
+github.com/3JoB/unsafeConvert v1.5.0 h1:zZGo8G/+yQu2h53GR2h0T+0VlD1uXEZgZIBH5ehjTgk=
+github.com/3JoB/unsafeConvert v1.5.0/go.mod h1:eSOZxiCOcyEi0vBO56ULYtfXJEn4vafvkebEfI0pYoE=
 github.com/cpuguy83/go-md2man/v2 v2.0.2 h1:p1EgwI/C7NhT0JmVkwCD2ZBK8j4aeHQX2pMHHBfMQ6w=
 github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
